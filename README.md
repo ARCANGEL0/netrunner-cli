@@ -1,4 +1,4 @@
-# Cyberpunk inspired authentication
+# Cyberpunk terminal menu
 ====================================
 
 Inspirado no terminal de hacking de Cyberpunk 2077, usando
