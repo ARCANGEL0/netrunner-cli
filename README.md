@@ -16,11 +16,12 @@ de inicializaçao no boot
 
 E necessario instalar certos pacotes, caso nao estejam instalados
 
-> pip install -r requirements.txt
+```shell
+ pip install -r requirements.txt
 
-> python3 init.py
+ python3 init.py
 
-
+```
 Por ser um projeto pessoal, o audio e algumas opções estão em japonês, pois foi inspirado no jogo Cyberpunk 2077 e feito como um aspiração à um terminal da Arasaka Corp. Sinta-se livre para modificar.
 
 
