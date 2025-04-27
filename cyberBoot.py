@@ -171,7 +171,7 @@ def menuOpcoes(scr):
         if keyInput == ord('\n') and selection == 0:
                 thread = Thread(target=playKey)
                 thread.start()
-                playsound(os.path.join(dir, "audio/goBack.mp3"))
+               audio(os.path.join(dir, "audio/goBack.mp3"))
 
                 scr.erase()
                 menu()
@@ -180,14 +180,14 @@ def menuOpcoes(scr):
             thread = Thread(target=playKey)
             thread.start()
             if checkPS('fusuma'):
-                playsound(os.path.join(dir, "audio/fusumaOff.mp3"))
+               audio(os.path.join(dir, "audio/fusumaOff.mp3"))
                 print("\n\nフスマを停車ている")
                 time.sleep(2)
                 os.system('killall fusuma')
                 scr.erase()
                 opcoes()
             else:
-                playsound(os.path.join(dir, "audio/fusumaOn.mp3"))
+               audio(os.path.join(dir, "audio/fusumaOn.mp3"))
                 print("\n\nフスマを始めている")
                 time.sleep(2)
                 os.system('fusuma -d')
@@ -198,14 +198,14 @@ def menuOpcoes(scr):
             thread = Thread(target=playKey)
             thread.start()
             if checkPS('apache'):
-                playsound(os.path.join(dir, "audio/apacheOff.mp3"))
+               audio(os.path.join(dir, "audio/apacheOff.mp3"))
                 print("\n\nアパッチを停車ている")
                 time.sleep(2)
                 os.system('echo {sudo password} | sudo -S -k service apache2 stop')
                 scr.erase()
                 opcoes()
             else:
-                playsound(os.path.join(dir, "audio/apacheOn.mp3"))
+               audio(os.path.join(dir, "audio/apacheOn.mp3"))
                 print("\n\nアパッチを始ている")
                 time.sleep(2)
                 os.system('echo {sudo password} | sudo -S -k service apache2 start')
@@ -214,17 +214,17 @@ def menuOpcoes(scr):
                 opcoes()
 
         elif keyInput == ord('\n') and selection == 3:
-            playsound(os.path.join(dir, "audio/keyenter.wav"))
+           audio(os.path.join(dir, "audio/keyenter.wav"))
 
             if checkPS('mariadb'):
-                playsound(os.path.join(dir, "audio/sqlOff.mp3"))
+               audio(os.path.join(dir, "audio/sqlOff.mp3"))
                 print("\n\nデータベースを停車ている")
                 time.sleep(2)
                 os.system('echo {sudo password} | sudo -S -k service mysql stop')
                 scr.erase()
                 opcoes()
             else:
-                playsound(os.path.join(dir, "audio/sqlOn.mp3"))
+               audio(os.path.join(dir, "audio/sqlOn.mp3"))
                 print("\n\nデータベースを始ている")
                 time.sleep(2)
                 os.system('echo {sudo password} | sudo -S -k service mysql start')
@@ -234,14 +234,14 @@ def menuOpcoes(scr):
             thread = Thread(target=playKey)
             thread.start()
             if checkPS('snapd'):
-                playsound(os.path.join(dir, "audio/snapOff.mp3"))
+               audio(os.path.join(dir, "audio/snapOff.mp3"))
                 print("\n\nスナップを停車ている")
                 time.sleep(2)
                 os.system('echo {sudo password} | sudo -S -k service snapd stop')
                 scr.erase()
                 opcoes()
             else:
-                playsound(os.path.join(dir, "audio/snapOn.mp3"))
+               audio(os.path.join(dir, "audio/snapOn.mp3"))
                 print("\n\nスナップを始ている")
                 time.sleep(2)
                 os.system(
@@ -251,10 +251,10 @@ def menuOpcoes(scr):
                 opcoes()
 
         elif keyInput == ord('\n') and selection == 5:
-            playsound(os.path.join(dir, "audio/keyenter.wav"))
+           audio(os.path.join(dir, "audio/keyenter.wav"))
 
             if checkPS('bluetoothd'):
-                playsound(os.path.join(dir, "audio/bluetoothOff.mp3"))
+               audio(os.path.join(dir, "audio/bluetoothOff.mp3"))
 
                 print("\n\nブルートゥースを停車ている")
                 time.sleep(2)
@@ -262,7 +262,7 @@ def menuOpcoes(scr):
                 scr.erase()
                 opcoes()
             else:
-                playsound(os.path.join(dir, "audio/bluetoothOn.mp3"))
+               audio(os.path.join(dir, "audio/bluetoothOn.mp3"))
                 print("\n\nブルートゥースを始ている")
                 time.sleep(2)
                 os.system('echo {sudo password} | sudo -S -k bluetoothd & disown')
@@ -272,7 +272,7 @@ def menuOpcoes(scr):
         elif keyInput == ord('\n') and selection == 6:
             thread = Thread(target=playKey)
             thread.start()
-            playsound(os.path.join(dir, "audio/torOn.mp3"))
+           audio(os.path.join(dir, "audio/torOn.mp3"))
             print("\n\n匿名ネットワークリレーを始めている")
             time.sleep(2)
             os.system('echo {sudo password} | sudo -S -k anonsurf start')
@@ -282,7 +282,7 @@ def menuOpcoes(scr):
         elif keyInput == ord('\n') and selection == 7:
             thread = Thread(target=playKey)
             thread.start()
-            playsound(os.path.join(dir, "audio/torOff.mp3"))
+           audio(os.path.join(dir, "audio/torOff.mp3"))
             print("\n\n匿名ネットワークリレーを停車ている")
             time.sleep(2)
             os.system('echo {sudo password} | sudo -S -k anonsurf stop')
@@ -325,7 +325,7 @@ def criarMenu(scr):
             thread = Thread(target=playKey)
             thread.start()
             print("\n\n\nTTYの端末を入るている")
-            playsound(os.path.join(dir, "audio/EnterTerminal.mp3"))
+           audio(os.path.join(dir, "audio/EnterTerminal.mp3"))
 
             time.sleep(2)
             os.system('tmux')
@@ -336,7 +336,7 @@ def criarMenu(scr):
             thread.start()
             print("\n\n\n荒坂ログを開く")
 
-            playsound(os.path.join(dir, "audio/logs.mp3"))
+           audio(os.path.join(dir, "audio/logs.mp3"))
 
             time.sleep(2)
 
@@ -353,14 +353,14 @@ def criarMenu(scr):
 
             thread = Thread(target=playKey)
             thread.start()
-            playsound(os.path.join(dir, "audio/options.mp3"))
+           audio(os.path.join(dir, "audio/options.mp3"))
 
             opcoes()
 
         elif keyInput == ord('\n') and selection == 3:
             thread = Thread(target=playKey)
             thread.start()
-            playsound(os.path.join(dir, "audio/logout.mp3"))
+           audio(os.path.join(dir, "audio/logout.mp3"))
             print("\n\n\nセッションを離れている")
             time.sleep(3)
             pid = os.getppid()
@@ -370,7 +370,7 @@ def criarMenu(scr):
             thread = Thread(target=playKey)
             thread.start()
             print("\n\n\nシャットダウン。。。")
-            playsound(os.path.join(dir, "audio/shutdown.mp3"))
+           audio(os.path.join(dir, "audio/shutdown.mp3"))
 
             time.sleep(5)
             os.system("systemctl poweroff")
@@ -548,7 +548,7 @@ def userPad(scr, senhas):
             thread = Thread(target=playKey)
             thread.start()
             keypad.addstr('>' + senha + '\n')
-            playsound(os.path.join(dir, "audio/beep.wav"))
+           audio(os.path.join(dir, "audio/beep.wav"))
             continue
 
         elif guess.upper() == senha.upper():
@@ -559,7 +559,7 @@ def userPad(scr, senhas):
             keypad.addstr('>するまで\n')
             keypad.addstr('>お待ちください.\n')
             mvPad(scr, keypad)
-            playsound(os.path.join(dir, "audio/correctpass.wav"))
+           audio(os.path.join(dir, "audio/correctpass.wav"))
             curses.napms(LOGIN_PAUSE)
 
             return senha
@@ -663,11 +663,11 @@ delay = 40
 mascara = '*'
 novaLinha = 10
 def playBeep():
-    playsound(os.path.join(dir, "audio/beep.wav"))
+   audio(os.path.join(dir, "audio/beep.wav"))
 def playError():
-    playsound(os.path.join(dir, "audio/wrongpass.wav"))
+   audio(os.path.join(dir, "audio/wrongpass.wav"))
 def playKey():
-    playsound(os.path.join(dir, "audio/keyenter.wav"))
+   audio(os.path.join(dir, "audio/keyenter.wav"))
 def typeT(window, text, pause=Lpausa):
 
     thread = Thread(target=playBeep)
