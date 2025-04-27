@@ -7,8 +7,7 @@
 # /_/    \_\_|  \___\__,_|_| |_|\__, |\___|_|\___/ 
 #                                __/ |             
    
-import subprocess
-import tempfile
+
 import sys
 import curses
 import time
@@ -16,7 +15,11 @@ import random
 import os
 import socket
 import signal
+import platform
+from playsound import playsound
 import psutil
+from threading import Thread
+
 
 # funcao para lidar co m interrupcoes do teclado
 def handler(signum, frame):
