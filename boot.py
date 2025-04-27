@@ -750,7 +750,7 @@ def initDarknet(scr):
     for header in MENU_HEAD2:   
         typeT(scr, header + '\n')
 
-    audio(os.path.join(dir, "audio/beep.wav",4)
+    audio(os.path.join(dir, "audio/beep.wav",4))
     for i in range(largura):
         scr.addch(curses.ACS_BSBS)
     scr.refresh()
@@ -776,7 +776,7 @@ def initMenu(scr):
     for header in MENU_HEAD2:   
         typeT(scr, header + '\n')
 
-    audio(os.path.join(dir, "audio/beep.wav",4)
+    audio(os.path.join(dir, "audio/beep.wav",4))
     for i in range(largura):
         scr.addch(curses.ACS_BSBS)
     scr.refresh()
