@@ -7,7 +7,8 @@
 # /_/    \_\_|  \___\__,_|_| |_|\__, |\___|_|\___/ 
 #                                __/ |             
    
-
+import subprocess
+import tempfile
 import sys
 import curses
 import time
@@ -16,7 +17,6 @@ import os
 import socket
 import signal
 import platform
-from playsound import playsound
 import psutil
 from threading import Thread
 
@@ -976,7 +976,7 @@ def userPad(scr, senhas):
             thread = Thread(target=playKey)
             thread.start()
             keypad.addstr('>' + senha + '\n')
-            playsound(os.path.join(dir, "audio/beep.wav"))
+            audio(os.path.join(dir, "audio/beep.wav"))
             continue
 
         elif guess.upper() == senha.upper():
@@ -987,7 +987,7 @@ def userPad(scr, senhas):
             keypad.addstr('>するまで\n')
             keypad.addstr('>お待ちください.\n')
             mvPad(scr, keypad)
-            playsound(os.path.join(dir, "audio/correctpass.wav"))
+            audio(os.path.join(dir, "audio/correctpass.wav"))
             curses.napms(LOGIN_PAUSE)
 
             return senha
@@ -1091,11 +1091,11 @@ delay = 40
 mascara = '*'
 novaLinha = 10
 def playBeep():
-    playsound(os.path.join(dir, "audio/beep.wav"))
+    audio(os.path.join(dir, "audio/beep.wav"))
 def playError():
-    playsound(os.path.join(dir, "audio/wrongpass.wav"))
+    audio(os.path.join(dir, "audio/wrongpass.wav"))
 def playKey():
-    playsound(os.path.join(dir, "audio/keyenter.wav"))
+    audio(os.path.join(dir, "audio/keyenter.wav"))
 def typeT(window, text, pause=Lpausa):
 
     thread = Thread(target=playBeep)
