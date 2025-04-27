@@ -8,7 +8,7 @@ def audio(filepath, repeats=1):
 
   
 def playBoot():
- audio(os.path.join(dir, "audio/beep.wav"))
+     audio(os.path.join(dir, "audio/beep.wav"))
 
 
 def playWelcome():
