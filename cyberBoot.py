@@ -424,13 +424,9 @@ def menu():
 
     res = curses.wrapper(initMenu)
     return res
-
-
 def opcoes():
     res = curses.wrapper(initOpcoes)
     return res
-
-
 def gPointer(n):
 
     num = POINTER
@@ -439,8 +435,6 @@ def gPointer(n):
         point_array.append(num)
         num += 12
     return point_array
-
-
 def getELEMNT(n):
 
     count = len(ELEMNT)
@@ -448,8 +442,6 @@ def getELEMNT(n):
     for i in range(int(n)):
         simbolos += ELEMNT[random.randint(0, count - 1)]
     return simbolos
-
-
 def f_senhas():
 
     senha_array = []
@@ -465,8 +457,6 @@ def f_senhas():
 
     random.shuffle(senhas)
     return senhas
-
-
 def SCREENF(length, senhas):
 
     tela = getELEMNT(length)
@@ -480,8 +470,6 @@ def SCREENF(length, senhas):
         tela = tela[:i] + senha + tela[i + senhaLen:]
         i += senhaLen
     return tela
-
-
 def sInit(scr):
 
     tTamanho = scr.getmaxyx()
@@ -518,8 +506,6 @@ def sInit(scr):
     scr.refresh()
 
     return senhas
-
-
 def mvPad(scr, keypad):
 
     tTamanho = scr.getmaxyx()
@@ -533,8 +519,6 @@ def mvPad(scr, keypad):
     keypad.refresh(0, 0, int(altura - cursorPos[0] - 1),
                    int(largura / 2 + NUMCHARS), int(altura - 1),
                    int(largura - 1))
-
-
 def userPad(scr, senhas):
 
     tTamanho = scr.getmaxyx()
@@ -604,8 +588,6 @@ def userPad(scr, senhas):
 
     # Out of tentativas
     return None
-
-
 def login_menu(scr):
 
     curses.use_default_colors()
@@ -617,13 +599,9 @@ def login_menu(scr):
     scr.move(0, 0)
     senhas = sInit(scr)
     return userPad(scr, senhas)
-
-
 def login():
 
     return curses.wrapper(login_menu)
-
-
 def initLock(scr):
     """
     Start the locked out portion of the terminal
@@ -640,15 +618,11 @@ def initLock(scr):
     centr(scr, '__!SYSTEM FA_ILUR_E 0x9f37c')
     scr.refresh()
     curses.napms(BLOQUEIO)
-
-
 def bloquearTela():
     """
     Initialize curses and start the locked out process
     """
     curses.wrapper(initLock)
-
-
 def initBoot():
 
     os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
@@ -657,14 +631,9 @@ def initBoot():
     return True
     res = curses.wrapper(initLogin)
     return res
-
-
-
 def iniciar():
     
     return initBoot()
-
-
 def initLogin(scr, username, password):
 
     curses.use_default_colors()
@@ -688,29 +657,17 @@ def initLogin(scr, username, password):
     typeT(scr, password_stars + '\n', delay)
 
     curses.napms(500)
-
-
 Lpausa = 3
-
-Ipausa = 50  # ms
-
+Ipausa = 50  
 delay = 40
-
 mascara = '*'
-
 novaLinha = 10
-
-
 def playBeep():
     playsound(os.path.join(dir, "audio/beep.wav"))
-
 def playError():
     playsound(os.path.join(dir, "audio/wrongpass.wav"))
-
 def playKey():
     playsound(os.path.join(dir, "audio/keyenter.wav"))
-
-
 def typeT(window, text, pause=Lpausa):
 
     thread = Thread(target=playBeep)
@@ -724,8 +681,6 @@ def typeT(window, text, pause=Lpausa):
 
 
 ''
-
-
 def cap_string(window, hidden=False, can_novaLinha=True):
 
     keyInput = 0

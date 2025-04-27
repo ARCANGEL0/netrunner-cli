@@ -18,7 +18,7 @@ import socket
 import signal
 import psutil
 
-# funcao para lidar com interrupcoes do teclado
+# funcao para lidar co m interrupcoes do teclado
 def handler(signum, frame):
     pass
 
@@ -860,8 +860,6 @@ def gPointer(n):
         point_array.append(num)
         num += 12
     return point_array
-
-
 def getELEMNT(n):
 
     count = len(ELEMNT)
@@ -869,8 +867,6 @@ def getELEMNT(n):
     for i in range(int(n)):
         simbolos += ELEMNT[random.randint(0, count - 1)]
     return simbolos
-
-
 def f_senhas():
 
     senha_array = []
@@ -886,8 +882,6 @@ def f_senhas():
 
     random.shuffle(senhas)
     return senhas
-
-
 def SCREENF(length, senhas):
 
     tela = getELEMNT(length)
@@ -901,8 +895,6 @@ def SCREENF(length, senhas):
         tela = tela[:i] + senha + tela[i + senhaLen:]
         i += senhaLen
     return tela
-
-
 def sInit(scr):
 
     tTamanho = scr.getmaxyx()
@@ -921,41 +913,28 @@ def sInit(scr):
     tCol1, tCol2 = tela[0:len(tela) // 2], tela[len(tela) // 2:]
 
     tLargura = int(largura / 4)
-    audio("$HOME/.fallout/audio/beep.wav", 2)
-    typeT(scr, LOGIN_TXT)
-    audio("$HOME/.fallout/audio/beep.wav",1)
-    typeT(scr, '\nENTER YOUR PASSWORD NOW\n\n')
-    audio("$HOME/.fallout/audio/beep.wav",1)
-    typeT(scr, str(TENTATIVAS_MAX) + ' ATTEMPT(S) LEFT: ')
-    audio("$HOME/.fallout/audio/beep.wav",2)
-    for i in range(TENTATIVAS_MAX):
-        scr.addch(curses.ACS_BLOCK)
-        typeT(scr, ' ')
+
+    typeT(scr, '\n\n' + LOGIN_TXT)
+    typeT(scr, '\n\n\nSTATUS:ONLINE\nMACHINE_DATA:'+ platform.system() +' '+ platform.release() +'\nCURRENT_USER:'+socket.gethostname()+'\n\nPROTOCOL 21F25532.... ACTIVATED.\nSYSTEM BREACH DETECTED... 0X94EF8C.\n「荒坂の端末」\n\n')
+
+    typeT(scr, '\n\n\n\n')
+    typeT(scr, '                                                                             SEQUENCE REQUIRED TO ACCESS: \n')
     typeT(scr, '\n\n')
+    typeT(scr, '                                    -' + '---------------' + '\n')
+    for i in range(len(senhas)):
+      
+       typeT(scr, '                                 | ' + senhas[i] + '  | \n')
+    typeT(scr, '                                    -' + '---------------' + '\n')
 
-    audio("$HOME/.fallout/audio/beep.wav",5)
-    for i in range(tAltura):
-        typeT(scr,
-              "0x%X %s" % (coluna1[i], tCol1[i * tLargura:(i + 1) * tLargura]),
-              0)
-        if i < tAltura - 1:
-            scr.addstr('\n')
-
-    for i in range(tAltura):
-        scr.move(LINHAS_HD + i, int(NUMCHARS / 2 + tLargura))
-        typeT(scr,
-              '0x%X %s' % (coluna2[i], tCol2[i * tLargura:(i + 1) * tLargura]),
-              0)
+   
 
     scr.refresh()
 
     return senhas
-
-
 def mvPad(scr, keypad):
 
     tTamanho = scr.getmaxyx()
-    altura = tTamanho[0]
+    altura = tTamanho[0] - 6
     largura = tTamanho[1]
 
     keypad.addstr('\n>')
@@ -965,12 +944,10 @@ def mvPad(scr, keypad):
     keypad.refresh(0, 0, int(altura - cursorPos[0] - 1),
                    int(largura / 2 + NUMCHARS), int(altura - 1),
                    int(largura - 1))
-
-
 def userPad(scr, senhas):
 
     tTamanho = scr.getmaxyx()
-    altura = tTamanho[0]
+    altura = tTamanho[0] - 6
     largura = tTamanho[1]
 
     keypad = curses.newpad(altura, int(largura / 2 + NUMCHARS))
@@ -978,7 +955,7 @@ def userPad(scr, senhas):
     tentativas = TENTATIVAS_MAX
 
     senha = senhas[random.randint(0, len(senhas) - 1)]
-    senhaHack = '/UNLOCK'
+    senhaHack = '[/ADMIN.F PASS]'
 
     curses.noecho()
 
@@ -991,44 +968,42 @@ def userPad(scr, senhas):
         cursorPos = keypad.getyx()
 
         keypad.move(cursorPos[0] - 1, cursorPos[1] - 1)
-        keypad.addstr('>' + guess.upper() + '\n')
 
         if guess.upper() == senhaHack.upper():
-            audio("$HOME/.fallout/audio/beep.wav")
+            thread = Thread(target=playKey)
+            thread.start()
             keypad.addstr('>' + senha + '\n')
+            playsound(os.path.join(dir, "audio/beep.wav"))
             continue
 
         elif guess.upper() == senha.upper():
-            audio("$HOME/.fallout/audio/correctpass.wav")
-            keypad.addstr('>Exact match!\n')
-            keypad.addstr('>Please wait\n')
-            keypad.addstr('>while system\n')
-            keypad.addstr('>is accessed.\n')
+            thread = Thread(target=playKey)
+            thread.start()
+            keypad.addstr('>完璧にマッチ!\n')
+            keypad.addstr('>システムにアクセス\n')
+            keypad.addstr('>するまで\n')
+            keypad.addstr('>お待ちください.\n')
             mvPad(scr, keypad)
+            playsound(os.path.join(dir, "audio/correctpass.wav"))
             curses.napms(LOGIN_PAUSE)
 
             return senha
 
         else:
 
+            thread = Thread(target=playKey)
+            thread.start()
             senhaLen = len(senha)
-            matched = 0
-            try:
-                for i in range(senhaLen):
-                    if senha[i].upper() == guess[i].upper():
-                        matched += 1
-            except IndexError:
-                pass
-            
-            audio("$HOME/.fallout/audio/wrongpass.wav")
-            keypad.addstr('>Login denied\n')
-            keypad.addstr('>' + str(matched) + '/' + str(senhaLen) +
-                          ' correct.\n')
+
+            keypad.addstr('>ACCESS DENIED!\n\n')
+
+            thread = Thread(target=playError)
+            thread.start()
 
         tentativas -= 1
         scr.move(SQUARE_Y, 0)
-        scr.addstr(str(tentativas))
         scr.move(SQUARE_Y, SQUARE_X)
+        scr.addstr(str(tentativas) + ' BREACHES LEFT:  ' )
         for i in range(TENTATIVAS_MAX):
             if i < tentativas:
                 scr.addch(curses.ACS_BLOCK)
@@ -1038,8 +1013,6 @@ def userPad(scr, senhas):
 
     # Out of tentativas
     return None
-
-
 def login_menu(scr):
 
     curses.use_default_colors()
@@ -1051,13 +1024,9 @@ def login_menu(scr):
     scr.move(0, 0)
     senhas = sInit(scr)
     return userPad(scr, senhas)
-
-
 def login():
 
     return curses.wrapper(login_menu)
-
-
 def initLock(scr):
     """
     Start the locked out portion of the terminal
@@ -1069,58 +1038,27 @@ def initLock(scr):
     scr.erase()
     curses.curs_set(0)
     scr.move(int(altura / 2 - 1), 0)
-    centr(scr, LOCK_TXT1)
+    os.system("cat " + os.path.join(dir, 'banner') + "| pv -qL 10000 " )
     scr.move(int(altura / 2 + 1), 0)
-    centr(scr, LOCK_TXT2)
+    centr(scr, '__!SYSTEM FA_ILUR_E 0x9f37c')
     scr.refresh()
     curses.napms(BLOQUEIO)
-
-
 def bloquearTela():
     """
     Initialize curses and start the locked out process
     """
     curses.wrapper(initLock)
+def initBoot():
 
-
-def initBoot(scr):
-
-    curses.use_default_colors()
-    scr.erase()
-    scr.move(0, 0)
-
-    curses.noecho()
-    scr.scrollok(True)
-    audio("$HOME/.fallout/audio/beep.wav",4)
-    typeT(scr, TXT1 + '\n\n', delay)
-    audio("$HOME/.fallout/audio/beep.wav",3)
-    typeT(scr, TXT2 + '\n\n', delay)
-    audio("$HOME/.fallout/audio/beep.wav",1)
-    typeT(scr, '>')
-    curses.napms(Ipausa)
-    audio("$HOME/.fallout/audio/beep.wav",2)
-    typeT(scr, TXT3 + '\n\n', delay)
-    curses.napms(Ipausa)
-    audio("$HOME/.fallout/audio/beep.wav",3)
-    typeT(scr, TXT4 + '\n\n', delay)
-    typeT(scr, '>')
-    curses.napms(Ipausa)
-    audio("$HOME/.fallout/audio/beep.wav",2)
-    typeT(scr, TXT5 + '\n', delay)
-    typeT(scr, '>')
-    curses.napms(Ipausa)
-    audio("$HOME/.fallout/audio/beep.wav",4)
-    typeT(scr, TXT6 + '\n\n', delay)
-    curses.napms(Ipausa)
+    os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
+    # time.sleep(5)
+    os.system("cat " + os.path.join(dir, 'arasaka_space') + "| pv -qL 10000 " )
     return True
-
-
-def iniciar():
-
-    res = curses.wrapper(initBoot)
+    res = curses.wrapper(initLogin)
     return res
-
-
+def iniciar():
+    
+    return initBoot()
 def initLogin(scr, username, password):
 
     curses.use_default_colors()
@@ -1144,32 +1082,30 @@ def initLogin(scr, username, password):
     typeT(scr, password_stars + '\n', delay)
 
     curses.napms(500)
-
-
 Lpausa = 3
-
-Ipausa = 50  # ms
-
+Ipausa = 50  
 delay = 40
-
 mascara = '*'
-
 novaLinha = 10
-
-
+def playBeep():
+    playsound(os.path.join(dir, "audio/beep.wav"))
+def playError():
+    playsound(os.path.join(dir, "audio/wrongpass.wav"))
+def playKey():
+    playsound(os.path.join(dir, "audio/keyenter.wav"))
 def typeT(window, text, pause=Lpausa):
 
-
+    thread = Thread(target=playBeep)
+    thread.start()
+ 
     for i in range(len(text)):
-
         window.addstr(text[i])
         window.refresh()
         curses.napms(pause)
 
 
+
 ''
-
-
 def cap_string(window, hidden=False, can_novaLinha=True):
 
     keyInput = 0
