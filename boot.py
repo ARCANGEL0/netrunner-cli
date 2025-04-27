@@ -944,12 +944,12 @@ def sInit(scr):
     typeT(scr, f"// STATUS: ONLINE\n// MACHINE_INFO: {platform.system()} {platform.release()} ({platform.machine()})\n// CURRENT_USER: {os.getlogin()}\n// HOSTNAME: {socket.gethostname()}\n// IP_ADDRESS: {socket.gethostbyname(socket.gethostname())}\n// MAC_ADDRESS: {get_mac_address()}\n// SYSTEM_TIME_UTC: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}\n// CPU_USAGE: {get_cpu_usage()}\n// MEMORY_STATUS: {get_memory_usage()}\n// DISK_STATUS: {get_disk_usage()}\n\n// BREACH_PROTOCOL: ACTIVE\n// BREACH_SOURCE: [ARASAKA TERMINAL - 港区, 東京]\n\n// INITIATING PACKET COLLECTION\n>>> COLLECTING_PACKET_1........COMPLETE\n>>> COLLECTING_PACKET_2........COMPLETE\n>>> COLLECTING_PACKET_3........COMPLETE\n>>> COLLECTING_PACKET_4........COMPLETE\n\n// UPLOAD_SEQUENCE\n>>> UPLOAD_IN_PROGRESS\n>>> UPLOAD_COMPLETE\n\n「システム侵入成功」")
 
     typeT(scr, '\n\n\n\n')
-    center(scr, '              SEQUENCE REQUIRED TO ACCESS: \n')
+    centr(scr, '              SEQUENCE REQUIRED TO ACCESS: \n')
     typeT(scr, '\n\n')
     centr(scr, '---------------' + '\n')
     for i in range(len(senhas)):
-       center(scr, '| ' + senhas[i] + ' | \n')
-    center(scr, '---------------' + '\n')
+       centr(scr, '| ' + senhas[i] + ' | \n')
+    centr(scr, '---------------' + '\n')
 
    
 
