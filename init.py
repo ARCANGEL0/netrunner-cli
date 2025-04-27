@@ -1,4 +1,4 @@
-import cyberBoot as mainB
+import boot as mainB
 from playsound import playsound
 import os
 from threading import Thread
