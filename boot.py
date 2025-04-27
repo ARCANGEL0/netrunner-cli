@@ -19,6 +19,7 @@ import signal
 import platform
 import psutil
 from threading import Thread
+import uuid
 
 
 # funcao para lidar co m interrupcoes do teclado
@@ -104,7 +105,7 @@ LINHAS_HD = 5
 LOGIN_PAUSE = 1000
 POINTER = 0xf650
 ELEMNT = '!@#$%^*()_-+={}[]|\\:;\'",<>./?'
-LOGIN_TXT = 'WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL'
+LOGIN_TXT = '// NET::TECH SYSTEM INTERFACE v2.7\n// BOOT_SEQUENCE_INITIATED\n// ACCESS_REQUEST\n\n'
 LOGIN_PASS = 'ENTER PASSWORD NOW'
 LOGIN_ERROR = 'INCORRECT PASSWORD, PLEASE TRY AGAIN'
 LOGIN_USER = 'LOGON '
@@ -189,6 +190,28 @@ def check_tor_running():
             return False
     except Exception:
         return False
+
+def get_mac_address():
+    mac = uuid.getnode()
+    mac_addr = ':'.join(('%012X' % mac)[i:i+2] for i in range(0, 12, 2))
+    return mac_addr
+
+def get_cpu_usage():
+    return f"{psutil.cpu_percent()}%" if psutil else "UNKNOWN"
+
+def get_memory_usage():
+    if psutil:
+        memory = psutil.virtual_memory()
+        return f"{memory.percent}% USED"
+    else:
+        return "UNKNOWN"
+
+def get_disk_usage():
+    if psutil:
+        disk = psutil.disk_usage('/')
+        return f"{disk.percent}% FULL"
+    else:
+        return "UNKNOWN"
 
 
 def checkNet():
@@ -918,16 +941,15 @@ def sInit(scr):
     tLargura = int(largura / 4)
 
     typeT(scr, '\n\n' + LOGIN_TXT)
-    typeT(scr, '\n\n\nSTATUS:ONLINE\nMACHINE_DATA:'+ platform.system() +' '+ platform.release() +'\nCURRENT_USER:'+socket.gethostname()+'\n\nPROTOCOL 21F25532.... ACTIVATED.\nSYSTEM BREACH DETECTED... 0X94EF8C.\n「荒坂の端末」\n\n')
+    typeT(scr, f"// STATUS: ONLINE\n// MACHINE_INFO: {platform.system()} {platform.release()} ({platform.machine()})\n// CURRENT_USER: {os.getlogin()}\n// HOSTNAME: {socket.gethostname()}\n// IP_ADDRESS: {socket.gethostbyname(socket.gethostname())}\n// MAC_ADDRESS: {get_mac_address()}\n// SYSTEM_TIME_UTC: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}\n// CPU_USAGE: {get_cpu_usage()}\n// MEMORY_STATUS: {get_memory_usage()}\n// DISK_STATUS: {get_disk_usage()}\n\n// BREACH_PROTOCOL: ACTIVE\n// BREACH_SOURCE: [ARASAKA TERMINAL - 港区, 東京]\n\n// INITIATING PACKET COLLECTION\n>>> COLLECTING_PACKET_1........COMPLETE\n>>> COLLECTING_PACKET_2........COMPLETE\n>>> COLLECTING_PACKET_3........COMPLETE\n>>> COLLECTING_PACKET_4........COMPLETE\n\n// UPLOAD_SEQUENCE\n>>> UPLOAD_IN_PROGRESS\n>>> UPLOAD_COMPLETE\n\n「システム侵入成功」")
 
     typeT(scr, '\n\n\n\n')
-    typeT(scr, '                                                                             SEQUENCE REQUIRED TO ACCESS: \n')
+    center(scr, '              SEQUENCE REQUIRED TO ACCESS: \n')
     typeT(scr, '\n\n')
-    typeT(scr, '                                    -' + '---------------' + '\n')
+    centr(scr, '---------------' + '\n')
     for i in range(len(senhas)):
-      
-       typeT(scr, '                                 | ' + senhas[i] + '  | \n')
-    typeT(scr, '                                    -' + '---------------' + '\n')
+       center(scr, '| ' + senhas[i] + ' | \n')
+    center(scr, '---------------' + '\n')
 
    
 
@@ -958,7 +980,7 @@ def userPad(scr, senhas):
     tentativas = TENTATIVAS_MAX
 
     senha = senhas[random.randint(0, len(senhas) - 1)]
-    senhaHack = '[/ADMIN.F PASS]'
+    senhaHack = '.unlock'
 
     curses.noecho()
 
