@@ -742,11 +742,11 @@ def initDarknet(scr):
 
     largura = scr.getmaxyx()[1]
 
-    audio(os.path.join(dir, "audio/beep.wav",3)
+    audio(os.path.join(dir, "audio/beep.wav",3))
     for header in MENU_HEAD:
         centr(scr, header + '\n')
 
-    audio(os.path.join(dir, "audio/beep.wav",3)
+    audio(os.path.join(dir, "audio/beep.wav",3))
     for header in MENU_HEAD2:   
         typeT(scr, header + '\n')
 
@@ -768,11 +768,11 @@ def initMenu(scr):
 
     largura = scr.getmaxyx()[1]
 
-    audio(os.path.join(dir, "audio/beep.wav",3)
+    audio(os.path.join(dir, "audio/beep.wav",3))
     for header in MENU_HEAD:
         centr(scr, header + '\n')
 
-    audio(os.path.join(dir, "audio/beep.wav",3)
+    audio(os.path.join(dir, "audio/beep.wav",3))
     for header in MENU_HEAD2:   
         typeT(scr, header + '\n')
 
