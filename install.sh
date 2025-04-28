@@ -3,8 +3,8 @@ echo "Installing. . . . . "
 clear
 sudo apt update -qq > /dev/null 2>&1
 sudo apt-get install curl wget zip git nmap figlet toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
-echo "// INSTALLATION_SEQUENCE . . . . . . . . . . . " | pv -qL 80
-echo ">>>> FETCHING NECESSARY MODULES. . . . . . . . " | pv -qL 80
+echo "// INSTALLATION_SEQUENCE . . . . . . . . . . . " | pv -qL 45
+echo ">>>> FETCHING NECESSARY MODULES. . . . . . . . " | pv -qL 45
 sudo apt-get install gnome-terminal ffmpeg
 [ ! -d "$HOME/.boot" ] && mkdir -p "$HOME/.boot"
 
@@ -19,13 +19,19 @@ elif [[ "$SHELL" == *"bash"* ]]; then
 else
   exit 1
 fi
-clear
-echo "///// SETTING PATH " | pv -qL 100
+cl30
+
+echo "///// SETTING PATH " | pv -qL 30
+echo ""
+echo ""
 grep -q "python $HOME/.boot/init.py" "$RC_FILE" || echo "python $HOME/.boot/init.py" >> "$RC_FILE"
+echo ""
 
 
 cd $HOME
-echo "[::]> INSTALLING DEPENDENCIES AND TOOLS. . . . . . . .   " | pv -qL 100
+echo "[::]> INSTALLING DEPENDENCIES AND TOOLS. . . . . . . .   " | pv -qL 60
+echo ""
+echo ""
 sudo systemctl stop tor
 wget https://github.com/JohnMcLaren/torctl-bridged/releases/download/torctl-bridged/torctl-bridged_0.5.7-1_amd64.deb
 sudo apt install torctl-bridged_0.5.7-1_amd64.deb
@@ -40,7 +46,7 @@ sleep 5
 echo " "
 echo " "
 echo " "
-echo "NET::TECH UI BOOT SCRIPT INSTALLED SUCCESSFULLY ✔" | pv -qL 50
+echo "NET::TECH UI BOOT SCRIPT INSTALLED SUCCESSFULLY ✔" | pv -qL 45
 echo " "
 echo " "
 echo " "
