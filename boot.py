@@ -897,7 +897,7 @@ def f_senhas():
 
     senha_array = []
 
-    with open("$HOME/.boot/pass")) as senha_ln:
+    with open("$HOME/.boot/pass") as senha_ln:
         for line in senha_ln:
             if not line.strip():
                 senha_array.append([])
