@@ -18,7 +18,7 @@ elif [[ "$SHELL" == *"bash"* ]]; then
 else
   exit 1
 fi
-cl30
+
 
 echo "///// SETTING PATH " | pv -qL 30
 echo ""
