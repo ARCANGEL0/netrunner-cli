@@ -1,9 +1,9 @@
 #!/bin/bash
-echo "Installing. . . . . "
+echo "// INSTALLATION_SEQUENCE . . . . . . . . . . . " | pv -qL 45
+echo ""
 clear
 sudo apt update -qq > /dev/null 2>&1
 sudo apt-get install curl wget zip git nmap figlet toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
-echo "// INSTALLATION_SEQUENCE . . . . . . . . . . . " | pv -qL 45
 echo ">>>> FETCHING NECESSARY MODULES. . . . . . . . " | pv -qL 45
 sudo apt-get install gnome-terminal ffmpeg
 [ ! -d "$HOME/.boot" ] && mkdir -p "$HOME/.boot"
