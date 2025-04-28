@@ -118,12 +118,83 @@ LOCK_TXT1 = 'TERMINAL LOCKED'
 LOCK_TXT2 = 'PLEASE CONTACT AN ADMINISTRATOR'
 LOCK_TXT3 = '! SECURITY BYPASS ATTEMPT DETECTED !'
 BLOQUEIO = 10000000
-
+MATRIX = [
+    ['44', '92', '11', '0E'],
+    ['2F', '94', '2E', 'A5'],
+    ['E8', 'D1', '93', '9B'],
+    ['6D', '42', '8F', '0C'],
+    ['A0', '58', '31', 'F3'],
+    ['39', '4E', '0B', '43'],
+]
 novaLinha = ord('\n')
 
 
 # ----------- funcoes --------------------
+def draw_matrix(win, matrix, sel_y=None, sel_x=None):
+    win.clear()
+    win.box()
+    for y, row in enumerate(matrix, start=1):
+        for x, code in enumerate(row, start=1):
+            # calculate cell position
+            cx = x * 5  # (4 chars + 1 space)
+            cy = y
+            if y-1 == sel_y and x-1 == sel_x:
+                win.attron(curses.A_REVERSE)
+                win.addstr(cy, cx, code)
+                win.attroff(curses.A_REVERSE)
+            else:
+                win.addstr(cy, cx, code)
+    win.refresh()
 
+
+def draw_sequence(win, seq):
+    win.erase()
+    win.box()
+    win.addstr(0, 2, " SEQUENCE REQUIRED ")
+    for idx, code in enumerate(seq, start=1):
+        win.addstr(idx, 2, f"{idx:02d}: {code}")
+    win.refresh()
+
+
+def breach_protocol(scr, matrix, req_seq):
+    # hide cursor, enable mouse
+    curses.curs_set(0)
+    curses.mousemask(curses.ALL_MOUSE_EVENTS)
+    scr.clear()
+    h, w = scr.getmaxyx()
+    mid = w // 2
+
+    # carve out two windows
+    left = curses.newwin(h-2, mid-2, 1, 1)
+    right = curses.newwin(h-2, w-mid-2, 1, mid+1)
+
+    sel = (None, None)
+    draw_matrix(left, matrix)
+    draw_sequence(right, req_seq)
+
+    while True:
+        ch = scr.getch()
+        if ch == curses.KEY_MOUSE:
+            _, mx, my, _, _ = curses.getmouse()
+            # if the click landed inside the left panel...
+            if 1 < mx < mid-1 and 1 < my < h-1:
+                # convert to matrix indices
+                cell_x = (mx - 1) // 5 - 1
+                cell_y = my - 1
+                if (0 <= cell_y < len(matrix) and
+                    0 <= cell_x < len(matrix[0])):
+                    sel = (cell_y, cell_x)
+                    # highlight the clicked cell
+                    draw_matrix(left, matrix, *sel)
+
+        elif ch in (ord('\n'), 27):  # ENTER or ESC to finish
+            break
+
+    # once done, clear and return to main flow
+    scr.clear()
+    scr.refresh()
+    
+        
 def audio(filepath, repeats=1):
     os.system(f"ffplay -nodisp -autoexit -loop {repeats} {filepath} > /dev/null 2>&1 &")
 
@@ -949,10 +1020,11 @@ def sInit(scr):
     typeT(scr, '\n\n\n\n')
     centr(scr, '              SEQUENCE REQUIRED TO ACCESS: \n')
     typeT(scr, '\n\n')
-    centr(scr, '---------------' + '\n')
-    for i in range(len(senhas)):
-       centr(scr, '| ' + senhas[i] + ' | \n')
-    centr(scr, '---------------' + '\n')
+    scr.refresh()
+    # now hand off to our interactive breach UI
+    breach_protocol(scr, MATRIX, senhas)
+    return senhas
+
 
    
 
