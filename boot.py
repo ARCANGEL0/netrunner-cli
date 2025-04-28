@@ -32,6 +32,9 @@ signal.signal(signal.SIGTSTP, handler)
 # -------------------- VARIAVEIS GERAIS --------------------------
 
 dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))  # pega o diretorio do arquivo
+home_dir = os.environ["HOME"]
+def expand_home(path):
+    return os.path.expanduser(path)
 
 # boot
 TXT1 = 'SECURITY RESET... '
@@ -357,7 +360,7 @@ def menuOptions(scr):
             menu()
 
         elif keyInput == ord('\n') and selection == 1:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nUPDATING VAULT SHELL. . . ")
             time.sleep(2)
             os.system('sudo apt update && sudo apt-get upgrade')
@@ -365,7 +368,7 @@ def menuOptions(scr):
             options()
 
         elif keyInput == ord('\n') and selection == 2:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nROBCO KEYMAPPING CONFIGURATION. . . ")
             time.sleep(2)
             keyboardModelLayout()
@@ -373,14 +376,14 @@ def menuOptions(scr):
             options()
 
         elif keyInput == ord('\n') and selection == 3:  
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nGETTING VAULTPEEK MODULE. . . ")
             vaultpeek()
             scr.erase()
             options()
 
         elif keyInput == ord('\n') and selection == 4:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING OVERSEER EYE. . . ")
             time.sleep(2)
             monitor()
@@ -388,7 +391,7 @@ def menuOptions(scr):
             options()
 
         elif keyInput == ord('\n') and selection == 5:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING NETCORE. . . ")
             time.sleep(2)
             getNmtui()
@@ -396,7 +399,7 @@ def menuOptions(scr):
             options()
 
         elif keyInput == ord('\n') and selection == 6:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nCLEARING ROBCO TEMPORARY LOGS AND FILES. . . ")
             time.sleep(2)
             os.system('sudo apt-get autoremove -y && sudo apt-get clean && sudo apt-get autoclean -y && sudo rm -rf /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/log/*.log && sudo journalctl --vacuum-time=7d')
@@ -406,7 +409,7 @@ def menuOptions(scr):
             options()
 
         elif keyInput == ord('\n') and selection == 7:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING PIPSNIFF 3000 ")
             time.sleep(2)
             getNetstat()
@@ -414,7 +417,7 @@ def menuOptions(scr):
             options()
 
         elif keyInput == ord('\n') and selection == 8:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nUPDATING NAMEFORGE . . . ")
             time.sleep(2)
             editHost()
@@ -423,7 +426,7 @@ def menuOptions(scr):
 
 
         elif keyInput == ord('\n') and selection == 9:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nSETTING CRONSTART INIT . . . ")
             time.sleep(2)
             createCron()
@@ -432,7 +435,7 @@ def menuOptions(scr):
 
 
         elif keyInput == ord('\n') and selection == 10:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nOPENING CRONWATCH . . . ")
             time.sleep(2)
             getCrons()
@@ -497,17 +500,17 @@ def menuServicos(scr):
             selection += 1
 
         if keyInput == ord('\n') and selection == 0:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             scr.erase()
             menu()
 
         elif keyInput == ord('\n') and selection == 1:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             scr.erase()
             darknet()
 
         elif keyInput == ord('\n') and selection == 2:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             if checkPS('apache2'):
                 print("\n\nSTOPPING ROBCO SERVER. . . ")
                 time.sleep(2)
@@ -522,7 +525,7 @@ def menuServicos(scr):
                 servicos()
 
         elif keyInput == ord('\n') and selection == 3:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             if checkPS('mariadb') or checkPS('mysql'):
                 print("\n\nSTOPPING CRYPTBASE. . . ")
                 time.sleep(2)
@@ -536,7 +539,7 @@ def menuServicos(scr):
                 scr.erase()
                 servicos()
         elif keyInput == ord('\n') and selection == 4:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             if checkPS('tor'):
                 print("\n\nSTOPPING RADNET. . . ")
                 time.sleep(2)
@@ -551,7 +554,7 @@ def menuServicos(scr):
                 servicos()
 
         elif keyInput == ord('\n') and selection == 5:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             if checkPS('ufw'):
 
                 print("\n\nSTOPPING VAULTSEC UFW")
@@ -597,7 +600,7 @@ def criarMenu(scr):
             selection += 1
 
         if keyInput == ord('\n') and selection == 0:    
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
 
             time.sleep(2)
@@ -605,7 +608,7 @@ def criarMenu(scr):
             os.system('tmux')
 
         elif keyInput == ord('\n') and selection == 1:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\nVault 138\n Journal entry:")
 
 
@@ -621,24 +624,24 @@ def criarMenu(scr):
             menu()
 
         elif keyInput == ord('\n') and selection == 2:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             servicos()
         elif keyInput == ord('\n') and selection == 3:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             options()
         elif keyInput == ord('\n') and selection == 4:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
                #logout
             lock_screen()
         elif keyInput == ord('\n') and selection == 5:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
 
             time.sleep(5)
             os.system("sudo shutdown -r now")
         
         elif keyInput == ord('\n') and selection == 6:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\nG O O D    B Y E ! ")
 
             time.sleep(5)
@@ -678,7 +681,7 @@ def criarDarknet(scr):
             selection += 1
 
         if keyInput == ord('\n') and selection == 0:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             scr.erase()
             servicos()
 
@@ -690,7 +693,7 @@ def criarDarknet(scr):
            darknet()
        
         elif keyInput == ord('\n') and selection == 2:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             if checkNet():
                 print("\n\nDISCONNECTING OVERSEER NETWORK. . . ")
                 time.sleep(2)
@@ -705,7 +708,7 @@ def criarDarknet(scr):
                 darknet()
 
         elif keyInput == ord('\n') and selection == 3:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nACTIVATING AUTOWIPE. . . ")
             time.sleep(2)
             os.system('sudo torctl autowipe')
@@ -713,42 +716,42 @@ def criarDarknet(scr):
             darknet()
 
         elif keyInput == ord('\n') and selection == 4:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nACTIVATING AUTO START. . . ")
             time.sleep(2)
             os.system('sudo torctl autostart')
             scr.erase()
             darknet()
         elif keyInput == ord('\n') and selection == 5:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nFETCHING LOCAL TERMINAL COORDINATES. . . ")
             time.sleep(2)
             os.system('sudo torctl ip | micro ')
             scr.erase()
             darknet()
         elif keyInput == ord('\n') and selection == 6:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
             time.sleep(2)
             os.system('sudo torctl chngid')
             scr.erase()
             darknet()
         elif keyInput == ord('\n') and selection == 7:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
             time.sleep(2)
             os.system('sudo torctl chngid')
             scr.erase()
             darknet()
         elif keyInput == ord('\n') and selection == 8:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nCHANGING LOCAL ROBCO CHIPSET MAC. . . ")
             time.sleep(2)
             os.system('sudo torctl chngmac')
             scr.erase()
             darknet()
         elif keyInput == ord('\n') and selection == 9:
-            audio("$HOME/.boot/audio/keyenter.wav")
+            audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nRESTORING LOCAL ROBCO CHIPSET MAC. . . ")
             time.sleep(2)
             os.system('sudo torctl rvmac')
@@ -765,15 +768,15 @@ def initDarknet(scr):
 
     largura = scr.getmaxyx()[1]
 
-    audio("$HOME/.boot/audio/beep.wav",3)
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in MENU_HEAD:
         centr(scr, header + '\n')
 
-    audio("$HOME/.boot/audio/beep.wav",3)
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in MENU_HEAD2:   
         typeT(scr, header + '\n')
 
-    audio("$HOME/.boot/audio/beep.wav",4)
+    audio(expand_home("~/.boot/audio/beep.wav"),4)
     for i in range(largura):
         scr.addch(curses.ACS_BSBS)
     scr.refresh()
@@ -791,15 +794,15 @@ def initMenu(scr):
 
     largura = scr.getmaxyx()[1]
 
-    audio("$HOME/.boot/audio/beep.wav",3)
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in MENU_HEAD:
         centr(scr, header + '\n')
 
-    audio("$HOME/.boot/audio/beep.wav",3)
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in MENU_HEAD2:   
         typeT(scr, header + '\n')
-
-    audio("$HOME/.boot/audio/beep.wav",4)
+    
+    audio(expand_home("~/.boot/audio/beep.wav"),4)
     for i in range(largura):
         scr.addch(curses.ACS_BSBS)
     scr.refresh()
@@ -896,8 +899,8 @@ def getELEMNT(n):
 def f_senhas():
 
     senha_array = []
-
-    with open("$HOME/.boot/pass") as senha_ln:
+    pathss = os.path.join(home_dir, ".boot", "pass")
+    with open(pathss) as senha_ln:
         for line in senha_ln:
             if not line.strip():
                 senha_array.append([])
@@ -998,7 +1001,7 @@ def userPad(scr, senhas):
             thread = Thread(target=playKey)
             thread.start()
             keypad.addstr('>' + senha + '\n')
-            audio("$HOME/.boot/audio/beep.wav")
+            audio(expand_home("~/.boot/audio/beep.wav"))
             continue
 
         elif guess.upper() == senha.upper():
@@ -1009,7 +1012,7 @@ def userPad(scr, senhas):
             keypad.addstr('>するまで\n')
             keypad.addstr('>お待ちください.\n')
             mvPad(scr, keypad)
-            audio("$HOME/.boot/audio/correctpass.wav")
+            audio(expand_home("~/.boot/audio/correctpass.wav"))
             curses.napms(LOGIN_PAUSE)
 
             return senha
@@ -1113,11 +1116,11 @@ delay = 40
 mascara = '*'
 novaLinha = 10
 def playBeep():
-    audio("$HOME/.boot/audio/beep.wav")
+    audio(expand_home("~/.boot/audio/beep.wav"))
 def playError():
-    audio("$HOME/.boot/audio/wrongpass.wav")
+    audio(expand_home("~/.boot/audio/wrongpass.wav"))
 def playKey():
-    audio("$HOME/.boot/audio/keyenter.wav")
+    audio(expand_home("~/.boot/audio/keyenter.wav"))
 def typeT(window, text, pause=Lpausa):
 
     thread = Thread(target=playBeep)
