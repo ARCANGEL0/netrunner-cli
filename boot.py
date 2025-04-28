@@ -1007,10 +1007,10 @@ def userPad(scr, senhas):
         elif guess.upper() == senha.upper():
             thread = Thread(target=playKey)
             thread.start()
-            keypad.addstr('>完璧にマッチ!\n')
-            keypad.addstr('>システムにアクセス\n')
-            keypad.addstr('>するまで\n')
-            keypad.addstr('>お待ちください.\n')
+            keypad.addstr('> ::: ENGAGING PROTOCOL//0xC0D3\n')
+            keypad.addstr('> :: INITIATING_NET_OVERRIDE //\n')
+            keypad.addstr('> ==>> UPLINK STABILIZED [███░░]\n')
+            keypad.addstr('> >>> ROOT_NODE_ACCESS//GRANTED\n')
             mvPad(scr, keypad)
             audio(expand_home("~/.boot/audio/correctpass.wav"))
             curses.napms(LOGIN_PAUSE)
@@ -1022,9 +1022,7 @@ def userPad(scr, senhas):
             thread = Thread(target=playKey)
             thread.start()
             senhaLen = len(senha)
-
-            keypad.addstr('>ACCESS DENIED!\n\n')
-
+            keypad.addstr('> [ERROR_CODE] :: 0x5A_DENIED\n\n')   
             thread = Thread(target=playError)
             thread.start()
 
@@ -1068,8 +1066,8 @@ def initLock(scr):
     scr.move(int(altura / 2 - 1), 0)
     os.system("cat " + os.path.join(dir, 'banner') + "| pv -qL 10000 " )
     scr.move(int(altura / 2 + 1), 0)
-    centr(scr, '__!SYSTEM FA_ILUR_E 0x9f37c')
-    scr.refresh()
+    centr(scr, 'C0NNECTION_TERMINATED__!\nSYSTEM_FAILURE [0x9F37C] //')
+    centr(scr, 'ERROR CODE: 0x5A_X12T | TRACE DETECTED!!\n')    scr.refresh()
     curses.napms(BLOQUEIO)
 def bloquearTela():
     """
@@ -1079,8 +1077,6 @@ def bloquearTela():
 def initBoot():
 
     os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
-    # time.sleep(5)
-    os.system("cat " + os.path.join(dir, 'arasaka_space') + "| pv -qL 10000 " )
     return True
     res = curses.wrapper(initLogin)
     return res
@@ -1135,37 +1131,50 @@ def typeT(window, text, pause=Lpausa):
 
 ''
 def cap_string(window, hidden=False, can_novaLinha=True):
-
     keyInput = 0
     def_string = ''
+    novaLinha = ord('\n')  # ASCII for newline
+
     try:
         while keyInput != novaLinha:
             keyInput = window.getch()
-            if keyInput > 96 and keyInput < 123:
+
+            # Convert lowercase to uppercase
+            if 96 < keyInput < 123:
                 keyInput -= 32
+
+            # Handle backspace
             if keyInput == ord('\b'):
                 if len(def_string) > 0:
                     def_string = def_string[:-1]
                     cur = window.getyx()
                     window.move(cur[0], cur[1] - 1)
-                    window.clrtobot()
+                    window.clrtobot()  # Clear from current cursor to bottom
                 else:
-                    continue
+                    continue  # Ignore if nothing to delete
+
+            # Ignore keys greater than 255 (extended keys)
             elif keyInput > 255:
                 continue
+
+            # Handle regular input (characters)
             elif keyInput != novaLinha:
                 def_string += chr(keyInput)
                 if hidden:
-                    window.addch(mascara)
+                    window.addch('*')  # Show a mask (e.g., *) if hidden is True
                 else:
-                    window.addch(keyInput)
+                    window.addch(chr(keyInput))  # Show the character normally
+
+            # Handle new line input
             elif can_novaLinha:
                 window.addch(novaLinha)
+
         return def_string
 
     except ValueError:
-        # We might have Unicode chars in here, let's use unichr instead
-        login()
+        # Handle Unicode characters, if needed, and re-call the login function
+        login()  # Or handle as appropriate
+
 
 
 def centr(window, text, pause=Lpausa):
