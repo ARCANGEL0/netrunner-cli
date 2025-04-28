@@ -19,6 +19,11 @@ else
   exit 1
 fi
 
+mkdir -p ~/.local/share/fonts
+[ ! -f ~/.local/share/fonts/starwars.flf ] && curl -o ~/.local/share/fonts/starwars.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/starwars.flf
+[ ! -f ~/.local/share/fonts/Doom.flf ] && curl -o ~/.local/share/fonts/Doom.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/Doom.flf
+
+
 
 echo "///// SETTING PATH " | pv -qL 30
 echo ""
@@ -45,11 +50,11 @@ sleep 5
 echo " "
 echo " "
 echo " "
+figlet -f ~/.local/share/fonts/starwars.flf "NET::TECH"
 echo "NET::TECH UI BOOT SCRIPT INSTALLED SUCCESSFULLY ✔" | pv -qL 45
 echo " "
 echo " "
-echo " "
-sleep 5
+cd $HOME
+read -n 1 -s -r -p "Press any key to restart your shell..."
 clear 
 cd $HOME;
-tmux
