@@ -34,7 +34,7 @@ echo ""
 echo ""
 sudo systemctl stop tor
 wget https://github.com/JohnMcLaren/torctl-bridged/releases/download/torctl-bridged/torctl-bridged_0.5.7-1_amd64.deb
-sudo apt install torctl-bridged_0.5.7-1_amd64.deb
+sudo apt install $HOME/torctl-bridged_0.5.7-1_amd64.deb
 
 git clone https://github.com/ARCANGEL0/EzyMap.git $HOME/.local/EzyMap
 cd $HOME/.local/EzyMap 
