@@ -1067,7 +1067,8 @@ def initLock(scr):
     os.system("cat " + os.path.join(dir, 'banner') + "| pv -qL 10000 " )
     scr.move(int(altura / 2 + 1), 0)
     centr(scr, 'C0NNECTION_TERMINATED__!\nSYSTEM_FAILURE [0x9F37C] //')
-    centr(scr, 'ERROR CODE: 0x5A_X12T | TRACE DETECTED!!\n')    scr.refresh()
+    centr(scr, 'ERROR CODE: 0x5A_X12T | TRACE DETECTED!!\n')    
+    scr.refresh()
     curses.napms(BLOQUEIO)
 def bloquearTela():
     """
