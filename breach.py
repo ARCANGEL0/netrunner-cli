@@ -12,7 +12,6 @@ import psutil
 from threading import Thread
 import uuid
 
-
 Lpausa = 3
 
 def get_mac_address():
@@ -78,7 +77,6 @@ MENU1 = [
     'POWER OFF'
 ]
 
-
 MENU_SERVICES = [
     'RETURN',
     'START OVERSEER NETWORK',
@@ -125,6 +123,7 @@ def gPointer(n):
         point_array.append(num)
         num += 12
     return point_array
+
 def getELEMNT(n):
 
     count = len(ELEMNT)
@@ -132,6 +131,7 @@ def getELEMNT(n):
     for i in range(int(n)):
         simbolos += ELEMNT[random.randint(0, count - 1)]
     return simbolos
+
 def f_senhas():
 
     senha_array = []
@@ -147,6 +147,7 @@ def f_senhas():
 
     random.shuffle(senhas)
     return senhas
+
 def SCREENF(length, senhas):
 
     tela = getELEMNT(length)
@@ -160,6 +161,7 @@ def SCREENF(length, senhas):
         tela = tela[:i] + senha + tela[i + senhaLen:]
         i += senhaLen
     return tela
+
 # tela bloqueada
 LOCK_TXT1 = 'TERMINAL LOCKED'
 LOCK_TXT2 = 'PLEASE CONTACT AN ADMINISTRATOR'
@@ -175,11 +177,12 @@ MATRIX = [
 ]
 novaLinha = ord('\n')
 
-
 novaLinha = 10
+
 # Assume helper functions audio, playKey, playError, cap_string, typeT, centr, f_senhas, gPointer, SCREENF, userPad etc. are defined elsewhere
 dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))  # pega o diretorio do arquivo
 home_dir = os.environ["HOME"]
+
 def expand_home(path):
     return os.path.expanduser(path)
 
@@ -188,8 +191,10 @@ def audio(filepath, repeats=1):
 
 def playBeep():
     audio(expand_home("~/.boot/audio/beep.wav"))
+
 def playError():
     audio(expand_home("~/.boot/audio/wrongpass.wav"))
+
 def playKey():
     audio(expand_home("~/.boot/audio/keyenter.wav"))
 
@@ -200,15 +205,11 @@ def typeT(window, text, pause=Lpausa):
 
     thread = Thread(target=playBeep)
     thread.start()
- 
+
     for i in range(len(text)):
         window.addstr(text[i])
         window.refresh()
         curses.napms(pause)
-
-
-
-''
 
 def centr(window, text, pause=Lpausa):
 
@@ -229,11 +230,9 @@ ATTEMPTS_ALLOWED = 3
 PICKS_PER_ATTEMPT = 8
 REFERENCE_LEN = 4
 
-
 def generate_grid(n):
     return [[f"{random.choice('0123456789ABCDEF')}{random.choice('0123456789ABCDEF')}" \
              for _ in range(n)] for _ in range(n)]
-
 
 def pick_reference_positions(n, length):
     path, visited = [], set()
@@ -256,7 +255,6 @@ def make_new_grid_with_ref(n, ref_positions):
         grid[r][c] = code; ref_codes.append(code)
     return grid, ref_codes
 
-
 def get_axis(prev, step):
     if step == 0: return None
     return 'col' if step % 2 else 'row'
@@ -269,7 +267,6 @@ def get_valid_picks(prev, step, visited):
     r0, c0 = prev
     if axis == 'col': return {(r, c0) for r in range(n) if (r, c0) not in visited}
     return {(r0, c) for c in range(n) if (r0, c) not in visited}
-
 
 def draw_single_box(scr, y, x, h, w, title=None):
     scr.addstr(y, x, '┌' + '─'*(w-2) + '┐')
@@ -313,8 +310,22 @@ def run_breach(scr):
         if all(b in picked for b in reference): success = True
         else: attempts -= 1
     draw_game(scr, grid, cursor, picks, attempts, reference)
+    if success:
+        h, w = scr.getmaxyx()
+        gw = GRID_SIZE * 5 + 2
+        gh = GRID_SIZE * 2 + 2
+        sy, sx = max(2, (h - gh) // 2), max(2, (w - gw - 60) // 2)
+        for r in range(GRID_SIZE * 2 + 2): scr.addstr(sy + r, sx, ' ' * (gw - 2))
+        typeT(scr, '\n\n\n\n\n\nBREACH PROTOCOL SUCCESS! CONTINUING...')
+        typeT(scr, '> ::: ENGAGING PROTOCOL//0xC0D3\n')
+        typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
+        typeT(scr, '> ==>> UPLINK STABILIZED [███░░]\n')
+        typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
+    else:
+        typeT(scr, '\nBREACH PROTOCOL FAILED! ACCESS DENIED')
+    scr.refresh()
+    time.sleep(1)
     return success
-
 
 def draw_game(scr, grid, cursor, picks, attempts, reference):
     h,w = scr.getmaxyx()
@@ -393,4 +404,4 @@ def sInit(scr):
 
 # Entry point
 if __name__ == '__main__':
-    curses.wrapper(login_menu)
+    curses.wrapper(login_menu) 
