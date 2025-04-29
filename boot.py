@@ -193,9 +193,11 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
-def shutdown_program(scr=None):
-    curses.endwin()
-    os.kill(os.getpid(), signal.SIGKILL)
+def shutdown_program(stdscr):
+    stdscr.clear()  
+    stdscr.refresh()  
+    curses.endwin()  
+    sys.exit(0)  
 
 
 #................TEXTS............................
