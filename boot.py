@@ -370,7 +370,7 @@ def get_system_info():
         f"// IADDRESS..........: {ip_address}",
         f"// W_ADDRESS.......: {public_ip}",
         f"// M_ADDRESS.......: {mac_address}",
-        f"// CUR_TIME......: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}",
+        f"// CUR_TIME......: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}",
         f"// RUNNER_ID.........: {hostname}",
         f"// SESSION_KEY.......: {session_key}",
         f"// GET_ACCESSV_SSID......: {ssid}",
