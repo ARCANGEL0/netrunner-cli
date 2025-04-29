@@ -1245,7 +1245,8 @@ def initFirstMenu(scr):
 def initMenu(scr):
 
     curses.use_default_colors()
-    selection_start_yx = scr.getyx()[1]
+    selection_start_y = scr.getyx()[1]
+    selection_start_x = scr.getyx()[1]
     scr.move(selection_start_yx,selection_start_yx)
     curses.curs_set(0)
     
