@@ -157,7 +157,7 @@ def run_breach(scr):
     else:
         bloquearTela()
     scr.refresh()
-    time.sleep(1)
+    time.sleep(2)
     return success
 
 def draw_game(scr, grid, cursor, picks, attempts, reference):
