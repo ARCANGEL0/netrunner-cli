@@ -289,7 +289,7 @@ def get_system_info():
             return result.decode()
         except subprocess.CalledProcessError:
             return "[ / ]"
-    def get_open_ports():
+    def open_ports():
         try:
             output = subprocess.check_output("ss -tuln", shell=True, text=True)
             ports = set()
