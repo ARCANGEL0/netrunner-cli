@@ -243,12 +243,7 @@ def get_system_info():
             return dns_servers
         except FileNotFoundError:
             return ["[ / ]"]
-    def get_scheduled_tasks():
-        try:
-            cron_jobs = subprocess.check_output("crontab -l", shell=True).decode().splitlines()
-            return cron_jobs if cron_jobs else ["No Cron Jobs"]
-        except subprocess.CalledProcessError:
-            return ["No Cron Jobs"]
+
     def selinux_status():
         try:
             status = subprocess.check_output("sestatus", shell=True).decode("utf-8")
@@ -436,7 +431,6 @@ def get_system_info():
         f"// LOAD_DNS.......: {', '.join(dns_servers)}",
         f"// SELINUX_STATUS....: {selinux_status()}",
         f"// FIREWALL_RULES....: {firewall_rules_summary}",
-        f"// SCHED_TASKS...: {', '.join(scheduled_tasks)}",
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
         "...................................................................."
