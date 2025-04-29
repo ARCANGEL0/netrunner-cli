@@ -337,7 +337,7 @@ def run_breach(scr):
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
         time.sleep(5)
     else:
-        initLock()
+        bloquearTela()
     scr.refresh()
     time.sleep(1)
     return success
