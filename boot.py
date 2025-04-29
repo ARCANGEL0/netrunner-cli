@@ -1041,7 +1041,7 @@ def criarMenu(scr):
             time.sleep(2)
             os.system("clear"); 
             os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
-            shutdown_program()
+            os.system("tmux")
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
