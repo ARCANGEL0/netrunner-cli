@@ -1341,7 +1341,7 @@ def login_menu(scr):
 
 
 def login():
-    return curses.wrapper()
+    return curses.wrapper(initServicos)
     #return curses.wrapper(login_menu)
 def initLock(scr):
     """
