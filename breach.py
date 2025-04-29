@@ -85,6 +85,8 @@ MENU_SERVICES = [
     'START RADNET',
     'START VAULTSEC UFW'
 ]
+icon_top = " ╔═╗╔═╗ "
+icon_bot = " ╚═╣╠═╝ "
 
 MENU_OPTIONS  = [
     'RETURN',
@@ -167,14 +169,6 @@ LOCK_TXT1 = 'TERMINAL LOCKED'
 LOCK_TXT2 = 'PLEASE CONTACT AN ADMINISTRATOR'
 LOCK_TXT3 = '! SECURITY BYPASS ATTEMPT DETECTED !'
 BLOQUEIO = 10000000
-MATRIX = [
-    ['44', '92', '11', '0E'],
-    ['2F', '94', '2E', 'A5'],
-    ['E8', 'D1', '93', '9B'],
-    ['6D', '42', '8F', '0C'],
-    ['A0', '58', '31', 'F3'],
-    ['39', '4E', '0B', '43'],
-]
 novaLinha = ord('\n')
 
 novaLinha = 10
@@ -321,6 +315,7 @@ def run_breach(scr):
         typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
         typeT(scr, '> ==>> UPLINK STABILIZED [███░░]\n')
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
+        time.sleep(5)
     else:
         typeT(scr, '\nBREACH PROTOCOL FAILED! ACCESS DENIED')
     scr.refresh()
@@ -333,6 +328,7 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     iw = max(60,REFERENCE_LEN*6+PICKS_PER_ATTEMPT*4); ih = PICKS_PER_ATTEMPT+8
     sy, sx = max(2,(h-gh)//2), max(2,(w-gw-iw-6)//2)
     scr.addstr(sy-2, sx, "NET::TECH PROTOCOL", curses.A_BOLD)
+    scr.addstr(sy-1, sx, "// TERMINAL_ST", curses.A_BOLD)
     draw_single_box(scr, sy, sx, gh, gw, " GRID ")
     ix = sx+gw+4; draw_double_box(scr, sy, ix, ih, iw, " PROTOCOL ")
     curses.init_pair(1,curses.COLOR_CYAN,curses.COLOR_BLACK)
@@ -350,8 +346,12 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
             scr.addstr(y,x,code,attr)
     iy=sy+2; scr.addstr(iy,ix+2,f"[{attempts}]::> ATTEMPTS LEFT")
     slots=[grid[r][c] for r,c in picks]+['__']*(PICKS_PER_ATTEMPT-len(picks))
-    scr.addstr(iy+2,ix+2,"BYTE [ "+' | '.join(slots)+" ]")
-    scr.addstr(iy+4,ix+2,">>> SEQUENCE:  "+' '.join(f"[{b}]" for b in reference))
+    scr.addstr(iy + 2, ix + 2, "BUFFER [ " + ' | '.join(slots) + " ]")
+    scr.addstr(iy+4,ix+2,">>> SEQUENCE REQUIRED TO UPLOAD:  ")
+    sequence = ' '.join(f"[{b}]" for b in reference)
+    scr.addstr(iy + 4, ix +2 , f"{sequence:<30}{icon_top}  DATAMINER_V1")
+    scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
+    # Refresh screen
     scr.refresh()
 
 # --- Integration into Login Flow ---
@@ -384,7 +384,7 @@ def sInit(scr):
     tLargura = int(largura / 4)
 
     typeT(scr, '\n\n' + LOGIN_TXT)
-    typeT(scr, f"// STATUS: ONLINE\n// MACHINE_INFO: {platform.system()} {platform.release()} ({platform.machine()})\n// CURRENT_USER: {os.getlogin()}\n// HOSTNAME: {socket.gethostname()}\n// IP_ADDRESS: {socket.gethostbyname(socket.gethostname())}\n// MAC_ADDRESS: {get_mac_address()}\n// SYSTEM_TIME_UTC: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}\n// CPU_USAGE: {get_cpu_usage()}\n// MEMORY_STATUS: {get_memory_usage()}\n// DISK_STATUS: {get_disk_usage()}\n\n// BREACH_PROTOCOL: ACTIVE\n// BREACH_SOURCE: [ARASAKA TERMINAL - 港区, 東京]\n\n// INITIATING PACKET COLLECTION\n>>> COLLECTING_PACKET_1........COMPLETE\n>>> COLLECTING_PACKET_2........COMPLETE\n>>> COLLECTING_PACKET_3........COMPLETE\n>>> COLLECTING_PACKET_4........COMPLETE\n\n// UPLOAD_SEQUENCE\n>>> UPLOAD_IN_PROGRESS\n>>> UPLOAD_COMPLETE\n\n「システム侵入成功」")
+    typeT(scr, f"// STATUS: ONLINE\n// MACHINE_INFO: {platform.system()} {platform.release()} ({platform.machine()})\n// CURRENT_USER: {os.getlogin()}\n// HOSTNAME: {socket.gethostname()}\n// IP_ADDRESS: {socket.gethostbyname(socket.gethostname())}\n// MAC_ADDRESS: {get_mac_address()}\n// SYSTEM_TIME_UTC: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}\n// CPU_USAGE: {get_cpu_usage()}\n// MEMORY_STATUS: {get_memory_usage()}\n// DISK_STATUS: {get_disk_usage()}\n\n// BREACH_PROTOCOL: ACTIVE\n// BREACH_SOURCE: [ARASAKA TERMINAL - 港区, 東京]\n\n// INITIATING PACKET COLLECTION\n>>> COLLECTING_PACKET_1........COMPLETE\n>>> COLLECTING_PACKET_2........COMPLETE\n>>> COLLECTING_PACKET_3........COMPLETE\n>>> COLLECTING_PACKET_4........COMPLETE\n\n// UPLOAD_SEQUENCE\n>>> UPLOAD_IN_PROGRESS\n\n「荒坂インターフェース 」")
     typeT(scr, '')
     # Run breach protocol game here
     success = run_breach(scr)
@@ -396,7 +396,7 @@ def sInit(scr):
         typeT(scr, '> ::: ENGAGING PROTOCOL//0xC0D3\n')
         typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
         typeT(scr,'> ==>> UPLINK STABILIZED [███░░]\n')
-        typeT(scr,'> >>> ROOT_NODE_ACCESS//GRANTED\n')
+        typeT(scr,'> >>> TESTING\n')
     scr.refresh()
     time.sleep(1)
     # After game, return the list of passwords to proceed
