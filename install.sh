@@ -6,7 +6,8 @@ sudo apt update -qq > /dev/null 2>&1
 echo ">>>> FETCHING NECESSARY MODULES. . . . . . . . " | pv -qL 45
 sudo apt-get install gnome-terminal ffmpeg curl wget zip htop  -y curl > /dev/null 2>&1
 echo "NET::TECH INTERFACE INSTALLATION. . . . . . . . " | pv -qL 45
-sudo apt-get install git nmtui nmap figlet toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
+sudo apt-get install git nmtui nmap figlet micro toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
+pip3 install wifi --break-system-packages
 [ ! -d "$HOME/.boot" ] && mkdir -p "$HOME/.boot"
 
 for item in *; do

@@ -14,6 +14,7 @@ import curses
 import time
 import random
 import os
+import wifi 
 import sys
 import socket
 import signal
