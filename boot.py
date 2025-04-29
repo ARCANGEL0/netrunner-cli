@@ -262,8 +262,8 @@ def get_system_info():
                 return "DISABLED"
             else:
                 return "[/]"
-    except subprocess.CalledProcessError:
-        return "[/]"
+        except subprocess.CalledProcessError:
+            return "[/]"
     def get_firewall_rules():
         try:
             result = subprocess.check_output(['iptables', '-L'], stderr=subprocess.PIPE)
