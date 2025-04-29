@@ -4,9 +4,9 @@ echo ""
 clear
 sudo apt update -qq > /dev/null 2>&1
 echo ">>>> FETCHING NECESSARY MODULES. . . . . . . . " | pv -qL 45
-sudo apt-get install gnome-terminal ffmpeg curl wget zip  -y curl > /dev/null 2>&1
+sudo apt-get install gnome-terminal ffmpeg curl wget zip htop  -y curl > /dev/null 2>&1
 echo "NET::TECH INTERFACE INSTALLATION. . . . . . . . " | pv -qL 45
-sudo apt-get install git nmap figlet toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
+sudo apt-get install git nmtui nmap figlet toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
 [ ! -d "$HOME/.boot" ] && mkdir -p "$HOME/.boot"
 
 for item in *; do
@@ -38,7 +38,7 @@ cd $HOME
 echo "[::]> INSTALLING DEPENDENCIES AND TOOLS. . . . . . . .   " | pv -qL 60
 echo ""
 echo ""
-sudo systemctl stop tor
+
 wget https://github.com/JohnMcLaren/torctl-bridged/releases/download/torctl-bridged/torctl-bridged_0.5.7-1_amd64.deb
 sudo apt install $HOME/torctl-bridged_0.5.7-1_amd64.deb
 
@@ -57,7 +57,7 @@ sudo apt-get install -y nmap > /dev/null 2>&1
 mkdir -p ~/.local/share/fonts
 [ ! -f ~/.local/share/fonts/starwars.flf ] && curl -o ~/.local/share/fonts/starwars.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/starwars.flf
 [ ! -f ~/.local/share/fonts/Doom.flf ] && curl -o ~/.local/share/fonts/Doom.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/Doom.flf
-
+sudo systemctl stop tor
 for i in {1..5}; do
   echo -n "Loading"
   for j in {1..3}; do
