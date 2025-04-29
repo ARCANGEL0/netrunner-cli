@@ -254,14 +254,14 @@ def get_system_info():
         except subprocess.CalledProcessError:
             return ["No Cron Jobs"]
     def get_selinux_status():
-    try:
-        status = subprocess.check_output("sestatus", shell=True).decode("utf-8")
-        if "enabled" in status.lower():
-            return "ENABLED"
-        elif "disabled" in status.lower():
-            return "DISABLED"
-        else:
-            return "[/]"
+        try:
+            status = subprocess.check_output("sestatus", shell=True).decode("utf-8")
+            if "enabled" in status.lower():
+                return "ENABLED"
+            elif "disabled" in status.lower():
+                return "DISABLED"
+            else:
+                return "[/]"
     except subprocess.CalledProcessError:
         return "[/]"
     def get_firewall_rules():
