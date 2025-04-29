@@ -193,27 +193,24 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
-def clear_old_menu(scr, top=0, menu_width=40):
+def clear_old_menu(scr, menu_width):
+    # Get the screen height and width
     height, width = scr.getmaxyx()
-    x_start = width - menu_width
-    for y in range(height):
-        scr.move(y, x_start)
-        scr.addstr(" " * menu_width)
-def clear_old_menu(scr, top=0, menu_width=40):
-    # Get screen dimensions
-    height, width = scr.getmaxyx()
-
-    # Ensure menu_width doesn't exceed terminal width
+    
+    # Ensure we don't try to clear more than the screen width
     menu_width = min(menu_width, width)
-
-    # Start clearing from the top-right corner
-    x_start = width - menu_width
-
-    # Loop over the rows and overwrite the specified area with spaces
+    
+    # Calculate starting position from the right side of the screen
+    start_x = width - menu_width
+    
+    # Loop through all lines on the screen to clear the designated area
     for y in range(height):
-        scr.move(y, x_start)
-        scr.addstr(" " * menu_width)
-    scr.refresh()  # Refresh the screen after clearing
+        scr.move(y, start_x)  # Move to the correct row and column
+        scr.addstr(" " * menu_width)  # Add spaces to clear the area
+    
+    # Refresh the screen to apply changes
+    scr.refresh()
+
 def shutdown_program(scr=None):
     curses.endwin()
     os.system("printf '\033c'")  
