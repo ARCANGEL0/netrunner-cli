@@ -18,6 +18,7 @@ import socket
 import signal
 import platform
 import psutil
+import wifi
 from threading import Thread
 import uuid
 from datetime import datetime
@@ -228,19 +229,6 @@ def get_system_info():
     def random_user():
         return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
-    def get_network_speed():
-        interfaces = ['wlan0', 'eth0']
-        for interface in interfaces:
-            net_io_start = psutil.net_io_counters(pernic=True).get(interface)
-            if net_io_start and psutil.net_if_stats().get(interface).isup:
-                bytes_sent_start, bytes_recv_start = net_io_start.bytes_sent, net_io_start.bytes_recv
-                time.sleep(1)
-                net_io_end = psutil.net_io_counters(pernic=True).get(interface)
-                bytes_sent_end, bytes_recv_end = net_io_end.bytes_sent, net_io_end.bytes_recv
-                download_speed = (bytes_recv_end - bytes_recv_start) * 8 / 1_000_000
-                upload_speed = (bytes_sent_end - bytes_sent_start) * 8 / 1_000_000
-                return download_speed, upload_speed
-        return "NO SIGNAL", "NO SIGNAL"
     def get_dns_servers():
         try:
             with open('/etc/resolv.conf', 'r') as f:
@@ -303,40 +291,68 @@ def get_system_info():
             return ", ".join(sorted(ports, key=int))
         except:
             return "[ / ]"
-    def get_wifi_info():
+    def get_current_wifi_signal_strength(interface='wlan0'):
+    if not os.path.exists(f'/sys/class/net/{interface}'):
+        return "[]"
+    try:
+        networks = wifi.Cell.all(interface)
+        if not networks:
+            return "NO SIGNAL"
+        current_signal_strength = next((network.signal for network in networks if network.encrypted), None)
+        if current_signal_strength is not None:
+            return current_signal_strength
+        else:
+            return "NO SIGNAL"
+    except wifi.exceptions.InterfaceError:
+        return "NO SIGNAL"
+    signal = get_current_wifi_signal_strength()
+    def get_bssid(interface='wlan0'):
+        if not os.path.exists(f'/sys/class/net/{interface}'):
+            return "[/]"
         try:
-            output = subprocess.check_output(
-                "nmcli -t -f active,ssid,bssid,signal,chan dev wifi",
-                shell=True,
-                text=True
-            )
-            line = next((l for l in output.strip().splitlines() if l.startswith("yes:")), None)
-            if not line:
-                return {}
-            parts = line.split(":")
-
-            ssid = parts[1] if len(parts) > 1 else None
-            bssid = parts[2] if len(parts) > 2 else None
-            signal_strength = parts[3] if len(parts) > 3 else None
-            channel = parts[4] if len(parts) > 4 else None
-            if signal_strength:
-                signal_strength = signal_strength.strip("%")  # Remove percentage sign if present
-            if channel:
-                channel = channel.strip()
-            return {
-                "SSID": ssid,
-                "BSID": bssid,
-                "signal_strength": signal_strength,
-                "channel": channel
-            }
-        except Exception:
-            return {}
-
-    wifi_info = get_wifi_info()
-    ssid = wifi_info.get("SSID", "[ / ]")
-    bssid = wifi_info.get("BSID", "[ / ]")
-    signal = wifi_info.get("signal_strength", "[ / ]")
-    channel = wifi_info.get("channel", "[ / ]")
+            networks = wifi.Cell.all(interface) 
+            if not networks:
+                return "NO SIGNAL"  
+            current_bssid = next((network.address for network in networks if network.encrypted), None)
+            if current_bssid:
+                return current_bssid
+            else:
+                return "NO SIGNAL"  
+        except wifi.exceptions.InterfaceError:
+            return "NO SIGNAL"  
+    def get_channel(interface='wlan0'):
+        if not os.path.exists(f'/sys/class/net/{interface}'):
+            return "[/]"
+        
+        try:
+            networks = wifi.Cell.all(interface)
+            if not networks:
+                return "NO SIGNAL"
+            
+            current_channel = next((network.channel for network in networks if network.encrypted), None)
+            if current_channel is not None:
+                return current_channel
+            else:
+                return "NO SIGNAL"
+        
+        except wifi.exceptions.InterfaceError:
+            return "NO SIGNAL"
+   
+    def get_ssid(interface='wlan0'):
+        if not os.path.exists(f'/sys/class/net/{interface}'):
+            return "[/]"
+        try:
+            networks = wifi.Cell.all(interface)  
+            if not networks:
+                return "NO SIGNAL" 
+            current_ssid = next((network.ssid for network in networks if network.encrypted), None)
+            if current_ssid:
+                return current_ssid
+            else:
+                return "NO SIGNAL"  #
+        except wifi.exceptions.InterfaceError:
+            return "NO SIGNAL"  
+            
     ip_address = socket.gethostbyname(socket.gethostname())
     public_ip = subprocess.getoutput("curl -s http://checkip.amazonaws.com")
     mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
@@ -365,7 +381,7 @@ def get_system_info():
     if 'eth0' in psutil.net_if_addrs() and len(psutil.net_if_addrs()['eth0']) > 1
     else "[ / ]"
     )
-    download_speed, upload_speed = get_network_speed()
+   
 
     active_connections = len(psutil.net_connections())
     active_processes = len(psutil.pids())
@@ -383,7 +399,7 @@ def get_system_info():
     firewall_rules_summary = get_firewall_rules()
     running_services = subprocess.getoutput("systemctl --type=service --state=running").splitlines()
     scheduled_tasks = get_scheduled_tasks()
-
+    
     HEADEROUTPUT = [
         "[ SYSTEM ONLINE ] <> NET::TECH",
         ">>> NETRUNNER_V3.1",
@@ -393,9 +409,9 @@ def get_system_info():
         f"// CUR_TIME......: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}",
         f"// RUNNER_ID.........: {hostname}",
         f"// SESSION_KEY.......: {session_key}",
-        f"// GET_ACCESSV_SSID......: {ssid}",
-        f"// PACCESSV_BSID......: {bssid}",
-        f"// SIGNAL............: {signal}% ... CH: {channel}",
+        f"// GET_ACCESSV_SSID......: {get_ssid()}",
+        f"// PACCESSV_BSID......: {get_bssid()}",
+        f"// SIGNAL............: {signal}% ... CH: {get_channel()}",
         f"// OPEN_PORTS........: {open_ports()}",
         f"// SYS_OS................: {os_info}",
         f"// KERNEL_LH....: {kernel_version}",
@@ -407,9 +423,6 @@ def get_system_info():
         f"// GPU_MEMORY........: {gpu_memory} GB",
         f"// DISK_PART...: {', '.join(disk_partitions)}",
         f"// GET_CONNECTIONS.: {active_connections}",
-        f"// NET_BDWT.: {network_bandwidth}",
-        f"// NET_SPEED.....: {download_speed:.2f} MB/s ↓ || {upload_speed:.2f} MB/s ↑",
-        f"// CPU_LOAD_AVG..: {load_avg_str}",
         f"// ACTIVE_PS..: {active_processes}",
         f"// GET_USBDEVICES.......: {usb_devices_count}",
         f"// GET_PCIDEVICES.......: {pci_devices_count}",
@@ -417,11 +430,10 @@ def get_system_info():
         f"// SELINUX_STATUS....: {selinux_status()}",
         f"// FIREWALL_RULES....: {firewall_rules_summary}",
         f"// SCHED_TASKS...: {', '.join(scheduled_tasks)}",
-        f"// SWAP_USG........: {swap_used:.2f} GB used, {swap_free:.2f} GB free",
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
-        "....................................................................",
-        "---- NODE: NETWATCH_HKG_CORE ----"
+        "...................................................................."
+       
     ]
 
 
@@ -998,10 +1010,11 @@ def criarMenu(scr):
     selection = 0
     selection_count = len(MENU1)
     selection_start_y = scr.getyx()[0]
+    selection_start_x = scr.getyx()[1]
     largura = scr.getmaxyx()[0]
-
+    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
     while keyInput != novaLinha:
-        scr.move(selection_start_y, 0)
+        scr.move(selection_start_y, selection_start_x)
         line = 0
         for sel in MENU1:
             whole_line = '> ' + MENU1[line]
@@ -1029,7 +1042,7 @@ def criarMenu(scr):
             time.sleep(2)
             os.system("clear"); 
             os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
-            exit()
+            return
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
@@ -1217,12 +1230,11 @@ def initMenu(scr):
     curses.curs_set(0)
     get_system_info()
     largura = scr.getmaxyx()[1]
-
+    
     audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
-    
-
+     
     scr.refresh()
 
     return criarMenu(scr)
