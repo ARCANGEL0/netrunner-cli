@@ -790,10 +790,9 @@ def menuOptions(scr):
     scr_height, scr_width = scr.getmaxyx()
     max_width = max(len(item) for item in MENU_OPTIONS)
     
-    # Position menu at the top-right corner
-    x_pos = scr_width - max_width - 4  # 4 is the padding from the right side
-    y_pos = 0  # Top of the screen (adjust this for a little margin if needed)
-    
+    x_pos = scr_width - max_width - 4
+    y_pos = 0
+
     menu_top_y = 0
     scr.move(0, x_pos)
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
