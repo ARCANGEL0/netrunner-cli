@@ -193,12 +193,9 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
-def shutdown_program(stdscr):
-    stdscr.clear()  
-    stdscr.refresh()  
-    curses.endwin()  
-    sys.exit(0)  
-
+def shutdown_program(scr=None):
+    curses.endwin()
+    os.kill(os.getpid(), signal.SIGKILL)
 
 #................TEXTS............................
 icon_top = " ╔═╗╔═╗ "
@@ -243,12 +240,7 @@ def get_system_info():
             return dns_servers
         except FileNotFoundError:
             return ["[ / ]"]
-    def get_scheduled_tasks():
-        try:
-            cron_jobs = subprocess.check_output("crontab -l", shell=True).decode().splitlines()
-            return cron_jobs if cron_jobs else ["No Cron Jobs"]
-        except subprocess.CalledProcessError:
-            return ["No Cron Jobs"]
+
     def selinux_status():
         try:
             status = subprocess.check_output("sestatus", shell=True).decode("utf-8")
@@ -395,7 +387,7 @@ def get_system_info():
     kernel_modules = ', '.join(get_kernel_modules())
     usb_devices_count = len([d for d in psutil.disk_partitions() if 'usb' in d.device.lower()])
     pci_devices_count = len([p for p in psutil.disk_partitions() if 'pci' in p.device.lower()])
-    cron_jobs_count = len(get_scheduled_tasks())
+
 
     swap_used = psutil.swap_memory().used / (1024 ** 3)
     swap_free = psutil.swap_memory().free / (1024 ** 3)
@@ -405,7 +397,7 @@ def get_system_info():
     dns_servers = get_dns_servers()
     firewall_rules_summary = get_firewall_rules()
     running_services = subprocess.getoutput("systemctl --type=service --state=running").splitlines()
-    scheduled_tasks = get_scheduled_tasks()
+   
     
     HEADEROUTPUT = [
         "[ SYSTEM ONLINE ] <> NET::TECH",
@@ -436,7 +428,6 @@ def get_system_info():
         f"// LOAD_DNS.......: {', '.join(dns_servers)}",
         f"// SELINUX_STATUS....: {selinux_status()}",
         f"// FIREWALL_RULES....: {firewall_rules_summary}",
-        f"// SCHED_TASKS...: {', '.join(scheduled_tasks)}",
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
         "...................................................................."
@@ -1049,7 +1040,7 @@ def criarMenu(scr):
             time.sleep(2)
             os.system("clear"); 
             os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
-            os.system("tmux")
+            shutdown_program(9)
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
