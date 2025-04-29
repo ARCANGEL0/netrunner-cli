@@ -926,7 +926,9 @@ def menuServicos(scr):
 
     while keyInput != novaLinha:
         
-        scr.move(0, scr.getyx()[1])
+        height, width = scr.getmaxyx()  
+        x_pos = width - len(text) - 1  
+        scr.move(0, x_pos)
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
