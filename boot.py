@@ -207,13 +207,30 @@ def clear_old_menu(scr, menu_width):
     for y in range(height):
         scr.move(y, start_x)  # Move to the correct row and column
         try:
-            scr.addstr(" " * menu_width)  # Add spaces to clear the area
+            # Clear the current column with spaces
+            scr.addstr(" " * menu_width)  
         except curses.error:
             # If an error occurs (such as trying to write out of bounds), pass
             pass
-    
+
     # Refresh the screen to apply changes
     scr.refresh()
+
+def render_menu(scr, menu, selection, start_y, start_x):
+    height, width = scr.getmaxyx()
+
+    # Calculate the starting position from the right side of the screen
+    x_pos = width - len(menu[0]) - 4  # Padding and prefix space for alignment
+    
+    # Loop through the menu options and display them
+    for line, item in enumerate(menu):
+        scr.move(start_y + line, x_pos)
+        if line == selection:
+            scr.addstr(item, curses.A_REVERSE)  # Highlight selected option
+        else:
+            scr.addstr(item)
+    scr.refresh()
+
 
 def shutdown_program(scr=None):
     curses.endwin()
@@ -923,7 +940,7 @@ def menuServicos(scr):
     selection = 0
     selection_count = len(MENU_SERVICES)
     scr_height, scr_width = scr.getmaxyx()
-
+    clear_old_menu(scr, len(MENU_SERVICES))
     # Dynamically update menu entries
     MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]" if checkNet() else "OVERSEER NETWORK [INACTIVE]"
     MENU_SERVICES[2] = "STOP ROBCO SERVER" if checkPS('apache2') else "START ROBCO SERVER"
@@ -936,7 +953,7 @@ def menuServicos(scr):
     x_pos = scr_width - max_width - 2  # Padding from right edge
 
     while keyInput != novaLinha:
-        # Clear previous menu area by overwriting lines with spaces
+        render_menu(scr, MENU_SERVICES, selection, selection_start_y, selection_start_x)
         for line in range(selection_count):
             scr.move(menu_top_y + line, x_pos)
             scr.addstr(" " * max_width)
