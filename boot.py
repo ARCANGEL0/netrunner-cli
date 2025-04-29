@@ -782,7 +782,6 @@ def lock_screen():
 
 
 def menuOptions(scr):
-
     keyInput = 0
     selection = 0
     selection_count = len(MENU_OPTIONS)
@@ -795,8 +794,9 @@ def menuOptions(scr):
     menu_top_y = 0
     scr.move(0, x_pos)
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
+
     while keyInput != novaLinha:
-        scr.move(selection_start_y, 0)
+        scr.move(menu_top_y, 0)
         line = 0
         for sel in MENU_OPTIONS:
             whole_line = MENU_OPTIONS[line]
@@ -817,7 +817,6 @@ def menuOptions(scr):
             selection += 1
 
         if keyInput == ord('\n') and selection == 0:
-
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             menu()
 
@@ -830,19 +829,22 @@ def menuOptions(scr):
             refOptions()
 
         elif keyInput == ord('\n') and selection == 2:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nROBCO KEYMAPPING CONFIGURATION. . . ")
             time.sleep(2)
             keyboardModelLayout()
             refOptions()
 
-        elif keyInput == ord('\n') and selection == 3:  
+        elif keyInput == ord('\n') and selection == 3:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nGETTING VAULTPEEK MODULE. . . ")
             vaultpeek()
             refOptions()
 
         elif keyInput == ord('\n') and selection == 4:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING OVERSEER EYE. . . ")
             time.sleep(2)
@@ -850,6 +852,7 @@ def menuOptions(scr):
             refOptions()
 
         elif keyInput == ord('\n') and selection == 5:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING NETCORE. . . ")
             time.sleep(2)
@@ -857,6 +860,7 @@ def menuOptions(scr):
             refOptions()
 
         elif keyInput == ord('\n') and selection == 6:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nCLEARING ROBCO TEMPORARY LOGS AND FILES. . . ")
             time.sleep(2)
@@ -866,6 +870,7 @@ def menuOptions(scr):
             refOptions()
 
         elif keyInput == ord('\n') and selection == 7:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING PIPSNIFF 3000 ")
             time.sleep(2)
@@ -873,22 +878,23 @@ def menuOptions(scr):
             refOptions()
 
         elif keyInput == ord('\n') and selection == 8:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nUPDATING NAMEFORGE . . . ")
             time.sleep(2)
             editHost()
             refOptions()
 
-
         elif keyInput == ord('\n') and selection == 9:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nSETTING CRONSTART INIT . . . ")
             time.sleep(2)
             createCron()
             refOptions()
 
-
         elif keyInput == ord('\n') and selection == 10:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nOPENING CRONWATCH . . . ")
             time.sleep(2)
