@@ -203,6 +203,7 @@ def shutdown_program(scr=None):
         else:
             os.setsid()  
             banner_cmd = f"cat {os.path.join(dir, 'arasaka')} | pv -qL 16000"
+            time.sleep(1)
             os.system(banner_cmd)
             os._exit(0)  
     except:
@@ -1023,7 +1024,7 @@ def criarMenu(scr):
     largura = scr.getmaxyx()[0]
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
     while keyInput != novaLinha:
-        scr.move(selection_start_y, selection_start_x)
+        scr.move(selection_start_y, 20+selection_start_x)
         line = 0
         for sel in MENU1:
             whole_line = '> ' + MENU1[line]
