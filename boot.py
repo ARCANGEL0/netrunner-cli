@@ -897,7 +897,6 @@ def menuServicos(scr):
     selection_start_y = scr.getyx()[1]
     selection_start_x = scr.getyx()[1]
     largura = scr.getmaxyx()[0]
-    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
 
     if checkNet():
         MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]"
@@ -1278,7 +1277,7 @@ def initServicos(scr):
 
     curses.use_default_colors()
     largura = scr.getmaxyx()[1]
-    scr.move(largura, 0)
+    scr.move(200, 0)
     curses.curs_set(0)
     get_system_info()
 
