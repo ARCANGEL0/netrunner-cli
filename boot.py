@@ -889,55 +889,40 @@ def menuOptions(scr):
             options()
 
 
+def initServicos(scr):
+    curses.use_default_colors()
+    curses.curs_set(0)
+    audio(expand_home("~/.boot/audio/beep.wav"), 3)
 
+    # Do not erase or re-render header; assume it was done before
+    return menuServicos(scr)
 def menuServicos(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    selection_start_y = scr.getyx()[0]
-    selection_start_x = scr.getyx()[1]
-    largura = scr.getmaxyx()[0]
-    scr.move(0,scr.getmaxyx()[0])
+    selection_start_y = 0  # Start at top row
+    scr_height, scr_width = scr.getmaxyx()
 
-    if checkNet():
-        MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]"
-    else:
-        MENU_SERVICES[1] = "OVERSEER NETWORK [INACTIVE]"
-
-
-    if checkPS('apache2'):
-        MENU_SERVICES[2] = "STOP ROBCO SERVER"
-    else:
-        MENU_SERVICES[2] = "START ROBCO SERVER"
-
-    if checkPS('mariadb' or 'mysqld'):
-        MENU_SERVICES[3] = "STOP CRYPTBASE"
-    else:
-        MENU_SERVICES[3] = "START CRYPTBASE"
-
-    if check_tor_running():
-        MENU_SERVICES[4] = "STOP RADNET"
-    else:
-        MENU_SERVICES[4] = "START RADNET"
-
-    if checkPS('ufw'):
-        MENU_SERVICES[5] = "STOP VAULTSEC UFW"
-    else:
-        MENU_SERVICES[5] = "START VAULTSEC UFW"
+    # Dynamically update menu entries
+    MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]" if checkNet() else "OVERSEER NETWORK [INACTIVE]"
+    MENU_SERVICES[2] = "STOP ROBCO SERVER" if checkPS('apache2') else "START ROBCO SERVER"
+    MENU_SERVICES[3] = "STOP CRYPTBASE" if checkPS('mariadb') or checkPS('mysqld') else "START CRYPTBASE"
+    MENU_SERVICES[4] = "STOP RADNET" if check_tor_running() else "START RADNET"
+    MENU_SERVICES[5] = "STOP VAULTSEC UFW" if checkPS('ufw') else "START VAULTSEC UFW"
 
     while keyInput != novaLinha:
-        scr.move(selection_start_y,0)
-        line = 0
-        for sel in MENU_SERVICES:
-            whole_line = MENU_SERVICES[line]
-            whole_line += '\n'
+        # Calculate right alignment
+        max_width = max(len(item) for item in MENU_SERVICES)
+        x_pos = scr_width - max_width - 2  # 2 for padding
 
+        # Redraw only the menu
+        for line, item in enumerate(MENU_SERVICES):
+            scr.move(selection_start_y + line, x_pos)
             if line == selection:
-                scr.addstr(whole_line, curses.A_REVERSE)
+                scr.addstr(item.ljust(max_width), curses.A_REVERSE)
             else:
-                scr.addstr(whole_line)
-            line += 1
-            scr.refresh()
+                scr.addstr(item.ljust(max_width))
+        scr.refresh()
 
         keyInput = scr.getch()
 
@@ -946,75 +931,47 @@ def menuServicos(scr):
         elif keyInput == curses.KEY_DOWN and selection < selection_count - 1:
             selection += 1
 
-        if keyInput == ord('\n') and selection == 0:
+        elif keyInput == ord('\n'):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            scr.erase()
-            menu()
 
-        elif keyInput == ord('\n') and selection == 1:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            scr.erase()
-            darknet()
-
-        elif keyInput == ord('\n') and selection == 2:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            if checkPS('apache2'):
-                print("\n\nSTOPPING ROBCO SERVER. . . ")
-                time.sleep(2)
-                os.system('sudo service apache2 stop')
+            if selection == 0:
                 scr.erase()
-                servicos()
-            else:
-                print("\n\nSTARTING ROBCO SERVER. . . ")
-                time.sleep(2)
-                os.system('sudo service apache2 start')
+                menu()
+
+            elif selection == 1:
+                scr.erase()
+                darknet()
+
+            elif selection == 2:
+                os.system('sudo service apache2 stop' if checkPS('apache2') else 'sudo service apache2 start')
                 scr.erase()
                 servicos()
 
-        elif keyInput == ord('\n') and selection == 3:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            if checkPS('mariadb') or checkPS('mysql'):
-                print("\n\nSTOPPING CRYPTBASE. . . ")
-                time.sleep(2)
-                os.system('sudo service mysql stop || sudo service mariadb stop')
-                scr.erase()
-                servicos()
-            else:
-                print("\n\nSTARTING CRYPTBASE. . . ")
-                time.sleep(2)
-                os.system('sudo service mysql start || sudo service mariadb start')
-                scr.erase()
-                servicos()
-        elif keyInput == ord('\n') and selection == 4:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            if checkPS('tor'):
-                print("\n\nSTOPPING RADNET. . . ")
-                time.sleep(2)
-                os.system('sudo pkill tor')
-                scr.erase()
-                servicos()
-            else:
-                print("\n\nSTARTING RADNET. . . ")
-                time.sleep(2)
-                os.system('tor &')
+            elif selection == 3:
+                if checkPS('mariadb') or checkPS('mysql'):
+                    os.system('sudo service mysql stop || sudo service mariadb stop')
+                else:
+                    os.system('sudo service mysql start || sudo service mariadb start')
                 scr.erase()
                 servicos()
 
-        elif keyInput == ord('\n') and selection == 5:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            if checkPS('ufw'):
+            elif selection == 4:
+                if checkPS('tor'):
+                    os.system('sudo pkill tor')
+                else:
+                    os.system('tor &')
+                scr.erase()
+                servicos()
 
-                print("\n\nSTOPPING VAULTSEC UFW")
-                time.sleep(2)
-                os.system('service ufw stop')
+            elif selection == 5:
+                if checkPS('ufw'):
+                    os.system('sudo service ufw stop')
+                else:
+                    os.system('sudo service ufw start')
                 scr.erase()
                 servicos()
-            else:
-                print("\n\nSTARTING VAULTSEC UFW")
-                time.sleep(2)
-                os.system('service ufw start')
-                scr.erase()
-                servicos()
+
+
 def criarMenu(scr):
 
     keyInput = 0
@@ -1274,20 +1231,6 @@ def initOptions(scr):
 
 
 
-def initServicos(scr):
-
-    curses.use_default_colors()
-    largura = scr.getmaxyx()[1]
-    scr.move(0, 200)
-    curses.curs_set(0)
-    get_system_info()
-
-    audio(expand_home("~/.boot/audio/beep.wav"),3)
-  
-     
-    scr.refresh()
-
-    return menuServicos(scr)
 
 
 def darknet():
