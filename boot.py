@@ -818,47 +818,43 @@ def menuOptions(scr):
 
         if keyInput == ord('\n') and selection == 0:
 
-            scr.erase()
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             menu()
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nUPDATING VAULT SHELL. . . ")
             time.sleep(2)
-            os.system('sudo apt update && sudo apt-get upgrade')
             scr.erase()
-            options()
+            os.system('sudo apt update && sudo apt-get upgrade')
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 2:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nROBCO KEYMAPPING CONFIGURATION. . . ")
             time.sleep(2)
             keyboardModelLayout()
-            scr.erase()
-            options()
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 3:  
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nGETTING VAULTPEEK MODULE. . . ")
             vaultpeek()
-            scr.erase()
-            options()
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 4:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING OVERSEER EYE. . . ")
             time.sleep(2)
             monitor()
-            scr.erase()
-            options()
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 5:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING NETCORE. . . ")
             time.sleep(2)
             getNmtui()
-            scr.erase()
-            options()
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 6:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
@@ -867,24 +863,21 @@ def menuOptions(scr):
             os.system('sudo apt-get autoremove -y && sudo apt-get clean && sudo apt-get autoclean -y && sudo rm -rf /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/log/*.log && sudo journalctl --vacuum-time=7d')
             print("\n\nALL TEMPORARY DATA DELETED!")
             time.sleep(5)
-            scr.erase()
-            options()
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 7:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nLOADING PIPSNIFF 3000 ")
             time.sleep(2)
             getNetstat()
-            scr.erase()
-            options()
+            refOptions()
 
         elif keyInput == ord('\n') and selection == 8:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nUPDATING NAMEFORGE . . . ")
             time.sleep(2)
             editHost()
-            scr.erase()
-            options()
+            refOptions()
 
 
         elif keyInput == ord('\n') and selection == 9:
@@ -892,8 +885,7 @@ def menuOptions(scr):
             print("\n\nSETTING CRONSTART INIT . . . ")
             time.sleep(2)
             createCron()
-            scr.erase()
-            options()
+            refOptions()
 
 
         elif keyInput == ord('\n') and selection == 10:
@@ -901,8 +893,7 @@ def menuOptions(scr):
             print("\n\nOPENING CRONWATCH . . . ")
             time.sleep(2)
             getCrons()
-            scr.erase()
-            options()
+            refOptions()
 
 
 def initServicos(scr):
@@ -1228,17 +1219,40 @@ def initMenu(scr):
 
 
 
-def initOptions(scr):
 
+def initRefOptions(scr):
+
+    curses.use_default_colors()
+    scr.erase()
+    scr.move(0, 0)
+    curses.curs_set(0)
+    get_system_info()
+    largura = scr.getmaxyx()[1]
+    
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+    for header in HEADEROUTPUT:   
+        typeT(scr, header + '\n',1)
+    menu_start_y = scr.getyx()[1]
+    scr.refresh()
+     
+
+    return menuOptions(scr)
+
+
+
+
+
+def initOptions(scr):
     curses.use_default_colors()
     curses.curs_set(0)
 
    
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
+   
+    scr.refresh()
 
      
-    scr.refresh()
 
     return menuOptions(scr)
 
@@ -1262,6 +1276,9 @@ def firstMenu():
     res = curses.wrapper(initFirstMenu)
     return res
 
+def refOptions():
+    res = curses.wrapper(initRefOptions)
+    return res
 
 def options():
     res = curses.wrapper(initOptions)
