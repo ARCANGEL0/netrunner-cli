@@ -203,7 +203,7 @@ def shutdown_program(scr=None):
             os._exit(0)  
     except:
         os._exit(0)
-        
+
 #................TEXTS............................
 icon_top = " ╔═╗╔═╗ "
 icon_bot = " ╚═╣╠═╝ "
@@ -1045,7 +1045,7 @@ def criarMenu(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
             time.sleep(2)
-            os.system("clear"); 
+            os.system("printf '\033[3J\033[H\033[2J'")
             os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
             shutdown_program()
 
