@@ -1245,15 +1245,12 @@ def initFirstMenu(scr):
 def initMenu(scr):
 
     curses.use_default_colors()
-    scr.erase()
-    scr.move(0, 0)
+    selection_start_yx = scr.getyx()[1]
+    scr.move(selection_start_yx,selection_start_yx)
     curses.curs_set(0)
-    get_system_info()
-    largura = scr.getmaxyx()[1]
     
     audio(expand_home("~/.boot/audio/beep.wav"),3)
    
-    menu_start_y = scr.getyx()[1]
     scr.refresh()
 
     return criarMenu(scr)
@@ -1282,11 +1279,11 @@ def initOptions(scr):
 def initServicos(scr):
 
     curses.use_default_colors()
-  
-    scr.move(0, 0)
+    selection_start_yx = scr.getyx()[1]
+    scr.move(selection_start_yx,selection_start_yx)
     curses.curs_set(0)
 
-    largura = scr.getmaxyx()[1]
+   
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
   
