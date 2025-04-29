@@ -895,7 +895,7 @@ def menuServicos(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    selection_start_y = scr.getyx()[1]
+    height, width = scr.getmaxyx()
     largura = scr.getmaxyx()[1]
 
     if checkNet():
@@ -926,9 +926,7 @@ def menuServicos(scr):
 
     while keyInput != novaLinha:
         
-        height, width = scr.getmaxyx()  
-        x_pos = width - len(text) - 1  
-        scr.move(0, x_pos)
+        scr.move(0, width - max(len(sel) for sel in MENU_SERVICES) - 1)  
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
