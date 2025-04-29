@@ -783,7 +783,7 @@ def menuOptions(scr):
         scr.move(selection_start_y, 0)
         line = 0
         for sel in MENU_OPTIONS:
-            whole_line = '> ' + MENU_OPTIONS[line]
+            whole_line = MENU_OPTIONS[line]
             whole_line += '\n'
 
             if line == selection:
@@ -928,7 +928,7 @@ def menuServicos(scr):
         scr.move(selection_start_y, 0)
         line = 0
         for sel in MENU_SERVICES:
-            whole_line = '> ' + MENU_SERVICES[line]
+            whole_line = MENU_SERVICES[line]
             whole_line += '\n'
 
             if line == selection:
@@ -1024,19 +1024,20 @@ def criarMenu(scr):
     largura = scr.getmaxyx()[0]
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
     while keyInput != novaLinha:
-        scr.move(selection_start_y, 20+selection_start_x)
+        scr.move(selection_start_y, selection_start_x)
         line = 0
-        for sel in MENU1:
-            whole_line = '> ' + MENU1[line]
-            space = largura - len(whole_line) % largura + 20
-            whole_line += '\n'
+        for line, sel in enumerate(MENU1):
+            height, width = scr.getmaxyx()
+            x_pos = width - len(sel) - 4  # 4 for padding and prefix
+            y_pos = selection_start_y + line
+            prefix = "> " if line == selection else "  "
+            display_line = prefix + sel
 
+            scr.move(y_pos, x_pos)
             if line == selection:
-                scr.addstr(whole_line, curses.A_REVERSE)
+                scr.addstr(display_line, curses.A_REVERSE)
             else:
-                scr.addstr(whole_line)
-            line += 1
-            scr.refresh()
+                scr.addstr(display_line)
 
         keyInput = scr.getch()
 
@@ -1106,7 +1107,7 @@ def criarDarknet(scr):
         scr.move(selection_start_y, 0)
         line = 0
         for sel in MENUDK:
-            whole_line = '> ' + MENUDK[line]
+            whole_line = MENUDK[line]
             space = largura - len(whole_line) % largura + 20
             whole_line += '\n'
 
