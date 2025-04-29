@@ -199,7 +199,21 @@ def clear_old_menu(scr, top=0, menu_width=40):
     for y in range(height):
         scr.move(y, x_start)
         scr.addstr(" " * menu_width)
+def clear_old_menu(scr, top=0, menu_width=40):
+    # Get screen dimensions
+    height, width = scr.getmaxyx()
 
+    # Ensure menu_width doesn't exceed terminal width
+    menu_width = min(menu_width, width)
+
+    # Start clearing from the top-right corner
+    x_start = width - menu_width
+
+    # Loop over the rows and overwrite the specified area with spaces
+    for y in range(height):
+        scr.move(y, x_start)
+        scr.addstr(" " * menu_width)
+    scr.refresh()  # Refresh the screen after clearing
 def shutdown_program(scr=None):
     curses.endwin()
     os.system("printf '\033c'")  
