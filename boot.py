@@ -6,7 +6,7 @@
 #  / ____ \| | | (_| (_| | | | | (_| |  __/ | (_) |
 # /_/    \_\_|  \___\__,_|_| |_|\__, |\___|_|\___/ 
 #                                __/ |             
-   
+import string
 import subprocess
 import tempfile
 import sys
@@ -135,7 +135,6 @@ def run_breach(scr):
         typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
         typeT(scr, '> ==>> UPLINK STABILIZED [███░░]\n')
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
-        time.sleep(3)
     else:
         bloquearTela()
     scr.refresh()
