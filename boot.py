@@ -947,35 +947,35 @@ def menuServicos(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
 
             if selection == 0:
-                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 menu()
             elif selection == 1:
-                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 darknet()
             elif selection == 2:
                 os.system('sudo service apache2 stop' if checkPS('apache2') else 'sudo service apache2 start')
-                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
             elif selection == 3:
                 if checkPS('mariadb') or checkPS('mysql'):
                     os.system('sudo service mysql stop || sudo service mariadb stop')
                 else:
                     os.system('sudo service mysql start || sudo service mariadb start')
-                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
             elif selection == 4:
                 if checkPS('tor'):
                     os.system('sudo pkill tor')
                 else:
                     os.system('tor &')
-                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
             elif selection == 5:
                 if checkPS('ufw'):
                     os.system('sudo service ufw stop')
                 else:
                     os.system('sudo service ufw start')
-                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
 
 
