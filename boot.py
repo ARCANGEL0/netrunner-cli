@@ -320,7 +320,7 @@ def get_system_info():
     running_services = subprocess.getoutput("systemctl --type=service --state=running").splitlines()
     scheduled_tasks = get_scheduled_tasks()
 
-    HEADEROUTPUT [
+    HEADEROUTPUT = [
         "[ SYSTEM ONLINE ] <> NET::TECH",
         ">>> NETRUNNER_V3.1",
         f"// IADDRESS..........: {ip_address}",
