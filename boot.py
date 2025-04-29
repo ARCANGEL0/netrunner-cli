@@ -1320,7 +1320,7 @@ def sInit(scr):
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
         scr.clear()
-        scr.sleep(1)
+        time.sleep(1)
         menu()
     scr.refresh()
 
