@@ -792,20 +792,23 @@ def menuOptions(scr):
     x_pos = scr_width - max_width - 4  # padding from right
     y_start = 1  # top of screen, just below header
     menu_top_y = 0 
+
+
     while keyInput != novaLinha:
-        scr.move(menu_top_y, 0)
-        line = 0
-        for sel in MENU_OPTIONS:
-            whole_line = MENU_OPTIONS[line]
-            whole_line += '\n'
+        # Clear only menu area
+        for i in range(selection_count):
+            scr.move(y_start + i, x_pos)
+            scr.addstr(" " * max_width)
 
-            if line == selection:
-                scr.addstr(whole_line, curses.A_REVERSE)
+        # Render menu items
+        for i, item in enumerate(MENU_OPTIONS):
+            scr.move(y_start + i, x_pos)
+            if i == selection:
+                scr.addstr(item.ljust(max_width), curses.A_REVERSE)
             else:
-                scr.addstr(whole_line)
-            line += 1
-            scr.refresh()
+                scr.addstr(item.ljust(max_width))
 
+        scr.refresh()
         keyInput = scr.getch()
 
         if keyInput == curses.KEY_UP and selection > 0:
