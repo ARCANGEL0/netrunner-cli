@@ -1019,7 +1019,7 @@ def criarMenu(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU1)
-    selection_start_y = scr.getyx()[0]
+    selection_start_y = scr.getyx()[1]
     selection_start_x = scr.getyx()[1]
     largura = scr.getmaxyx()[0]
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
