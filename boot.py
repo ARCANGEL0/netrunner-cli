@@ -1034,6 +1034,7 @@ def criarMenu(scr):
                 shutdown_program()
 
             elif selection == 1:
+                scr.erase()
                 centr(scr,"\n\n\n/// GET_LOGS\n >>> SYSTEM:")
                 time.sleep(2)
                 os.system('journalctl')
