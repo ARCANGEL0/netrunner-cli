@@ -1111,7 +1111,7 @@ def criarDarknet(scr):
                 centr(scr,"\n\n/// TORRC_GET")
                 time.sleep(2)
                 os.system('sudo torctl status | micro')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 2:
@@ -1123,49 +1123,49 @@ def criarDarknet(scr):
                     centr(scr,"\n\n// DISCONNECT_DARKNET")
                     time.sleep(2)
                     os.system('sudo torctl start')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 3:
                 centr(scr,"\n\n// CLEAN_TMPF")
                 time.sleep(2)
                 os.system('sudo torctl autowipe')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 4:
                 centr(scr,"\n\n // ON_BOOT::INIT[]")
                 time.sleep(2)
                 os.system('sudo torctl autostart')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 5:
                 centr(scr,"\n\n// GET_LOC")
                 time.sleep(2)
                 os.system('sudo torctl ip | micro ')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 6:
                 centr(scr,"\n\n/// NETRUNNER_V3::NEW_ID[]")
                 time.sleep(2)
                 os.system('sudo torctl chngid')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 7:
                 centr(scr,"\n\n/// NETRUNNER_V3::CHANGE_MAC[]")
                 time.sleep(2)
                 os.system('sudo torctl chngmac')
-                scr.erase()
+                
                 darknet()
 
             elif selection == 8:
                 centr(scr,"\n\n/// NETRUNNER_V3::RESTORE_MAC[]")
                 time.sleep(2)
                 os.system('sudo torctl rvmac')
-                scr.erase()
+                
                 darknet()
 
 
