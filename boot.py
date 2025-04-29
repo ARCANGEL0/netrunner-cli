@@ -1215,8 +1215,7 @@ def initDarknet(scr):
     largura = scr.getmaxyx()[1]
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in HEADEROUTPUT:   
-        typeT(scr, header + '\n')
+  
      
     scr.refresh()
 
@@ -1236,7 +1235,7 @@ def initMenu(scr):
     audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
-     
+    menu_start_y = scr.getyx()[1]
     scr.refresh()
 
     return criarMenu(scr)
@@ -1253,8 +1252,7 @@ def initOptions(scr):
     largura = scr.getmaxyx()[1]
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in HEADEROUTPUT:   
-        typeT(scr, header + '\n')
+
      
     scr.refresh()
 
@@ -1273,8 +1271,7 @@ def initServicos(scr):
     largura = scr.getmaxyx()[1]
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in HEADEROUTPUT:   
-        typeT(scr, header + '\n')
+  
      
     scr.refresh()
 
