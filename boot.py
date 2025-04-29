@@ -22,29 +22,88 @@ from threading import Thread
 import uuid
 
 
-# funcao para lidar co m interrupcoes do teclado
+# AVOID EXITTING SCRIPT
 def handler(signum, frame):
     pass
 
 signal.signal(signal.SIGINT, handler)
 signal.signal(signal.SIGTSTP, handler)
 
-# -------------------- VARIAVEIS GERAIS --------------------------
-
+# .................DIR.FUNCTIONS............................
 dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))  # pega o diretorio do arquivo
 home_dir = os.environ["HOME"]
 def expand_home(path):
     return os.path.expanduser(path)
+# ..................-------------------......................
 
-# boot
-TXT1 = 'SECURITY RESET... '
-TXT2 = 'WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK'
-TXT3 = 'SET TERMINAL/INQUIRE'
-TXT4 = 'RIT-V300'
-TXT5 = 'SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F'
-TXT6 = 'SET HALT RESTART/MAIN'
+#................TEXTS............................
 
-# menu de selecao
+def random_user():
+    """Generate a random user-like string."""
+    user_prefix = ''.join(random.choices(string.ascii_lowercase, k=4))
+    user_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    return f"{user_prefix}-{user_suffix}"
+
+def get_system_info():
+    global HEADEROUTPUT
+    os_info = platform.system() + " " + platform.release()
+    cpu_info = os.popen("wmic cpu get caption").read().strip().split("\n")[1]
+    memory = psutil.virtual_memory()
+    ram_info = f"{memory.total / (1024 ** 3):.2f}GB"
+    disk = psutil.disk_usage('/')
+    disk_info = f"{disk.used / (1024 ** 3):.2f}GB/{disk.total / (1024 ** 3):.2f}GB"
+    load = psutil.cpu_percent(interval=1)
+    system_load = f"{load}%"
+    ip_address = socket.gethostbyname(socket.gethostname())
+
+    wifi_info = {}
+    try:
+        wifi_cmd = "iwconfig"
+        result = subprocess.check_output(wifi_cmd, stderr=subprocess.PIPE, shell=True).decode('utf-8')
+        for line in result.split("\n"):
+            if "ESSID" in line:
+                wifi_info['SSID'] = line.split('"')[1]
+            if "Link Quality" in line:
+                wifi_info['signal_strength'] = line.split('=')[1].split()[0]
+            if "Channel" in line:
+                wifi_info['channel'] = line.split('=')[1]
+    except subprocess.CalledProcessError:
+        wifi_info = {
+            'SSID': "OFFLINE",
+            'signal_strength': "[ / ]",
+            'channel': "[ / ]"
+        }
+
+    open_ports = [conn.laddr.port for conn in psutil.net_connections(kind='inet') if conn.status == 'LISTEN']
+    open_ports = ', '.join(map(str, open_ports)) if open_ports else "[ / ]"
+
+    gpu_info = "NVIDIA GTX 1080 Ti"
+    temp_info = psutil.sensors_temperatures()
+    system_temp = temp_info['coretemp'][0].current if 'coretemp' in temp_info else "[ / ]"
+    
+    session_key = f"0x{''.join(random.choices(string.hexdigits, k=4))}-{random_user()}"
+
+    HEADEROUTPUT = [
+        "[ SYSTEM ONLINE ] <> NET::TECH",
+        ">>> GHOSTWALKER_V3.1",
+        f"// IADDRESS..........: {ip_address}",
+        f"// RUNNER_ID.........: {socket.gethostname()}",
+        f"// SESSION_KEY.......: {session_key}",
+        f"// ACCESS_POINT......: {wifi_info.get('SSID', '[ / ]')}",
+        f"// SIGNAL............: {wifi_info.get('signal_strength', '[ / ]')}% ... CH: {wifi_info.get('channel', '[ / ]')}",
+        f"// OPEN_PORTS........: {open_ports}",
+        f"// OS................: {os_info}",
+        f"// CPU...............: {cpu_info}",
+        f"// RAM...............: {ram_info}",
+        f"// DISK USAGE........: {disk_info}",
+        f"// GPU...............: {gpu_info}",
+        f"// SYSTEM TEMP.......: {system_temp}°C",
+        f"// SYSTEM LOAD.......: {system_load}",
+        "....................................................................",
+        "---- NODE: NETWATCH_HKG_CORE ----"
+    ]
+
+
 MENU_HEAD = ('ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',
              'COPYRIGHT 2075-2077 ROBCO INDUSTRIES', '- SERVER 6 -', '')
 
@@ -866,11 +925,7 @@ def initMenu(scr):
     largura = scr.getmaxyx()[1]
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in MENU_HEAD:
-        centr(scr, header + '\n')
-
-    audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in MENU_HEAD2:   
+    for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
     
     audio(expand_home("~/.boot/audio/beep.wav"),4)

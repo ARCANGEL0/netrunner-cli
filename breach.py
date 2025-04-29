@@ -26,7 +26,8 @@ def initLock(scr):
     scr.move(int(altura / 2 - 1), 0)
     os.system("cat " + os.path.join(dir, 'banner') + "| pv -qL 10000 " )
     scr.move(int(altura / 2 + 1), 0)
-    centr(scr, 'C0NNECTION_TERMINATED__!\nSYSTEM_FAILURE [0x9F37C] //\n\n')
+    centr(scr, 'C0NNECTION_TERMINATED__!\n')
+    centr(scr, '         SYSTEM_FAILURE [0x9F37C] //\n\n\n')
     centr(scr, 'ERROR CODE: 0x5A_X12T | TRACE DETECTED!!\n')    
     scr.refresh()
     curses.napms(BLOQUEIO)
@@ -180,10 +181,7 @@ def SCREENF(length, senhas):
         i += senhaLen
     return tela
 
-# tela bloqueada
-LOCK_TXT1 = 'TERMINAL LOCKED'
-LOCK_TXT2 = 'PLEASE CONTACT AN ADMINISTRATOR'
-LOCK_TXT3 = '! SECURITY BYPASS ATTEMPT DETECTED !'
+
 BLOQUEIO = 10000000
 novaLinha = ord('\n')
 
@@ -335,7 +333,7 @@ def run_breach(scr):
         typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
         typeT(scr, '> ==>> UPLINK STABILIZED [███░░]\n')
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
-        time.sleep(5)
+        time.sleep(9)
     else:
         bloquearTela()
     scr.refresh()
@@ -412,10 +410,7 @@ def sInit(scr):
         bloquearTela()
     else:
         scr.clear()
-        typeT(scr, '\n\n\n\n\n\nBREACH PROTOCOL SUCCESS! CONTINUING...')
-        typeT(scr, '> ::: ENGAGING PROTOCOL//0xC0D3\n')
-        typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
-        typeT(scr,'> ==>> UPLINK STABILIZED [███░░]\n')
+  
         typeT(scr,'> >>> TESTING\n')
     scr.refresh()
     time.sleep(1)
