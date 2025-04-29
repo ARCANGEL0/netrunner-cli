@@ -209,14 +209,14 @@ def shutdown_program(scr=None):
 
     try:
         if os.fork():
-            time.sleep(6)
+            time.sleep(3)
             os._exit(0)  
         else:
             os.setsid()  
-            time.sleep(6)
+            time.sleep(3)
             os._exit(0)  
     except:
-        time.sleep(6)
+        time.sleep(3)
         os._exit(0)
 
 #................TEXTS............................
