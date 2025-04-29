@@ -452,7 +452,7 @@ def get_system_info():
         f"// FIREWALL_RULES....: {firewall_rules_summary}",
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
-        f"...................................................................."
+        f"....................................................................",
         f"--------------------- NODE: NETWATCH_HKG_CORE --------------------- ",
        
     ]
