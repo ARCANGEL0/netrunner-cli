@@ -196,7 +196,7 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
 def clear_old_menu(scr, menu_width):
     # Get the screen height and width
     height, width = scr.getmaxyx()
-    
+
     # Ensure we don't try to clear more than the screen width
     menu_width = min(menu_width, width)
     
@@ -206,7 +206,11 @@ def clear_old_menu(scr, menu_width):
     # Loop through all lines on the screen to clear the designated area
     for y in range(height):
         scr.move(y, start_x)  # Move to the correct row and column
-        scr.addstr(" " * menu_width)  # Add spaces to clear the area
+        try:
+            scr.addstr(" " * menu_width)  # Add spaces to clear the area
+        except curses.error:
+            # If an error occurs (such as trying to write out of bounds), pass
+            pass
     
     # Refresh the screen to apply changes
     scr.refresh()
