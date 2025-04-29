@@ -784,11 +784,11 @@ def lock_screen():
 def menuOptions(scr):
     keyInput = 0
     selection = 0
-    selection_count = len(MENUDK)
+    selection_count = len(MENU_OPTIONS)
 
     curses.curs_set(0)
     scr_height, scr_width = scr.getmaxyx()
-    max_width = max(len(item) for item in MENUDK)
+    max_width = max(len(item) for item in MENU_OPTIONS)
     x_pos = scr_width - max_width - 4  # padding from right
     y_start = 1  # top of screen, just below header
 
