@@ -924,9 +924,9 @@ def menuServicos(scr):
     else:
         MENU_SERVICES[5] = "START VAULTSEC UFW"
 
+    scr.move(0, width - max(len(sel) for sel in MENU_SERVICES) - 1)     
     while keyInput != novaLinha:
         
-        scr.move(0, width - max(len(sel) for sel in MENU_SERVICES) - 1)  
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
