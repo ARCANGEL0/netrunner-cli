@@ -193,6 +193,19 @@ import os
 from datetime import datetime
 import time
 
+
+def get_kernel_modules():
+    try:
+        # Run `lsmod` and capture the output
+        result = subprocess.check_output("lsmod", shell=True).decode('utf-8')
+        # Parse the output, splitting by new lines
+        modules = result.splitlines()
+        # Extract module names (first column)
+        kernel_modules = [line.split()[0] for line in modules[1:]]  # Skip header
+        return kernel_modules
+    except subprocess.CalledProcessError:
+        return []
+
 def get_system_info():
     def random_user():
         return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
@@ -263,7 +276,7 @@ def get_system_info():
 
     active_connections = len(psutil.net_connections())
     active_processes = len(psutil.pids())
-    kernel_modules = ', '.join([m for m in psutil.get_kernel_modules()])
+    kernel_modules = ', '.join(get_kernel_modules())
     usb_devices_count = len([d for d in psutil.disk_partitions() if 'usb' in d.device.lower()])
     pci_devices_count = len([p for p in psutil.disk_partitions() if 'pci' in p.device.lower()])
     cron_jobs_count = len(get_scheduled_tasks())
@@ -313,8 +326,6 @@ def get_system_info():
         "....................................................................",
         "---- NODE: NETWATCH_HKG_CORE ----"
     ]
-
-
 
 
 MENUDK = [
