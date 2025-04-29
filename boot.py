@@ -156,7 +156,7 @@ def run_breach(scr):
         typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
         typeT(scr, '> ==>> NETVH_UPLOADED [███░░]\n')
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
-        scr.clear()
+        
     else:
         bloquearTela()
     scr.refresh()
@@ -1319,6 +1319,7 @@ def sInit(scr):
     else:
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
+        scr.clear()
         menu()
     scr.refresh()
 
