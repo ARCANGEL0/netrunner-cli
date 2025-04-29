@@ -193,6 +193,13 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
+def clear_old_menu(scr, lines_to_clear):
+    height, width = scr.getmaxyx()
+    for i in range(lines_to_clear):
+        scr.move(i, width - 40)  # adjust 40 to match your menu width
+        scr.clrtoeol()
+
+
 def shutdown_program(scr=None):
     curses.endwin()
     os.system("printf '\033c'")  
@@ -939,35 +946,35 @@ def menuServicos(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
 
             if selection == 0:
-                scr.erase()
+                clear_old_menu(scr, len(MENU_SERVICES))
                 menu()
             elif selection == 1:
-                scr.erase()
+                clear_old_menu(scr, len(MENU_SERVICES))
                 darknet()
             elif selection == 2:
                 os.system('sudo service apache2 stop' if checkPS('apache2') else 'sudo service apache2 start')
-                scr.erase()
+                clear_old_menu(scr, len(MENU_SERVICES))
                 servicos()
             elif selection == 3:
                 if checkPS('mariadb') or checkPS('mysql'):
                     os.system('sudo service mysql stop || sudo service mariadb stop')
                 else:
                     os.system('sudo service mysql start || sudo service mariadb start')
-                scr.erase()
+                clear_old_menu(scr, len(MENU_SERVICES))
                 servicos()
             elif selection == 4:
                 if checkPS('tor'):
                     os.system('sudo pkill tor')
                 else:
                     os.system('tor &')
-                scr.erase()
+                clear_old_menu(scr, len(MENU_SERVICES))
                 servicos()
             elif selection == 5:
                 if checkPS('ufw'):
                     os.system('sudo service ufw stop')
                 else:
                     os.system('sudo service ufw start')
-                scr.erase()
+                clear_old_menu(scr, len(MENU_SERVICES))
                 servicos()
 
 
@@ -1015,6 +1022,7 @@ def criarMenu(scr):
             if selection == 0:
                 print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
                 time.sleep(2)
+                clear_old_menu(scr, len(MENU1))
                 shutdown_program()
 
             elif selection == 1:
@@ -1023,23 +1031,28 @@ def criarMenu(scr):
                 os.system('journalctl')
                 scr.getch()
                 scr.erase()
-                menu()
+                firstMenu()
 
             elif selection == 2:
+                clear_old_menu(scr, len(MENU1))
                 servicos()
 
             elif selection == 3:
+                clear_old_menu(scr, len(MENU1))
                 options()
 
             elif selection == 4:
+                clear_old_menu(scr, len(MENU1))
                 lock_screen()
 
             elif selection == 5:
+                clear_old_menu(scr, len(MENU1))
                 print("\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
                 time.sleep(5)
                 os.system("sudo shutdown -r now")
 
             elif selection == 6:
+                clear_old_menu(scr, len(MENU1))
                 print("\n\n\nG O O D    B Y E ! ")
                 time.sleep(5)
                 os.system("sudo shutdown -h now")
