@@ -900,7 +900,6 @@ def menuServicos(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    selection_start_y = 0  # Start at top row
     scr_height, scr_width = scr.getmaxyx()
 
     # Dynamically update menu entries
@@ -910,14 +909,19 @@ def menuServicos(scr):
     MENU_SERVICES[4] = "STOP RADNET" if check_tor_running() else "START RADNET"
     MENU_SERVICES[5] = "STOP VAULTSEC UFW" if checkPS('ufw') else "START VAULTSEC UFW"
 
-    while keyInput != novaLinha:
-        # Calculate right alignment
-        max_width = max(len(item) for item in MENU_SERVICES)
-        x_pos = scr_width - max_width - 2  # 2 for padding
+    menu_top_y = 0
+    max_width = max(len(item) for item in MENU_SERVICES)
+    x_pos = scr_width - max_width - 2  # Padding from right edge
 
-        # Redraw only the menu
+    while keyInput != novaLinha:
+        # Clear previous menu area by overwriting lines with spaces
+        for line in range(selection_count):
+            scr.move(menu_top_y + line, x_pos)
+            scr.addstr(" " * max_width)
+
+        # Redraw updated menu
         for line, item in enumerate(MENU_SERVICES):
-            scr.move(selection_start_y + line, x_pos)
+            scr.move(menu_top_y + line, x_pos)
             if line == selection:
                 scr.addstr(item.ljust(max_width), curses.A_REVERSE)
             else:
@@ -937,16 +941,13 @@ def menuServicos(scr):
             if selection == 0:
                 scr.erase()
                 menu()
-
             elif selection == 1:
                 scr.erase()
                 darknet()
-
             elif selection == 2:
                 os.system('sudo service apache2 stop' if checkPS('apache2') else 'sudo service apache2 start')
                 scr.erase()
                 servicos()
-
             elif selection == 3:
                 if checkPS('mariadb') or checkPS('mysql'):
                     os.system('sudo service mysql stop || sudo service mariadb stop')
@@ -954,7 +955,6 @@ def menuServicos(scr):
                     os.system('sudo service mysql start || sudo service mariadb start')
                 scr.erase()
                 servicos()
-
             elif selection == 4:
                 if checkPS('tor'):
                     os.system('sudo pkill tor')
@@ -962,7 +962,6 @@ def menuServicos(scr):
                     os.system('tor &')
                 scr.erase()
                 servicos()
-
             elif selection == 5:
                 if checkPS('ufw'):
                     os.system('sudo service ufw stop')
@@ -973,110 +972,105 @@ def menuServicos(scr):
 
 
 def criarMenu(scr):
-
     keyInput = 0
     selection = 0
     selection_count = len(MENU1)
-    selection_start_y = scr.getyx()[1]
-    selection_start_x = scr.getyx()[1]
-    largura = scr.getmaxyx()[0]
-    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
-    while keyInput != novaLinha:
-        scr.move(selection_start_y, selection_start_x)
-        line = 0
-        for line, sel in enumerate(MENU1):
-            height, width = scr.getmaxyx()
-            x_pos = width - len(sel) - 4  # 4 for padding and prefix
-            y_pos = selection_start_y + line
-            display_line = sel
 
-            scr.move(y_pos, x_pos)
-            if line == selection:
-                scr.addstr(display_line, curses.A_REVERSE)
+    curses.curs_set(0)
+    scr_height, scr_width = scr.getmaxyx()
+    max_width = max(len(item) for item in MENU1)
+    x_pos = scr_width - max_width - 4  # Padding from right
+    y_start = 1  # Start just below the title
+
+    scr.move(0, x_pos)
+    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
+
+    while keyInput != novaLinha:
+        # Clear only the previous menu area
+        for i in range(selection_count):
+            scr.move(y_start + i, x_pos)
+            scr.addstr(" " * max_width)
+
+        # Draw the menu
+        for i, sel in enumerate(MENU1):
+            scr.move(y_start + i, x_pos)
+            if i == selection:
+                scr.addstr(sel.ljust(max_width), curses.A_REVERSE)
             else:
-                scr.addstr(display_line)
+                scr.addstr(sel.ljust(max_width))
+        scr.refresh()
 
         keyInput = scr.getch()
 
-        # move up and down
+        # Move up/down
         if keyInput == curses.KEY_UP and selection > 0:
             selection -= 1
         elif keyInput == curses.KEY_DOWN and selection < selection_count - 1:
             selection += 1
 
-        if keyInput == ord('\n') and selection == 0:    
+        # Handle Enter key
+        if keyInput == ord('\n'):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
-            time.sleep(2)
-            shutdown_program()
 
-        elif keyInput == ord('\n') and selection == 1:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\n\nVault 138\n Journal entry:")
+            if selection == 0:
+                print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
+                time.sleep(2)
+                shutdown_program()
 
-
-            time.sleep(2)
-
-            print(os.system('journalctl'))
-
-            exit = scr.getch()
-            if exit == ord('\n'):
+            elif selection == 1:
+                print("\n\n\nVault 138\n Journal entry:")
+                time.sleep(2)
+                os.system('journalctl')
+                scr.getch()
                 scr.erase()
                 menu()
-            scr.erase()
-            menu()
 
-        elif keyInput == ord('\n') and selection == 2:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            servicos()
-        elif keyInput == ord('\n') and selection == 3:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            options()
-        elif keyInput == ord('\n') and selection == 4:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-               #logout
-            lock_screen()
-        elif keyInput == ord('\n') and selection == 5:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
+            elif selection == 2:
+                servicos()
 
-            time.sleep(5)
-            os.system("sudo shutdown -r now")
-        
-        elif keyInput == ord('\n') and selection == 6:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\n\nG O O D    B Y E ! ")
+            elif selection == 3:
+                options()
 
-            time.sleep(5)
-            os.system("sudo shutdown -h now")
+            elif selection == 4:
+                lock_screen()
 
+            elif selection == 5:
+                print("\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
+                time.sleep(5)
+                os.system("sudo shutdown -r now")
+
+            elif selection == 6:
+                print("\n\n\nG O O D    B Y E ! ")
+                time.sleep(5)
+                os.system("sudo shutdown -h now")
 
 
 def criarDarknet(scr):
-
     keyInput = 0
     selection = 0
     selection_count = len(MENUDK)
-    selection_start_y = scr.getyx()[1]
-    selection_start_x = scr.getyx()[1]
-    largura = scr.getmaxyx()[1]
+
+    curses.curs_set(0)
+    scr_height, scr_width = scr.getmaxyx()
+    max_width = max(len(item) for item in MENUDK)
+    x_pos = scr_width - max_width - 4  # padding from right
+    y_start = 1  # top of screen, just below header
 
     while keyInput != novaLinha:
-        scr.move(selection_start_y, selection_start_x)
-        line = 0
-        for sel in MENUDK:
-            whole_line = MENUDK[line]
-            space = largura - len(whole_line) % largura + 20
-            whole_line += '\n'
+        # Clear only menu area
+        for i in range(selection_count):
+            scr.move(y_start + i, x_pos)
+            scr.addstr(" " * max_width)
 
-            if line == selection:
-                scr.addstr(whole_line, curses.A_REVERSE)
+        # Render menu items
+        for i, item in enumerate(MENUDK):
+            scr.move(y_start + i, x_pos)
+            if i == selection:
+                scr.addstr(item.ljust(max_width), curses.A_REVERSE)
             else:
-                scr.addstr(whole_line)
-            line += 1
-            scr.refresh()
+                scr.addstr(item.ljust(max_width))
 
-
+        scr.refresh()
         keyInput = scr.getch()
 
         if keyInput == curses.KEY_UP and selection > 0:
@@ -1084,83 +1078,80 @@ def criarDarknet(scr):
         elif keyInput == curses.KEY_DOWN and selection < selection_count - 1:
             selection += 1
 
-        if keyInput == ord('\n') and selection == 0:
+        if keyInput == ord('\n'):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            scr.erase()
-            servicos()
 
-        if keyInput == ord('\n') and selection == 1:
-           print("\n\n- - OVERSEER NETWORK STATUS - -")
-           time.sleep(2)
-           os.system('sudo torctl status | micro')
-           scr.erase()
-           darknet()
-       
-        elif keyInput == ord('\n') and selection == 2:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            if checkNet():
-                print("\n\nDISCONNECTING OVERSEER NETWORK. . . ")
-                time.sleep(2)
-                os.system('sudo torctl stop')
+            if selection == 0:
                 scr.erase()
-                darknet()
-            else:
-                print("\n\nCONNECTING OVERSEER NETWORK. . . ")
+                servicos()
+
+            elif selection == 1:
+                print("\n\n- - OVERSEER NETWORK STATUS - -")
                 time.sleep(2)
-                os.system('sudo torctl start')
+                os.system('sudo torctl status | micro')
                 scr.erase()
                 darknet()
 
-        elif keyInput == ord('\n') and selection == 3:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nACTIVATING AUTOWIPE. . . ")
-            time.sleep(2)
-            os.system('sudo torctl autowipe')
-            scr.erase()
-            darknet()
+            elif selection == 2:
+                if checkNet():
+                    print("\n\nDISCONNECTING OVERSEER NETWORK. . . ")
+                    time.sleep(2)
+                    os.system('sudo torctl stop')
+                else:
+                    print("\n\nCONNECTING OVERSEER NETWORK. . . ")
+                    time.sleep(2)
+                    os.system('sudo torctl start')
+                scr.erase()
+                darknet()
 
-        elif keyInput == ord('\n') and selection == 4:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nACTIVATING AUTO START. . . ")
-            time.sleep(2)
-            os.system('sudo torctl autostart')
-            scr.erase()
-            darknet()
-        elif keyInput == ord('\n') and selection == 5:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nFETCHING LOCAL TERMINAL COORDINATES. . . ")
-            time.sleep(2)
-            os.system('sudo torctl ip | micro ')
-            scr.erase()
-            darknet()
-        elif keyInput == ord('\n') and selection == 6:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
-            time.sleep(2)
-            os.system('sudo torctl chngid')
-            scr.erase()
-            darknet()
-        elif keyInput == ord('\n') and selection == 7:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
-            time.sleep(2)
-            os.system('sudo torctl chngid')
-            scr.erase()
-            darknet()
-        elif keyInput == ord('\n') and selection == 8:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nCHANGING LOCAL ROBCO CHIPSET MAC. . . ")
-            time.sleep(2)
-            os.system('sudo torctl chngmac')
-            scr.erase()
-            darknet()
-        elif keyInput == ord('\n') and selection == 9:
-            audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nRESTORING LOCAL ROBCO CHIPSET MAC. . . ")
-            time.sleep(2)
-            os.system('sudo torctl rvmac')
-            scr.erase()
-            darknet()
+            elif selection == 3:
+                print("\n\nACTIVATING AUTOWIPE. . . ")
+                time.sleep(2)
+                os.system('sudo torctl autowipe')
+                scr.erase()
+                darknet()
+
+            elif selection == 4:
+                print("\n\nACTIVATING AUTO START. . . ")
+                time.sleep(2)
+                os.system('sudo torctl autostart')
+                scr.erase()
+                darknet()
+
+            elif selection == 5:
+                print("\n\nFETCHING LOCAL TERMINAL COORDINATES. . . ")
+                time.sleep(2)
+                os.system('sudo torctl ip | micro ')
+                scr.erase()
+                darknet()
+
+            elif selection == 6:
+                print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
+                time.sleep(2)
+                os.system('sudo torctl chngid')
+                scr.erase()
+                darknet()
+
+            elif selection == 7:
+                print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
+                time.sleep(2)
+                os.system('sudo torctl chngid')
+                scr.erase()
+                darknet()
+
+            elif selection == 8:
+                print("\n\nCHANGING LOCAL ROBCO CHIPSET MAC. . . ")
+                time.sleep(2)
+                os.system('sudo torctl chngmac')
+                scr.erase()
+                darknet()
+
+            elif selection == 9:
+                print("\n\nRESTORING LOCAL ROBCO CHIPSET MAC. . . ")
+                time.sleep(2)
+                os.system('sudo torctl rvmac')
+                scr.erase()
+                darknet()
 
 
 def initDarknet(scr):
