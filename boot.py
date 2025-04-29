@@ -791,7 +791,7 @@ def menuOptions(scr):
     max_width = max(len(item) for item in MENU_OPTIONS)
     x_pos = scr_width - max_width - 4  # padding from right
     y_start = 1  # top of screen, just below header
-
+    menu_top_y = 0 
     while keyInput != novaLinha:
         scr.move(menu_top_y, 0)
         line = 0
