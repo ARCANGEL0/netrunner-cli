@@ -1111,8 +1111,8 @@ def criarDarknet(scr):
                 centr(scr,"\n\n/// TORRC_GET")
                 time.sleep(2)
                 os.system('sudo torctl status | micro')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 2:
                 if checkNet():
@@ -1123,50 +1123,50 @@ def criarDarknet(scr):
                     centr(scr,"\n\n// DISCONNECT_DARKNET")
                     time.sleep(2)
                     os.system('sudo torctl start')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 3:
                 centr(scr,"\n\n// CLEAN_TMPF")
                 time.sleep(2)
                 os.system('sudo torctl autowipe')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 4:
                 centr(scr,"\n\n // ON_BOOT::INIT[]")
                 time.sleep(2)
                 os.system('sudo torctl autostart')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 5:
                 centr(scr,"\n\n// GET_LOC")
                 time.sleep(2)
                 os.system('sudo torctl ip | micro ')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 6:
                 centr(scr,"\n\n/// NETRUNNER_V3::NEW_ID[]")
                 time.sleep(2)
                 os.system('sudo torctl chngid')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 7:
                 centr(scr,"\n\n/// NETRUNNER_V3::CHANGE_MAC[]")
                 time.sleep(2)
                 os.system('sudo torctl chngmac')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
             elif selection == 8:
                 centr(scr,"\n\n/// NETRUNNER_V3::RESTORE_MAC[]")
                 time.sleep(2)
                 os.system('sudo torctl rvmac')
-                
-                darknet()
+                scr.erase()
+                newDarknet()
 
 
 def initDarknet(scr):
@@ -1185,6 +1185,22 @@ def initDarknet(scr):
 
     return criarDarknet(scr)
 
+def initFreshDarknet(scr):
+
+    curses.use_default_colors()
+    scr.erase()
+    scr.move(0, 0)
+    curses.curs_set(0)
+    get_system_info()
+    largura = scr.getmaxyx()[1]
+    
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+    for header in HEADEROUTPUT:   
+        typeT(scr, header + '\n')
+    menu_start_y = scr.getyx()[1]
+    scr.refresh()
+
+    return criarDarknet(scr)
 
 def initFirstMenu(scr):
 
@@ -1257,6 +1273,10 @@ def initOptions(scr):
 
 
 
+def newDarknet():
+
+    res = curses.wrapper(initFreshDarknet)
+    return res
 
 
 def darknet():
