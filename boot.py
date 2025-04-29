@@ -195,11 +195,15 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.refresh()
 def shutdown_program(scr=None):
     curses.endwin()
+    os.system("printf '\033c'")  
+
     try:
         if os.fork():
             os._exit(0)  
         else:
             os.setsid()  
+            banner_cmd = f"cat {os.path.join(dir, 'arasaka')} | pv -qL 16000"
+            os.system(banner_cmd)
             os._exit(0)  
     except:
         os._exit(0)
@@ -1045,8 +1049,6 @@ def criarMenu(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
             time.sleep(2)
-            os.system("printf '\033[3J\033[H\033[2J'")
-            os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
             shutdown_program()
 
         elif keyInput == ord('\n') and selection == 1:
