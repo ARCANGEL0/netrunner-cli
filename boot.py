@@ -1323,7 +1323,7 @@ def sInit(scr):
     else:
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
-        menu()
+        return 
     scr.refresh()
 
 def login_menu(scr):
