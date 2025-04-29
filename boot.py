@@ -926,7 +926,7 @@ def menuServicos(scr):
 
     while keyInput != novaLinha:
         
-        scr.move(selection_start_y, 0)
+        scr.move(selection_start_y, scr.getyx()[1])
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
@@ -1245,7 +1245,6 @@ def initFirstMenu(scr):
 def initMenu(scr):
 
     curses.use_default_colors()
-    scr.erase()
     scr.move(0, 0)
     curses.curs_set(0)
 
