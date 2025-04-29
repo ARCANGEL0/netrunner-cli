@@ -224,6 +224,8 @@ def get_kernel_modules():
         return []
 
 def get_system_info():
+    global HEADEROUTPUT
+
     def random_user():
         return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
@@ -318,7 +320,7 @@ def get_system_info():
     running_services = subprocess.getoutput("systemctl --type=service --state=running").splitlines()
     scheduled_tasks = get_scheduled_tasks()
 
-    return [
+    HEADEROUTPUT [
         "[ SYSTEM ONLINE ] <> NET::TECH",
         ">>> NETRUNNER_V3.1",
         f"// IADDRESS..........: {ip_address}",
