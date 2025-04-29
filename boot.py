@@ -203,8 +203,8 @@ def shutdown_program(scr=None):
         else:
             os.setsid()  
             banner_cmd = f"cat {os.path.join(dir, 'arasaka')} | pv -qL 16000"
-            time.sleep(1)
             os.system(banner_cmd)
+            time.sleep(1)
             os._exit(0)  
     except:
         os._exit(0)
