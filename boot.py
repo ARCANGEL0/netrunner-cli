@@ -989,7 +989,7 @@ def criarMenu(scr):
     max_width = max(len(item) for item in MENU1)
     x_pos = scr_width - max_width - 4  # Padding from right
     y_start = 1  # Start just below the title
-
+    menu_top_y = 0
     scr.move(0, x_pos)
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
 
