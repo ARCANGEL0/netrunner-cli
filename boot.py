@@ -209,14 +209,14 @@ def shutdown_program(scr=None):
 
     try:
         if os.fork():
-            time.sleep(3)
+            time.sleep(1)
             os._exit(0)  
         else:
             os.setsid()  
-            time.sleep(3)
+            time.sleep(1)
             os._exit(0)  
     except:
-        time.sleep(3)
+        time.sleep(1)
         os._exit(0)
 
 #................TEXTS............................
@@ -786,9 +786,15 @@ def menuOptions(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_OPTIONS)
-    selection_start_y = scr.getyx()[0]
-    largura = scr.getmaxyx()[1]
 
+    curses.curs_set(0)
+    scr_height, scr_width = scr.getmaxyx()
+    max_width = max(len(item) for item in MENU_OPTIONS)
+    x_pos = scr_width - max_width - 4  # Padding from right
+    y_start = 1  # Start just below the title
+    menu_top_y = 0
+    scr.move(0, x_pos)
+    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
     while keyInput != novaLinha:
         scr.move(selection_start_y, 0)
         line = 0
@@ -1023,7 +1029,8 @@ def criarMenu(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
 
             if selection == 0:
-                print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
+                scr.erase()
+                print("\n\n//// EXEC_SHELL::[] . . .")
                 time.sleep(2)
                 clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 shutdown_program()
