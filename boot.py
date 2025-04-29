@@ -917,11 +917,11 @@ def menuServicos(scr):
     scr_height, scr_width = scr.getmaxyx()
 
     # Dynamically update menu entries
-    MENU_SERVICES[1] = "// DARKNET_PROXY::[RUNNING]" if checkNet() else "// DARKNET_PROXY::[INACTIVE]"
-    MENU_SERVICES[2] = "// KILL_LOCAL_SERVER" if checkPS('apache2') else "// INIT_LOCAL_SERVER"
-    MENU_SERVICES[3] = "// KILL_DATABASE_V2" if checkPS('mariadb') or checkPS('mysqld') else "// INIT_DATABASE_V2"
-    MENU_SERVICES[4] = "// KILL_TORRC" if check_tor_running() else "// INIT_TORRC"
-    MENU_SERVICES[5] = "// KILL_NETRUNNERV3_UFW" if checkPS('ufw') else "// INIT_NETRUNNERV3_UFW"
+    MENU_SERVICES[1] = "[:]|/ DARKNET_PROXY::[RUNNING]" if checkNet() else "[:]|/ DARKNET_PROXY::[INACTIVE]"
+    MENU_SERVICES[2] = "[:]|/ KILL_LOCAL_SERVER" if checkPS('apache2') else "[:]|/ INIT_LOCAL_SERVER"
+    MENU_SERVICES[3] = "[:]|/ KILL_DATABASE_V2" if checkPS('mariadb') or checkPS('mysqld') else "[:]|/ INIT_DATABASE_V2"
+    MENU_SERVICES[4] = "[:]|/ KILL_TORRC" if check_tor_running() else "[:]|/ INIT_TORRC"
+    MENU_SERVICES[5] = "[:]|/ KILL_NETRUNNERV3_UFW" if checkPS('ufw') else "[:]|/ INIT_NETRUNNERV3_UFW"
 
     menu_top_y = 0
     max_width = max(len(item) for item in MENU_SERVICES)
@@ -1093,7 +1093,7 @@ def criarDarknet(scr):
 
         scr.refresh()
         keyInput = scr.getch()
-        MENUDK[2] = "// KILL_DARKNET_PROXY::[]" if checkNet() else "// INIT_DARKNET_PROXY::[]"
+        MENUDK[2] = "[:]|/ KILL_DARKNET_PROXY::[]" if checkNet() else "[:]|/ INIT_DARKNET_PROXY::[]"
 
         if keyInput == curses.KEY_UP and selection > 0:
             selection -= 1
