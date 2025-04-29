@@ -20,7 +20,9 @@ import platform
 import psutil
 from threading import Thread
 import uuid
-   
+from datetime import datetime
+import re
+import json
 
 # AVOID EXITTING SCRIPT
 def handler(signum, frame):
@@ -179,70 +181,134 @@ icon_top = " ╔═╗╔═╗ "
 icon_bot = " ╚═╣╠═╝ "
 
 
-def random_user():
-    """Generate a random user-like string."""
-    user_prefix = ''.join(random.choices(string.ascii_lowercase, k=4))
-    user_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    return f"{user_prefix}-{user_suffix}"
+
+import socket
+import subprocess
+import psutil
+import platform
+import random
+import string
+import uuid
+import os
+from datetime import datetime
+import time
 
 def get_system_info():
-    global HEADEROUTPUT
-    os_info = platform.system() + " " + platform.release()
-    cpu_info = os.popen("wmic cpu get caption").read().strip().split("\n")[1]
-    memory = psutil.virtual_memory()
-    ram_info = f"{memory.total / (1024 ** 3):.2f}GB"
-    disk = psutil.disk_usage('/')
-    disk_info = f"{disk.used / (1024 ** 3):.2f}GB/{disk.total / (1024 ** 3):.2f}GB"
-    load = psutil.cpu_percent(interval=1)
-    system_load = f"{load}%"
+    def random_user():
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+
+    def get_network_speed():
+        interfaces = ['wlan0', 'eth0']
+        for interface in interfaces:
+            net_io_start = psutil.net_io_counters(pernic=True).get(interface)
+            if net_io_start and psutil.net_if_stats().get(interface).isup:
+                bytes_sent_start, bytes_recv_start = net_io_start.bytes_sent, net_io_start.bytes_recv
+                time.sleep(1)
+                net_io_end = psutil.net_io_counters(pernic=True).get(interface)
+                bytes_sent_end, bytes_recv_end = net_io_end.bytes_sent, net_io_end.bytes_recv
+                download_speed = (bytes_recv_end - bytes_recv_start) * 8 / 1_000_000
+                upload_speed = (bytes_sent_end - bytes_sent_start) * 8 / 1_000_000
+                return download_speed, upload_speed
+        return "NO SIGNAL", "NO SIGNAL"
+    def get_dns_servers():
+        try:
+            with open('/etc/resolv.conf', 'r') as f:
+                dns_servers = [line.split()[1] for line in f.readlines() if line.startswith('nameserver')]
+            return dns_servers
+        except FileNotFoundError:
+            return ["[ / ]"]
+    def get_scheduled_tasks():
+        try:
+            cron_jobs = subprocess.check_output("crontab -l", shell=True).decode().splitlines()
+            return cron_jobs if cron_jobs else ["No Cron Jobs"]
+        except subprocess.CalledProcessError:
+            return ["No Cron Jobs"]
+
+    def get_firewall_rules():
+        try:
+            result = subprocess.check_output(['iptables', '-L'], stderr=subprocess.PIPE)
+            return result.decode()
+        except subprocess.CalledProcessError:
+            return "[ / ]"
+
     ip_address = socket.gethostbyname(socket.gethostname())
-
-    wifi_info = {}
-    try:
-        wifi_cmd = "iwconfig"
-        result = subprocess.check_output(wifi_cmd, stderr=subprocess.PIPE, shell=True).decode('utf-8')
-        for line in result.split("\n"):
-            if "ESSID" in line:
-                wifi_info['SSID'] = line.split('"')[1]
-            if "Link Quality" in line:
-                wifi_info['signal_strength'] = line.split('=')[1].split()[0]
-            if "Channel" in line:
-                wifi_info['channel'] = line.split('=')[1]
-    except subprocess.CalledProcessError:
-        wifi_info = {
-            'SSID': "OFFLINE",
-            'signal_strength': "[ / ]",
-            'channel': "[ / ]"
-        }
-
-    open_ports = [conn.laddr.port for conn in psutil.net_connections(kind='inet') if conn.status == 'LISTEN']
-    open_ports = ', '.join(map(str, open_ports)) if open_ports else "[ / ]"
-
-    gpu_info = "NVIDIA GTX 1080 Ti"
-    temp_info = psutil.sensors_temperatures()
-    system_temp = temp_info['coretemp'][0].current if 'coretemp' in temp_info else "[ / ]"
-    
+    public_ip = subprocess.getoutput("curl -s http://checkip.amazonaws.com")
+    mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
+    hostname = socket.gethostname()
     session_key = f"0x{''.join(random.choices(string.hexdigits, k=4))}-{random_user()}"
+    os_info = platform.system() + " " + platform.release()
+    kernel_version = platform.uname().release
+    architecture = platform.architecture()[0]
+    distro_info = platform.linux_distribution() if hasattr(platform, 'linux_distribution') else ('', '', '')
+    distro_name, distro_version, distro_id = distro_info
 
-    HEADEROUTPUT = [
+    cpu_temp = psutil.sensors_temperatures().get('coretemp', [{'current': '/'})[0]['current']
+    gpu_memory = psutil.virtual_memory().total / (1024 ** 3)
+    cpu_load = psutil.cpu_percent(interval=1)
+    load_avg_str = ' '.join(map(str, os.getloadavg()))
+    memory = psutil.virtual_memory()
+    ram_info = f"{memory.total / (1024 ** 3):.2f} GB, {memory.percent}% used"
+
+    disk_partitions = [p.device for p in psutil.disk_partitions()]
+    network_bandwidth = f"{psutil.net_if_addrs()['eth0'][1].address}" if 'eth0' in psutil.net_if_addrs() else "[ / ]"
+    download_speed, upload_speed = get_network_speed()
+
+    active_connections = len(psutil.net_connections())
+    active_processes = len(psutil.pids())
+    kernel_modules = ', '.join([m for m in psutil.get_kernel_modules()])
+    usb_devices_count = len([d for d in psutil.disk_partitions() if 'usb' in d.device.lower()])
+    pci_devices_count = len([p for p in psutil.disk_partitions() if 'pci' in p.device.lower()])
+    cron_jobs_count = len(get_scheduled_tasks())
+
+    swap_used = psutil.swap_memory().used / (1024 ** 3)
+    swap_free = psutil.swap_memory().free / (1024 ** 3)
+    tor_status = check_tor_status()
+    system_uptime = str(datetime.now() - datetime.fromtimestamp(psutil.boot_time()))
+
+    dns_servers = get_dns_servers()
+    firewall_rules_summary = get_firewall_rules()
+    running_services = subprocess.getoutput("systemctl --type=service --state=running").splitlines()
+    scheduled_tasks = get_scheduled_tasks()
+
+    return [
         "[ SYSTEM ONLINE ] <> NET::TECH",
         ">>> NETRUNNER_V3.1",
         f"// IADDRESS..........: {ip_address}",
-        f"// RUNNER_ID.........: {socket.gethostname()}",
+        f"// W_ADDRESS.......: {public_ip}",
+        f"// M_ADDRESS.......: {mac_address}",
+        f"// RUNNER_ID.........: {hostname}",
         f"// SESSION_KEY.......: {session_key}",
-        f"// ACCESS_POINT......: {wifi_info.get('SSID', '[ / ]')}",
-        f"// SIGNAL............: {wifi_info.get('signal_strength', '[ / ]')}% ... CH: {wifi_info.get('channel', '[ / ]')}",
-        f"// OPEN_PORTS........: {open_ports}",
-        f"// OS................: {os_info}",
-        f"// CPU...............: {cpu_info}",
-        f"// RAM...............: {ram_info}",
-        f"// DISK USAGE........: {disk_info}",
-        f"// GPU...............: {gpu_info}",
-        f"// SYSTEM TEMP.......: {system_temp}°C",
-        f"// SYSTEM LOAD.......: {system_load}",
+        f"// SYS_OS................: {os_info}",
+        f"// KERNEL_LH....: {kernel_version}",
+        f"// DISTRO............: {distro_name} {distro_version} ({distro_id})",
+        f"// NV4_ARCH......: {architecture}",
+        f"// CPU_TEMP..........: {cpu_temp}°C",
+        f"// GPU_MEMORY........: {gpu_memory} GB",
+        f"// DISK_PART...: {', '.join(disk_partitions)}",
+        f"// GET_CONNECTIONS.: {active_connections}",
+        f"// NET_BDWT.: {network_bandwidth}",
+        f"// NET_SPEED.....: {download_speed:.2f} MB/s (Download), {upload_speed:.2f} MB/s (Upload)",
+        f"// CPU_LOAD_AVG..: {load_avg_str}",
+        f"// ACTIVE_PS..: {active_processes}",
+        f"// KERNEL_MODULES....: {kernel_modules}",
+        f"// GET_USBDEVICES.......: {usb_devices_count}",
+        f"// GET_PCIDEVICES.......: {pci_devices_count}",
+        f"// LOAD_DNS.......: {', '.join(dns_servers)}",
+        f"// SELINUX_STATUS....: {selinux_status}",
+        f"// FIREWALL_RULES....: {firewall_rules_summary}",
+        f"// LOG_SERVICES..: {', '.join(running_services)}",
+        f"// SCHED_TASKS...: {', '.join(scheduled_tasks)}",
+        f"// CRON_JOBS.........: {cron_jobs_count}",
+        f"// SWAP_USG........: {swap_used:.2f} GB used, {swap_free:.2f} GB free",
+        f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
+        f"// RUNNER_UPTIME.....: {system_uptime}",
         "....................................................................",
         "---- NODE: NETWATCH_HKG_CORE ----"
     ]
+
+
+
+
 MENUDK = [
     "[:]|/ RETURN_TO_NODE",
     "[:]|/ CHECK_STATUS",
