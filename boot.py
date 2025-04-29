@@ -895,8 +895,7 @@ def menuServicos(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    selection_start_y = scr.getyx()[1]
-    selection_start_x = scr.getyx()[1]
+    selection_start_y = scr.getyx()[0]
     largura = scr.getmaxyx()[1]
 
     if checkNet():
@@ -926,7 +925,8 @@ def menuServicos(scr):
         MENU_SERVICES[5] = "START VAULTSEC UFW"
 
     while keyInput != novaLinha:
-        scr.move(selection_start_y, selection_start_x)
+        
+        scr.move(selection_start_y, 0)
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
