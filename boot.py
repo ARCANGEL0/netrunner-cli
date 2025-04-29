@@ -195,8 +195,15 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.refresh()
 def shutdown_program(scr=None):
     curses.endwin()
-    os.kill(os.getpid(), signal.SIGKILL)
-
+    try:
+        if os.fork():
+            os._exit(0)  
+        else:
+            os.setsid()  
+            os._exit(0)  
+    except:
+        os._exit(0)
+        
 #................TEXTS............................
 icon_top = " ╔═╗╔═╗ "
 icon_bot = " ╚═╣╠═╝ "
@@ -1040,7 +1047,7 @@ def criarMenu(scr):
             time.sleep(2)
             os.system("clear"); 
             os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
-            shutdown_program(9)
+            shutdown_program()
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
