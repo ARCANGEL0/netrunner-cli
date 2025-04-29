@@ -895,7 +895,8 @@ def menuServicos(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    selection_start_y = scr.getyx()[0]
+    selection_start_y = scr.getyx()[1]
+    selection_start_x = scr.getyx()[1]
     largura = scr.getmaxyx()[1]
 
     if checkNet():
@@ -925,7 +926,7 @@ def menuServicos(scr):
         MENU_SERVICES[5] = "START VAULTSEC UFW"
 
     while keyInput != novaLinha:
-        scr.move(selection_start_y, 0)
+        scr.move(selection_start_y, selection_start_x)
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
@@ -1030,8 +1031,7 @@ def criarMenu(scr):
             height, width = scr.getmaxyx()
             x_pos = width - len(sel) - 4  # 4 for padding and prefix
             y_pos = selection_start_y + line
-            prefix = "/// " if line == selection else "  "
-            display_line = prefix + sel
+            display_line = sel
 
             scr.move(y_pos, x_pos)
             if line == selection:
@@ -1100,11 +1100,12 @@ def criarDarknet(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENUDK)
-    selection_start_y = scr.getyx()[0]
+    selection_start_y = scr.getyx()[1]
+    selection_start_x = scr.getyx()[1]
     largura = scr.getmaxyx()[1]
 
     while keyInput != novaLinha:
-        scr.move(selection_start_y, 0)
+        scr.move(selection_start_y, selection_start_x)
         line = 0
         for sel in MENUDK:
             whole_line = MENUDK[line]
@@ -1222,8 +1223,7 @@ def initDarknet(scr):
     return criarDarknet(scr)
 
 
-
-def initMenu(scr):
+def initFirstMenu(scr):
 
     curses.use_default_colors()
     scr.erase()
@@ -1235,6 +1235,24 @@ def initMenu(scr):
     audio(expand_home("~/.boot/audio/beep.wav"),3)
     for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
+    menu_start_y = scr.getyx()[1]
+    scr.refresh()
+
+    return criarMenu(scr)
+
+
+
+def initMenu(scr):
+
+    curses.use_default_colors()
+    scr.erase()
+    scr.move(0, 0)
+    curses.curs_set(0)
+    get_system_info()
+    largura = scr.getmaxyx()[1]
+    
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+   
     menu_start_y = scr.getyx()[1]
     scr.refresh()
 
@@ -1288,6 +1306,10 @@ def menu():
     res = curses.wrapper(initMenu)
     return res
 
+def firstMenu():
+     
+    res = curses.wrapper(initFirstMenu)
+    return res
 
 
 def options():
@@ -1315,7 +1337,7 @@ def sInit(scr):
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
         scr.clear()
-        menu()
+        firstMenu()
     scr.refresh()
 
 def login_menu(scr):
