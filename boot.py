@@ -292,19 +292,19 @@ def get_system_info():
         except:
             return "[ / ]"
     def get_current_wifi_signal_strength(interface='wlan0'):
-    if not os.path.exists(f'/sys/class/net/{interface}'):
-        return "[]"
-    try:
-        networks = wifi.Cell.all(interface)
-        if not networks:
+        if not os.path.exists(f'/sys/class/net/{interface}'):
+            return "[]"
+        try:
+            networks = wifi.Cell.all(interface)
+            if not networks:
+                return "NO SIGNAL"
+            current_signal_strength = next((network.signal for network in networks if network.encrypted), None)
+            if current_signal_strength is not None:
+                return current_signal_strength
+            else:
+                return "NO SIGNAL"
+        except wifi.exceptions.InterfaceError:
             return "NO SIGNAL"
-        current_signal_strength = next((network.signal for network in networks if network.encrypted), None)
-        if current_signal_strength is not None:
-            return current_signal_strength
-        else:
-            return "NO SIGNAL"
-    except wifi.exceptions.InterfaceError:
-        return "NO SIGNAL"
     signal = get_current_wifi_signal_strength()
     def get_bssid(interface='wlan0'):
         if not os.path.exists(f'/sys/class/net/{interface}'):
