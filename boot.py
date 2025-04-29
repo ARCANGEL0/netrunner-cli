@@ -193,12 +193,13 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
-def clear_old_menu(scr, lines_to_clear):
-    height, width = scr.getmaxyx()
-    for i in range(lines_to_clear):
-        scr.move(i, width - 40)  # adjust 40 to match your menu width
-        scr.clrtoeol()
 
+def clear_old_menu(scr, menu_width=40):
+    height, width = scr.getmaxyx()
+    x_start = width - menu_width
+    for y in range(height):
+        scr.move(y, x_start)
+        scr.clrtoeol()
 
 def shutdown_program(scr=None):
     curses.endwin()
