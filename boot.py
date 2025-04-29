@@ -289,6 +289,21 @@ def get_system_info():
             return result.decode()
         except subprocess.CalledProcessError:
             return "[ / ]"
+    def get_open_ports():
+    try:
+        output = subprocess.check_output("ss -tuln", shell=True, text=True)
+        ports = set()
+        for line in output.splitlines():
+            parts = line.split()
+            if len(parts) >= 5:
+                address = parts[4]
+                if ":" in address:
+                    port = address.rsplit(":", 1)[-1]
+                    if port.isdigit():
+                        ports.add(port)
+        return ", ".join(sorted(ports, key=int))
+    except:
+        return "[ / ]"
     def get_wifi_info():
         try:
             output = subprocess.check_output(
