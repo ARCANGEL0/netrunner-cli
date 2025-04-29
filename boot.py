@@ -196,7 +196,7 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
 def clearCurrentMenu(scr, start_y, start_x, menu_height, menu_width):
   
     for y in range(menu_height):
-        scr.move(start_y + y, start_x)
+        scr.move(start_y + y + 100, start_x)
         scr.addstr(" " * menu_width)  # Clear the area by writing spaces
     scr.refresh()
 
