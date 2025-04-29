@@ -1341,8 +1341,8 @@ def login_menu(scr):
 
 
 def login():
-
-    return curses.wrapper(login_menu)
+    return curses.wrapper()
+    #return curses.wrapper(login_menu)
 def initLock(scr):
     """
     Start the locked out portion of the terminal
@@ -1367,10 +1367,9 @@ def bloquearTela():
     curses.wrapper(initLock)
 def initBoot():
 
-    #os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
+    os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
     return True
-    #res = curses.wrapper(initLogin)
-    res = curses.wrapper(initServicos)
+    res = curses.wrapper(initLogin)
     return res
 def iniciar():
     
@@ -1443,8 +1442,7 @@ def cap_string(window, hidden=False, can_novaLinha=True):
 
     except ValueError:
         # Handle Unicode characters, if needed, and re-call the login function
-        #login()  # Or handle as appropriate
-        pass
+        login()  # Or handle as appropriate
 
 
 
