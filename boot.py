@@ -310,27 +310,29 @@ def get_system_info():
                 shell=True,
                 text=True
             )
-
-            # Look for the active connection (starts with 'yes:')
             line = next((l for l in output.strip().splitlines() if l.startswith("yes:")), None)
-
             if not line:
                 return {}
-
             parts = line.split(":")
-            
-            # BSSID can be a MAC address like D8:FC:93:12:AB:CD
-            return {
-                "SSID": parts[1] if len(parts) > 1 else None,
-                "BSID": parts[2] if len(parts) > 2 else None,
-                "signal_strength": parts[3] if len(parts) > 3 else None,
-                "channel": parts[4] if len(parts) > 4 else None
-            }
 
+            ssid = parts[1] if len(parts) > 1 else None
+            bssid = parts[2] if len(parts) > 2 else None
+            signal_strength = parts[3] if len(parts) > 3 else None
+            channel = parts[4] if len(parts) > 4 else None
+            if signal_strength:
+                signal_strength = signal_strength.strip("%")  # Remove percentage sign if present
+            if channel:
+                channel = channel.strip()
+            return {
+                "SSID": ssid,
+                "BSID": bssid,
+                "signal_strength": signal_strength,
+                "channel": channel
+            }
         except Exception:
             return {}
 
-    wifi_info = get_wifi_info() 
+    wifi_info = get_wifi_info()
     ssid = wifi_info.get("SSID", "[ / ]")
     bssid = wifi_info.get("BSID", "[ / ]")
     signal = wifi_info.get("signal_strength", "[ / ]")
@@ -1024,10 +1026,10 @@ def criarMenu(scr):
         if keyInput == ord('\n') and selection == 0:    
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
-
             time.sleep(2)
-            os.system('cd $HOME')
-            os.system('tmux')
+            os.system("clear"); 
+            os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
+            exit()
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
@@ -1279,7 +1281,7 @@ def darknet():
     return res
 
 def menu():
-
+     
     res = curses.wrapper(initMenu)
     return res
 
