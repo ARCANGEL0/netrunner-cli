@@ -1130,9 +1130,9 @@ def sInit(scr):
         scr.clear()
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
+        menu()
     time.sleep(2)
     scr.refresh()
-    initMenu()
 
 def login_menu(scr):
     curses.use_default_colors()
