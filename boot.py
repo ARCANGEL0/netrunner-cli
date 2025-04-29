@@ -1367,9 +1367,10 @@ def bloquearTela():
     curses.wrapper(initLock)
 def initBoot():
 
-    os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
+    #os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 10000 " )
     return True
-    res = curses.wrapper(initLogin)
+    #res = curses.wrapper(initLogin)
+    res = curses.wrapper(initServicos)
     return res
 def iniciar():
     
