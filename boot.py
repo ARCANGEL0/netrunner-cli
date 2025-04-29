@@ -1245,11 +1245,12 @@ def initFirstMenu(scr):
 def initMenu(scr):
 
     curses.use_default_colors()
-    selection_start_y = scr.getyx()[1]
-    selection_start_x = scr.getyx()[1]
-    scr.move(selection_start_yx,selection_start_yx)
+    scr.erase()
+    scr.move(0, 0)
     curses.curs_set(0)
-    
+
+    largura = scr.getmaxyx()[1]
+
     audio(expand_home("~/.boot/audio/beep.wav"),3)
    
     scr.refresh()
