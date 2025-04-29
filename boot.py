@@ -1034,7 +1034,7 @@ def initMenu(scr):
     scr.erase()
     scr.move(0, 0)
     curses.curs_set(0)
-
+    get_system_info()
     largura = scr.getmaxyx()[1]
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
@@ -1128,7 +1128,7 @@ def sInit(scr):
     if not success:
         bloquearTela()
     else:
-        scr.clear()
+   
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
         initMenu(scr)
