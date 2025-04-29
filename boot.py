@@ -895,7 +895,7 @@ def menuServicos(scr):
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    selection_start_y = scr.getyx()[0]
+    selection_start_y = scr.getyx()[1]
     largura = scr.getmaxyx()[1]
 
     if checkNet():
@@ -1245,10 +1245,9 @@ def initFirstMenu(scr):
 def initMenu(scr):
 
     curses.use_default_colors()
-    scr.move(0, 0)
     curses.curs_set(0)
 
-    largura = scr.getmaxyx()[1]
+   
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
    
@@ -1261,11 +1260,9 @@ def initMenu(scr):
 def initOptions(scr):
 
     curses.use_default_colors()
-    scr.erase()
-    scr.move(0, 0)
     curses.curs_set(0)
 
-    largura = scr.getmaxyx()[1]
+   
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
 
