@@ -940,6 +940,8 @@ def menuServicos(scr):
     selection = 0
     selection_count = len(MENU_SERVICES)
     scr_height, scr_width = scr.getmaxyx()
+    selection_start_y = scr.getyx()[1]
+    selection_start_x = scr.getyx()[1]
     clear_old_menu(scr, len(MENU_SERVICES))
     # Dynamically update menu entries
     MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]" if checkNet() else "OVERSEER NETWORK [INACTIVE]"
