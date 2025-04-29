@@ -204,7 +204,7 @@ def shutdown_program(scr=None):
             os.setsid()  
             banner_cmd = f"cat {os.path.join(dir, 'arasaka')} | pv -qL 16000"
             os.system(banner_cmd)
-            time.sleep(1)
+            time.sleep(4)
             os._exit(0)  
     except:
         os._exit(0)
@@ -897,6 +897,7 @@ def menuServicos(scr):
     selection_start_y = scr.getyx()[0]
     selection_start_x = scr.getyx()[1]
     largura = scr.getmaxyx()[0]
+    scr.move(selection_start_y,300)
 
     if checkNet():
         MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]"
