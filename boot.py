@@ -483,7 +483,7 @@ MENU1 = [
 
 MENU_SERVICES = [
     "[:]|/ RETURN_TO_NODE",            
-    "[:]|/ INIT_DARKNET_PROXY",        
+    "[:]|/ DARKNET_PROXY",        
     "[:]|/ LAUNCH_APACHE",       
     "[:]|/ BOOT_MYSQL",                
     "[:]|/ EXECUTE_TOR",       
@@ -1093,6 +1093,7 @@ def criarDarknet(scr):
 
         scr.refresh()
         keyInput = scr.getch()
+        MENUDK[2] = "// KILL_DARKNET_PROXY::[]" if checkNet() else "// INIT_DARKNET_PROXY::[]"
 
         if keyInput == curses.KEY_UP and selection > 0:
             selection -= 1
