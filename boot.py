@@ -1076,7 +1076,7 @@ def criarDarknet(scr):
     max_width = max(len(item) for item in MENUDK)
     x_pos = scr_width - max_width - 4  # padding from right
     y_start = 1  # top of screen, just below header
-
+    menu_top_y = 0 
     while keyInput != novaLinha:
         # Clear only menu area
         for i in range(selection_count):
@@ -1104,7 +1104,7 @@ def criarDarknet(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
 
             if selection == 0:
-                scr.erase()
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
 
             elif selection == 1:
