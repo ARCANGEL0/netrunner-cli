@@ -14,6 +14,7 @@ import curses
 import time
 import random
 import os
+import sys
 import socket
 import signal
 import platform
@@ -191,6 +192,9 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
+def shutdown_program(stdscr):
+    curses.endwin()  
+    sys.exit() 
 
 
 #................TEXTS............................
@@ -1042,7 +1046,7 @@ def criarMenu(scr):
             time.sleep(2)
             os.system("clear"); 
             os.system("cat " + os.path.join(dir, 'arasaka') + "| pv -qL 16000 " )
-            return
+            shutdown_program(scr)
 
         elif keyInput == ord('\n') and selection == 1:
             audio(expand_home("~/.boot/audio/keyenter.wav"))
@@ -1206,16 +1210,9 @@ def initDarknet(scr):
     largura = scr.getmaxyx()[1]
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in MENU_HEAD:
-        centr(scr, header + '\n')
-
-    audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in MENU_HEAD2:   
+    for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
-
-    audio(expand_home("~/.boot/audio/beep.wav"),4)
-    for i in range(largura):
-        scr.addch(curses.ACS_BSBS)
+     
     scr.refresh()
 
     return criarDarknet(scr)
@@ -1250,14 +1247,10 @@ def initOptions(scr):
 
     largura = scr.getmaxyx()[1]
 
-    for header in MENU_HEAD:
-        centr(scr, header + '\n')
-
-    for header in MENU_HEAD2:
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+    for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
-
-    for i in range(largura):
-        scr.addch(curses.ACS_BSBS)
+     
     scr.refresh()
 
     return menuOptions(scr)
@@ -1323,7 +1316,7 @@ def sInit(scr):
     else:
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
-        return 
+        menu()
     scr.refresh()
 
 def login_menu(scr):
