@@ -1246,16 +1246,14 @@ def initRefOptions(scr):
 
 
 def initOptions(scr):
+
     curses.use_default_colors()
+    scr.erase()
+    scr.move(0, 0)
     curses.curs_set(0)
 
-   
+    largura = scr.getmaxyx()[1]
 
-    audio(expand_home("~/.boot/audio/beep.wav"),3)
-   
-    scr.refresh()
-
-     
 
     return menuOptions(scr)
 
