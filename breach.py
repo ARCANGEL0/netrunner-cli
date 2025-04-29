@@ -13,7 +13,23 @@ from threading import Thread
 import uuid
 
 Lpausa = 3
-
+def initLock(scr):
+    """
+    Start the locked out portion of the terminal
+    """
+    curses.use_default_colors()
+    tTamanho = scr.getmaxyx()
+    largura = tTamanho[1]
+    altura = tTamanho[0]
+    scr.erase()
+    curses.curs_set(0)
+    scr.move(int(altura / 2 - 1), 0)
+    os.system("cat " + os.path.join(dir, 'banner') + "| pv -qL 10000 " )
+    scr.move(int(altura / 2 + 1), 0)
+    centr(scr, 'C0NNECTION_TERMINATED__!\nSYSTEM_FAILURE [0x9F37C] //')
+    centr(scr, 'ERROR CODE: 0x5A_X12T | TRACE DETECTED!!\n')    
+    scr.refresh()
+    curses.napms(BLOQUEIO)
 def get_mac_address():
     mac = uuid.getnode()
     mac_addr = ':'.join(('%012X' % mac)[i:i+2] for i in range(0, 12, 2))

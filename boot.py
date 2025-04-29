@@ -1020,10 +1020,10 @@ def sInit(scr):
     typeT(scr, '\n\n\n\n')
     centr(scr, '              SEQUENCE REQUIRED TO ACCESS: \n')
     typeT(scr, '\n\n')
-    scr.refresh()
-    # now hand off to our interactive breach UI
-    breach_protocol(scr, MATRIX, senhas)
-    return senhas
+    centr(scr, '-------------' + '\n')
+    for i in range(len(senhas)):
+       centr(scr, '| ' + senhas[i] + ' | \n')
+    centr(scr, '-------------' + '\n')
 
 
    
@@ -1138,7 +1138,7 @@ def initLock(scr):
     scr.move(int(altura / 2 - 1), 0)
     os.system("cat " + os.path.join(dir, 'banner') + "| pv -qL 10000 " )
     scr.move(int(altura / 2 + 1), 0)
-    centr(scr, 'C0NNECTION_TERMINATED__!\nSYSTEM_FAILURE [0x9F37C] //')
+    centr(scr, 'C0NNECTION_TERMINATED__!\nSYSTEM_FAILURE [0x9F37C] //\n\n')
     centr(scr, 'ERROR CODE: 0x5A_X12T | TRACE DETECTED!!\n')    
     scr.refresh()
     curses.napms(BLOQUEIO)
