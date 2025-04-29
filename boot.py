@@ -1321,8 +1321,7 @@ def login_menu(scr):
 
 
 def login():
-    return curses.wrapper(initServicos)
-    #return curses.wrapper(login_menu)
+    return curses.wrapper(login_menu)
 def initLock(scr):
     """
     Start the locked out portion of the terminal
