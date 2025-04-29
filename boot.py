@@ -453,6 +453,7 @@ def get_system_info():
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
         "...................................................................."
+        f"--------------------- NODE: NETWATCH_HKG_CORE --------------------- ",
        
     ]
 
@@ -996,7 +997,7 @@ def criarMenu(scr):
     y_start = 1  # Start just below the title
     menu_top_y = 0
     scr.move(0, x_pos)
-    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
+    
 
     while keyInput != novaLinha:
         # Clear only the previous menu area
