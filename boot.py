@@ -175,6 +175,9 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
 
 
 #................TEXTS............................
+icon_top = " ╔═╗╔═╗ "
+icon_bot = " ╚═╣╠═╝ "
+
 
 def random_user():
     """Generate a random user-like string."""
