@@ -157,7 +157,6 @@ def run_breach(scr):
     else:
         bloquearTela()
     scr.refresh()
-    time.sleep(2)
     return success
 
 def draw_game(scr, grid, cursor, picks, attempts, reference):
@@ -307,17 +306,17 @@ def get_system_info():
     def get_wifi_info():
         try:
             output = subprocess.check_output(
-                "nmcli -t -f active,ssid,bssid,signal,chan dev wifi", 
-                shell=True, 
+                "nmcli -t -f active,ssid,bssid,signal,chan --separator '|' dev wifi",
+                shell=True,
                 text=True
             )
             
-            line = next((l for l in output.strip().splitlines() if l.startswith("yes:")), None)
+            line = next((l for l in output.strip().splitlines() if l.startswith("yes|")), None)
 
             if not line:
                 return {}
 
-            parts = line.split(":")
+            parts = line.split("|")
             return {
                 "SSID": parts[1] if len(parts) > 1 else None,
                 "BSID": parts[2] if len(parts) > 2 else None,
@@ -391,14 +390,14 @@ def get_system_info():
         f"// GET_ACCESSV_SSID......: {ssid}",
         f"// PACCESSV_BSID......: {bssid}",
         f"// SIGNAL............: {signal}% ... CH: {channel}",
-        f"// OPEN_PORTS........: {open_ports}",
+        f"// OPEN_PORTS........: {open_ports()}",
         f"// SYS_OS................: {os_info}",
         f"// KERNEL_LH....: {kernel_version}",
         f"// DISTRO............: {distro_name} {distro_version} ({distro_id})",
         f"// NV4_ARCH......: {architecture}",
-        f"// CPU_DATA..........: {get_cpu_info}",
+        f"// CPU_DATA..........: {get_cpu_info()}",
         f"// CPU_TEMP..........: {cpu_temp}°C",
-        f"// GPU_DATA........: {get_gpu_info}",
+        f"// GPU_DATA........: {get_gpu_info()}",
         f"// GPU_MEMORY........: {gpu_memory} GB",
         f"// DISK_PART...: {', '.join(disk_partitions)}",
         f"// GET_CONNECTIONS.: {active_connections}",
@@ -409,7 +408,7 @@ def get_system_info():
         f"// GET_USBDEVICES.......: {usb_devices_count}",
         f"// GET_PCIDEVICES.......: {pci_devices_count}",
         f"// LOAD_DNS.......: {', '.join(dns_servers)}",
-        f"// SELINUX_STATUS....: {selinux_status}",
+        f"// SELINUX_STATUS....: {selinux_status()}",
         f"// FIREWALL_RULES....: {firewall_rules_summary}",
         f"// SCHED_TASKS...: {', '.join(scheduled_tasks)}",
         f"// SWAP_USG........: {swap_used:.2f} GB used, {swap_free:.2f} GB free",
@@ -1304,10 +1303,9 @@ def sInit(scr):
     if not success:
         bloquearTela()
     else:
-   
         typeT(scr,'/// LOADING NETRUNNER_V3.1............\n')
         typeT(scr,'/// BOOT_SEQUENCE INITIATED.........\n')
-        initMenu(scr)
+        menu()
     scr.refresh()
 
 def login_menu(scr):
