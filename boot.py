@@ -1280,8 +1280,6 @@ def initOptions(scr):
 def initServicos(scr):
 
     curses.use_default_colors()
-    selection_start_yx = scr.getyx()[1]
-    scr.move(selection_start_yx,selection_start_yx)
     curses.curs_set(0)
 
    
