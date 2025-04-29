@@ -289,7 +289,33 @@ def get_system_info():
             return result.decode()
         except subprocess.CalledProcessError:
             return "[ / ]"
+    def get_wifi_info():
+        try:
+            output = subprocess.check_output(
+                "nmcli -t -f active,ssid,bssid,signal,chan dev wifi", 
+                shell=True, 
+                text=True
+            )
+            
+            line = next((l for l in output.strip().splitlines() if l.startswith("yes:")), None)
 
+            if not line:
+                return {}
+
+            parts = line.split(":")
+            return {
+                "SSID": parts[1] if len(parts) > 1 else None,
+                "BSID": parts[2] if len(parts) > 2 else None,
+                "signal_strength": parts[3] if len(parts) > 3 else None,
+                "channel": parts[4] if len(parts) > 4 else None
+            }
+
+        except Exception:
+            return {}
+    ssid = wifi_info.get("SSID", "[ / ]")
+    bssid = wifi_info.get("BSID", "[ / ]")
+    signal = wifi_info.get("signal_strength", "[ / ]")
+    channel = wifi_info.get("channel", "[ / ]")
     ip_address = socket.gethostbyname(socket.gethostname())
     public_ip = subprocess.getoutput("curl -s http://checkip.amazonaws.com")
     mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
@@ -305,7 +331,7 @@ def get_system_info():
         cpu_temp = cpu_temp[0].get('current', '/')
     else:
         cpu_temp = '/'
-
+    
     gpu_memory = psutil.virtual_memory().total / (1024 ** 3)
     cpu_load = psutil.cpu_percent(interval=1)
     load_avg_str = ' '.join(map(str, os.getloadavg()))
@@ -346,8 +372,9 @@ def get_system_info():
         f"// CUR_TIME......: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}",
         f"// RUNNER_ID.........: {hostname}",
         f"// SESSION_KEY.......: {session_key}",
-        f"// ACCESS_POINT......: {wifi_info.get('SSID', '[ / ]')}",
-        f"// SIGNAL............: {wifi_info.get('signal_strength', '[ / ]')}% ... CH: {wifi_info.get('channel', '[ / ]')}",
+        f"// GET_ACCESSV_SSID......: {ssid}",
+        f"// PACCESSV_BSID......: {bssid}",
+        f"// SIGNAL............: {signal}% ... CH: {channel}",
         f"// OPEN_PORTS........: {open_ports}",
         f"// SYS_OS................: {os_info}",
         f"// KERNEL_LH....: {kernel_version}",
