@@ -241,8 +241,8 @@ def get_system_info():
     architecture = platform.architecture()[0]
     distro_info = platform.linux_distribution() if hasattr(platform, 'linux_distribution') else ('', '', '')
     distro_name, distro_version, distro_id = distro_info
+    cpu_temp = psutil.sensors_temperatures().get('coretemp', [{'current': '/' }])[0]['current']
 
-    cpu_temp = psutil.sensors_temperatures().get('coretemp', [{'current': '/'})[0]['current']
     gpu_memory = psutil.virtual_memory().total / (1024 ** 3)
     cpu_load = psutil.cpu_percent(interval=1)
     load_avg_str = ' '.join(map(str, os.getloadavg()))
