@@ -789,9 +789,9 @@ def menuOptions(scr):
     curses.curs_set(0)
     scr_height, scr_width = scr.getmaxyx()
     max_width = max(len(item) for item in MENU_OPTIONS)
-    
-    x_pos = scr_width - max_width - 4
-    y_pos = 0
+
+    x_pos = scr_width - max_width - 4  # Right-aligned
+    y_pos = 0  # At the top
 
     menu_top_y = 0
     scr.move(0, x_pos)
