@@ -312,10 +312,12 @@ def get_system_info():
 
         except Exception:
             return {}
-    ssid = get_wifi_info.get("SSID", "[ / ]")
-    bssid = get_wifi_info.get("BSID", "[ / ]")
-    signal = get_wifi_info.get("signal_strength", "[ / ]")
-    channel = get_wifi_info.get("channel", "[ / ]")
+   wifi_info = get_wifi_info()  # Call the function
+
+    ssid = wifi_info.get("SSID", "[ / ]")
+    bssid = wifi_info.get("BSID", "[ / ]")
+    signal = wifi_info.get("signal_strength", "[ / ]")
+    channel = wifi_info.get("channel", "[ / ]")
     ip_address = socket.gethostbyname(socket.gethostname())
     public_ip = subprocess.getoutput("curl -s http://checkip.amazonaws.com")
     mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
