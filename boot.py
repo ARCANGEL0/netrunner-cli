@@ -266,6 +266,23 @@ def get_system_info():
                 return "[/]"
         except subprocess.CalledProcessError:
             return "[/]"
+    def get_cpu_info():
+        try:
+            result = subprocess.run(['lscpu'], capture_output=True, text=True)
+            if result.returncode == 0:
+                info = result.stdout.splitlines()
+                cpu_info = {line.split(":")[0].strip(): line.split(":")[1].strip() for line in info}
+                return f"{cpu_info.get('Model name', '[/]')} @ {cpu_info.get('CPU MHz', '[/]')} MHz, {cpu_info.get('CPU(s)', '[/]')} Cores"
+            return "[/]"
+        except:
+            return "[/]"
+    def get_gpu_info():
+        try:
+            result = subprocess.run(['nvidia-smi', '--query-gpu=name,memory.total,memory.free,memory.used,driver_version', '--format=csv,noheader,nounits'],
+                                    capture_output=True, text=True)
+            return result.stdout.strip().replace("\n", ", ") if result.returncode == 0 else "[/]"
+        except:
+            return "[/]"
     def get_firewall_rules():
         try:
             result = subprocess.check_output(['iptables', '-L'], stderr=subprocess.PIPE)
@@ -326,6 +343,7 @@ def get_system_info():
         f"// IADDRESS..........: {ip_address}",
         f"// W_ADDRESS.......: {public_ip}",
         f"// M_ADDRESS.......: {mac_address}",
+        f"// CUR_TIME......: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}",
         f"// RUNNER_ID.........: {hostname}",
         f"// SESSION_KEY.......: {session_key}",
         f"// ACCESS_POINT......: {wifi_info.get('SSID', '[ / ]')}",
@@ -335,23 +353,22 @@ def get_system_info():
         f"// KERNEL_LH....: {kernel_version}",
         f"// DISTRO............: {distro_name} {distro_version} ({distro_id})",
         f"// NV4_ARCH......: {architecture}",
+        f"// CPU_DATA..........: {get_cpu_info}",
         f"// CPU_TEMP..........: {cpu_temp}°C",
+        f"// GPU_DATA........: {get_gpu_info}",
         f"// GPU_MEMORY........: {gpu_memory} GB",
         f"// DISK_PART...: {', '.join(disk_partitions)}",
         f"// GET_CONNECTIONS.: {active_connections}",
         f"// NET_BDWT.: {network_bandwidth}",
-        f"// NET_SPEED.....: {download_speed:.2f} MB/s (Download), {upload_speed:.2f} MB/s (Upload)",
+        f"// NET_SPEED.....: {download_speed:.2f} MB/s ↓ || {upload_speed:.2f} MB/s ↑",
         f"// CPU_LOAD_AVG..: {load_avg_str}",
         f"// ACTIVE_PS..: {active_processes}",
-        f"// KERNEL_MODULES....: {kernel_modules}",
         f"// GET_USBDEVICES.......: {usb_devices_count}",
         f"// GET_PCIDEVICES.......: {pci_devices_count}",
         f"// LOAD_DNS.......: {', '.join(dns_servers)}",
         f"// SELINUX_STATUS....: {selinux_status}",
         f"// FIREWALL_RULES....: {firewall_rules_summary}",
-        f"// LOG_SERVICES..: {', '.join(running_services)}",
         f"// SCHED_TASKS...: {', '.join(scheduled_tasks)}",
-        f"// CRON_JOBS.........: {cron_jobs_count}",
         f"// SWAP_USG........: {swap_used:.2f} GB used, {swap_free:.2f} GB free",
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
