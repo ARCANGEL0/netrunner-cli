@@ -1023,7 +1023,7 @@ def criarMenu(scr):
             if selection == 0:
                 print("\n\n\n/.F==: ACCESSING VAULT TERMINAL. . .")
                 time.sleep(2)
-                clear_old_menu(scr, len(MENU1))
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 shutdown_program()
 
             elif selection == 1:
@@ -1035,25 +1035,25 @@ def criarMenu(scr):
                 firstMenu()
 
             elif selection == 2:
-                clear_old_menu(scr, len(MENU1))
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
 
             elif selection == 3:
-                clear_old_menu(scr, len(MENU1))
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 options()
 
             elif selection == 4:
-                clear_old_menu(scr, len(MENU1))
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 lock_screen()
 
             elif selection == 5:
-                clear_old_menu(scr, len(MENU1))
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 print("\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
                 time.sleep(5)
                 os.system("sudo shutdown -r now")
 
             elif selection == 6:
-                clear_old_menu(scr, len(MENU1))
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 print("\n\n\nG O O D    B Y E ! ")
                 time.sleep(5)
                 os.system("sudo shutdown -h now")
