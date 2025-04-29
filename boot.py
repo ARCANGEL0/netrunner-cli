@@ -194,7 +194,7 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.refresh()
 def shutdown_program(stdscr):
     curses.endwin()  
-    sys.exit() 
+    sys.exit(0) 
 
 
 #................TEXTS............................
