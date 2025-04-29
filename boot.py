@@ -149,10 +149,10 @@ def run_breach(scr):
         sy, sx = max(2, (h - gh) // 2), max(2, (w - gw - 60) // 2)
         for r in range(GRID_SIZE * 2 + 2): scr.addstr(sy + r, sx, ' ' * (gw - 2))
         scr.clear()
-        typeT(scr, '\n\n\n\n\n\nBREACH PROTOCOL SUCCESS! CONTINUING...')
-        typeT(scr, '> ::: ENGAGING PROTOCOL//0xC0D3\n')
+        typeT(scr, '\n\n\n\n\n\n//// NETRUNNER_V3.1 BREACH PROTOCOL RUNNING')
+        typeT(scr, '> ::: ENGAGING PROTOCOL//0x002D03F\n')
         typeT(scr, '> :: INITIATING_NET_OVERRIDE //\n')
-        typeT(scr, '> ==>> UPLINK STABILIZED [███░░]\n')
+        typeT(scr, '> ==>> NETVH_UPLOADED [███░░]\n')
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
     else:
         bloquearTela()
