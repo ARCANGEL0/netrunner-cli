@@ -312,8 +312,7 @@ def get_system_info():
 
         except Exception:
             return {}
-   wifi_info = get_wifi_info()  # Call the function
-
+    wifi_info = get_wifi_info() 
     ssid = wifi_info.get("SSID", "[ / ]")
     bssid = wifi_info.get("BSID", "[ / ]")
     signal = wifi_info.get("signal_strength", "[ / ]")
