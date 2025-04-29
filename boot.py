@@ -1030,7 +1030,7 @@ def criarMenu(scr):
             height, width = scr.getmaxyx()
             x_pos = width - len(sel) - 4  # 4 for padding and prefix
             y_pos = selection_start_y + line
-            prefix = "> " if line == selection else "  "
+            prefix = "/// " if line == selection else "  "
             display_line = prefix + sel
 
             scr.move(y_pos, x_pos)
