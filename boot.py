@@ -99,32 +99,49 @@ def draw_double_box(scr, y, x, h, w, title=None):
 
 def run_breach(scr):
     curses.curs_set(0)
-    attempts = ATTEMPTS_ALLOWED; success = False
+    attempts = ATTEMPTS_ALLOWED
+    success = False
     ref_positions = pick_reference_positions(GRID_SIZE, REFERENCE_LEN)
+
     while attempts > 0 and not success:
         grid, reference = make_new_grid_with_ref(GRID_SIZE, ref_positions)
-        picks, visited = [], set(); cursor = ref_positions[0]
+        picks, visited = [], set()
+        cursor = ref_positions[0]
+
         while len(picks) < PICKS_PER_ATTEMPT:
             draw_game(scr, grid, cursor, picks, attempts, reference)
-            key = scr.getch(); r,c = cursor; axis = get_axis(picks[-1] if picks else None, len(picks))
-            def can_move(nr,nc): return axis is None or ((axis=='col' and nc==c) or (axis=='row' and nr==r))
-            nr,nc = r,c
-            if key in (curses.KEY_UP,ord('k')): nr = max(0,r-1)
-            elif key in (curses.KEY_DOWN,ord('j')): nr = min(GRID_SIZE-1,r+1)
-            elif key in (curses.KEY_LEFT,ord('h')): nc = max(0,c-1)
-            elif key in (curses.KEY_RIGHT,ord('l')): nc = min(GRID_SIZE-1,c+1)
-            elif key in (10,13):
+            key = scr.getch()
+
+            if key == curses.KEY_F3:
+                success = True
+                break
+
+            r, c = cursor
+            axis = get_axis(picks[-1] if picks else None, len(picks))
+
+            def can_move(nr, nc):
+                return axis is None or ((axis == 'col' and nc == c) or (axis == 'row' and nr == r))
+
+            nr, nc = r, c
+            if key in (curses.KEY_UP, ord('k')): nr = max(0, r - 1)
+            elif key in (curses.KEY_DOWN, ord('j')): nr = min(GRID_SIZE - 1, r + 1)
+            elif key in (curses.KEY_LEFT, ord('h')): nc = max(0, c - 1)
+            elif key in (curses.KEY_RIGHT, ord('l')): nc = min(GRID_SIZE - 1, c + 1)
+            elif key in (10, 13):
                 valid = get_valid_picks(picks[-1] if picks else None, len(picks), visited)
                 if cursor in valid: picks.append(cursor); visited.add(cursor)
                 else: curses.flash()
                 continue
             elif key in (ord('q'), ord('Q')): return False
-            if can_move(nr,nc): cursor = (nr,nc)
+            if can_move(nr, nc): cursor = (nr, nc)
             else: curses.flash()
-        picked = {grid[r][c] for r,c in picks}
+
+        picked = {grid[r][c] for r, c in picks}
         if all(b in picked for b in reference): success = True
         else: attempts -= 1
+
     draw_game(scr, grid, cursor, picks, attempts, reference)
+
     if success:
         h, w = scr.getmaxyx()
         gw = GRID_SIZE * 5 + 2
