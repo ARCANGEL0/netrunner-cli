@@ -253,7 +253,17 @@ def get_system_info():
             return cron_jobs if cron_jobs else ["No Cron Jobs"]
         except subprocess.CalledProcessError:
             return ["No Cron Jobs"]
-
+    def get_selinux_status():
+    try:
+        status = subprocess.check_output("sestatus", shell=True).decode("utf-8")
+        if "enabled" in status.lower():
+            return "ENABLED"
+        elif "disabled" in status.lower():
+            return "DISABLED"
+        else:
+            return "[/]"
+    except subprocess.CalledProcessError:
+        return "[/]"
     def get_firewall_rules():
         try:
             result = subprocess.check_output(['iptables', '-L'], stderr=subprocess.PIPE)
