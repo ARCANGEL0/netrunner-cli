@@ -1272,14 +1272,10 @@ def initServicos(scr):
 
     largura = scr.getmaxyx()[1]
 
-    for header in MENU_HEAD:
-        centr(scr, header + '\n')
-
-    for header in MENU_HEAD2:
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+    for header in HEADEROUTPUT:   
         typeT(scr, header + '\n')
-
-    for i in range(largura):
-        scr.addch(curses.ACS_BSBS)
+     
     scr.refresh()
 
     return menuServicos(scr)
