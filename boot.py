@@ -789,8 +789,11 @@ def menuOptions(scr):
     curses.curs_set(0)
     scr_height, scr_width = scr.getmaxyx()
     max_width = max(len(item) for item in MENU_OPTIONS)
-    x_pos = scr_width - max_width - 4  # Padding from right
-    y_start = 1  # Start just below the title
+    
+    # Position menu at the top-right corner
+    x_pos = scr_width - max_width - 4  # 4 is the padding from the right side
+    y_pos = 0  # Top of the screen (adjust this for a little margin if needed)
+    
     menu_top_y = 0
     scr.move(0, x_pos)
     typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----\n")
@@ -821,11 +824,11 @@ def menuOptions(scr):
             menu()
 
         elif keyInput == ord('\n') and selection == 1:
+            clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
             print("\n\nUPDATING VAULT SHELL. . . ")
             time.sleep(2)
-            scr.erase()
-            os.system('sudo apt update && sudo apt-get upgrade')
+            os.system('xterm -hold -e "sudo apt update && sudo apt-get upgrade"')
             refOptions()
 
         elif keyInput == ord('\n') and selection == 2:
