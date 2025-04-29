@@ -254,7 +254,11 @@ def get_system_info():
     ram_info = f"{memory.total / (1024 ** 3):.2f} GB, {memory.percent}% used"
 
     disk_partitions = [p.device for p in psutil.disk_partitions()]
-    network_bandwidth = f"{psutil.net_if_addrs()['eth0'][1].address}" if 'eth0' in psutil.net_if_addrs() else "[ / ]"
+    network_bandwidth = (
+    f"{psutil.net_if_addrs()['eth0'][1].address}"
+    if 'eth0' in psutil.net_if_addrs() and len(psutil.net_if_addrs()['eth0']) > 1
+    else "[ / ]"
+    )
     download_speed, upload_speed = get_network_speed()
 
     active_connections = len(psutil.net_connections())
