@@ -283,7 +283,7 @@ def get_system_info():
 
     swap_used = psutil.swap_memory().used / (1024 ** 3)
     swap_free = psutil.swap_memory().free / (1024 ** 3)
-    tor_status = check_tor_status()
+    tor_status = checkNet()
     system_uptime = str(datetime.now() - datetime.fromtimestamp(psutil.boot_time()))
 
     dns_servers = get_dns_servers()
