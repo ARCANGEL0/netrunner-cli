@@ -1252,7 +1252,6 @@ def initRefOptions(scr):
 def initOptions(scr):
 
     curses.use_default_colors()
-    scr.erase()
     scr.move(0, 0)
     curses.curs_set(0)
 
