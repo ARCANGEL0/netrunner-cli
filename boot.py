@@ -193,42 +193,11 @@ def draw_game(scr, grid, cursor, picks, attempts, reference):
     scr.addstr(iy + 5, ix+32, f"{icon_bot}  // BIND_SHELL")
     # Refresh screen
     scr.refresh()
-def clear_old_menu(scr, menu_width):
-    # Get the screen height and width
-    height, width = scr.getmaxyx()
-
-    # Ensure we don't try to clear more than the screen width
-    menu_width = min(menu_width, width)
-    
-    # Calculate starting position from the right side of the screen
-    start_x = width - menu_width
-    
-    # Loop through all lines on the screen to clear the designated area
-    for y in range(height):
-        scr.move(y, start_x)  # Move to the correct row and column
-        try:
-            # Clear the current column with spaces
-            scr.addstr(" " * menu_width)  
-        except curses.error:
-            # If an error occurs (such as trying to write out of bounds), pass
-            pass
-
-    # Refresh the screen to apply changes
-    scr.refresh()
-
-def render_menu(scr, menu, selection, start_y, start_x):
-    height, width = scr.getmaxyx()
-
-    # Calculate the starting position from the right side of the screen
-    x_pos = width - len(menu[0]) - 4  # Padding and prefix space for alignment
-    
-    # Loop through the menu options and display them
-    for line, item in enumerate(menu):
-        scr.move(start_y + line, x_pos)
-        if line == selection:
-            scr.addstr(item, curses.A_REVERSE)  # Highlight selected option
-        else:
-            scr.addstr(item)
+def clearCurrentMenu(scr, start_y, start_x, menu_height, menu_width):
+  
+    for y in range(menu_height):
+        scr.move(start_y + y, start_x)
+        scr.addstr(" " * menu_width)  # Clear the area by writing spaces
     scr.refresh()
 
 
@@ -940,9 +909,7 @@ def menuServicos(scr):
     selection = 0
     selection_count = len(MENU_SERVICES)
     scr_height, scr_width = scr.getmaxyx()
-    selection_start_y = scr.getyx()[1]
-    selection_start_x = scr.getyx()[1]
-    clear_old_menu(scr, len(MENU_SERVICES))
+
     # Dynamically update menu entries
     MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]" if checkNet() else "OVERSEER NETWORK [INACTIVE]"
     MENU_SERVICES[2] = "STOP ROBCO SERVER" if checkPS('apache2') else "START ROBCO SERVER"
@@ -955,7 +922,7 @@ def menuServicos(scr):
     x_pos = scr_width - max_width - 2  # Padding from right edge
 
     while keyInput != novaLinha:
-        render_menu(scr, MENU_SERVICES, selection, selection_start_y, selection_start_x)
+        # Clear previous menu area by overwriting lines with spaces
         for line in range(selection_count):
             scr.move(menu_top_y + line, x_pos)
             scr.addstr(" " * max_width)
@@ -980,35 +947,35 @@ def menuServicos(scr):
             audio(expand_home("~/.boot/audio/keyenter.wav"))
 
             if selection == 0:
-                clear_old_menu(scr, len(MENU_SERVICES))
+                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 menu()
             elif selection == 1:
-                clear_old_menu(scr, len(MENU_SERVICES))
+                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 darknet()
             elif selection == 2:
                 os.system('sudo service apache2 stop' if checkPS('apache2') else 'sudo service apache2 start')
-                clear_old_menu(scr, len(MENU_SERVICES))
+                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
             elif selection == 3:
                 if checkPS('mariadb') or checkPS('mysql'):
                     os.system('sudo service mysql stop || sudo service mariadb stop')
                 else:
                     os.system('sudo service mysql start || sudo service mariadb start')
-                clear_old_menu(scr, len(MENU_SERVICES))
+                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
             elif selection == 4:
                 if checkPS('tor'):
                     os.system('sudo pkill tor')
                 else:
                     os.system('tor &')
-                clear_old_menu(scr, len(MENU_SERVICES))
+                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
             elif selection == 5:
                 if checkPS('ufw'):
                     os.system('sudo service ufw stop')
                 else:
                     os.system('sudo service ufw start')
-                clear_old_menu(scr, len(MENU_SERVICES))
+                cclearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 servicos()
 
 
