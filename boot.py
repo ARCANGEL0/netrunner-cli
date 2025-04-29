@@ -306,17 +306,20 @@ def get_system_info():
     def get_wifi_info():
         try:
             output = subprocess.check_output(
-                "nmcli -t -f active,ssid,bssid,signal,chan --separator '|' dev wifi",
+                "nmcli -t -f active,ssid,bssid,signal,chan dev wifi",
                 shell=True,
                 text=True
             )
-            
-            line = next((l for l in output.strip().splitlines() if l.startswith("yes|")), None)
+
+            # Look for the active connection (starts with 'yes:')
+            line = next((l for l in output.strip().splitlines() if l.startswith("yes:")), None)
 
             if not line:
                 return {}
 
-            parts = line.split("|")
+            parts = line.split(":")
+            
+            # BSSID can be a MAC address like D8:FC:93:12:AB:CD
             return {
                 "SSID": parts[1] if len(parts) > 1 else None,
                 "BSID": parts[2] if len(parts) > 2 else None,
@@ -326,6 +329,7 @@ def get_system_info():
 
         except Exception:
             return {}
+
     wifi_info = get_wifi_info() 
     ssid = wifi_info.get("SSID", "[ / ]")
     bssid = wifi_info.get("BSID", "[ / ]")
@@ -992,7 +996,7 @@ def criarMenu(scr):
     selection = 0
     selection_count = len(MENU1)
     selection_start_y = scr.getyx()[0]
-    largura = scr.getmaxyx()[1]
+    largura = scr.getmaxyx()[0]
 
     while keyInput != novaLinha:
         scr.move(selection_start_y, 0)
