@@ -767,10 +767,10 @@ def lock_screen():
             subprocess.run(['i3lock'])
             return
         else:
-            print("/.F==: NO LOCKER DEFINED FOR VAULT TERMINAL")
+            centr(scr,"/.F==: NO LOCKER DEFINED FOR VAULT TERMINAL")
     
     except Exception as e:
-        print(f"Journal Entry:\n AN ERROR HAS OCURRED==: {e}")
+        centr(scr,f"Journal Entry:\n AN ERROR HAS OCURRED==: {e}")
 
 
 
@@ -824,7 +824,7 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 1:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nUPDATING VAULT SHELL. . . ")
+            centr(scr,"\n\nUPDATING VAULT SHELL. . . ")
             time.sleep(2)
             os.system('xterm -hold -e "sudo apt update && sudo apt-get upgrade"')
             refOptions()
@@ -832,7 +832,7 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 2:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nROBCO KEYMAPPING CONFIGURATION. . . ")
+            centr(scr,"\n\nROBCO KEYMAPPING CONFIGURATION. . . ")
             time.sleep(2)
             keyboardModelLayout()
             refOptions()
@@ -840,14 +840,14 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 3:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nGETTING VAULTPEEK MODULE. . . ")
+            centr(scr,"\n\nGETTING VAULTPEEK MODULE. . . ")
             vaultpeek()
             refOptions()
 
         elif keyInput == ord('\n') and selection == 4:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nLOADING OVERSEER EYE. . . ")
+            centr(scr,"\n\nLOADING OVERSEER EYE. . . ")
             time.sleep(2)
             monitor()
             refOptions()
@@ -855,7 +855,7 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 5:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nLOADING NETCORE. . . ")
+            centr(scr,"\n\nLOADING NETCORE. . . ")
             time.sleep(2)
             getNmtui()
             refOptions()
@@ -863,17 +863,17 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 6:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nCLEARING ROBCO TEMPORARY LOGS AND FILES. . . ")
+            centr(scr,"\n\nCLEARING ROBCO TEMPORARY LOGS AND FILES. . . ")
             time.sleep(2)
             os.system('sudo apt-get autoremove -y && sudo apt-get clean && sudo apt-get autoclean -y && sudo rm -rf /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/log/*.log && sudo journalctl --vacuum-time=7d')
-            print("\n\nALL TEMPORARY DATA DELETED!")
+            centr(scr,"\n\nALL TEMPORARY DATA DELETED!")
             time.sleep(5)
             refOptions()
 
         elif keyInput == ord('\n') and selection == 7:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nLOADING PIPSNIFF 3000 ")
+            centr(scr,"\n\nLOADING PIPSNIFF 3000 ")
             time.sleep(2)
             getNetstat()
             refOptions()
@@ -881,7 +881,7 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 8:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nUPDATING NAMEFORGE . . . ")
+            centr(scr,"\n\nUPDATING NAMEFORGE . . . ")
             time.sleep(2)
             editHost()
             refOptions()
@@ -889,7 +889,7 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 9:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nSETTING CRONSTART INIT . . . ")
+            centr(scr,"\n\nSETTING CRONSTART INIT . . . ")
             time.sleep(2)
             createCron()
             refOptions()
@@ -897,7 +897,7 @@ def menuOptions(scr):
         elif keyInput == ord('\n') and selection == 10:
             clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
             audio(expand_home("~/.boot/audio/keyenter.wav"))
-            print("\n\nOPENING CRONWATCH . . . ")
+            centr(scr,"\n\nOPENING CRONWATCH . . . ")
             time.sleep(2)
             getCrons()
             refOptions()
@@ -1028,13 +1028,13 @@ def criarMenu(scr):
 
             if selection == 0:
                 scr.erase()
-                print("\n\n//// EXEC_SHELL::[] . . .")
+                centr(scr,"\n\n//// EXEC_SHELL::[] . . .")
                 time.sleep(2)
                 clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
                 shutdown_program()
 
             elif selection == 1:
-                print("\n\n\nVault 138\n Journal entry:")
+                centr(scr,"\n\n\nVault 138\n Journal entry:")
                 time.sleep(2)
                 os.system('journalctl')
                 scr.getch()
@@ -1055,13 +1055,13 @@ def criarMenu(scr):
 
             elif selection == 5:
                 clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
-                print("\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
+                centr(scr,"\n\n\nREBOOTING ROBCO INDUSTRIES (TM) UNIFIED OPERATIONAL SYSTEM")
                 time.sleep(5)
                 os.system("sudo shutdown -r now")
 
             elif selection == 6:
                 clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
-                print("\n\n\nG O O D    B Y E ! ")
+                centr(scr,"\n\n\nG O O D    B Y E ! ")
                 time.sleep(5)
                 os.system("sudo shutdown -h now")
 
@@ -1107,7 +1107,7 @@ def criarDarknet(scr):
                 servicos()
 
             elif selection == 1:
-                print("\n\n- - OVERSEER NETWORK STATUS - -")
+                centr(scr,"\n\n- - OVERSEER NETWORK STATUS - -")
                 time.sleep(2)
                 os.system('sudo torctl status | micro')
                 scr.erase()
@@ -1115,60 +1115,60 @@ def criarDarknet(scr):
 
             elif selection == 2:
                 if checkNet():
-                    print("\n\nDISCONNECTING OVERSEER NETWORK. . . ")
+                    centr(scr,"\n\nDISCONNECTING OVERSEER NETWORK. . . ")
                     time.sleep(2)
                     os.system('sudo torctl stop')
                 else:
-                    print("\n\nCONNECTING OVERSEER NETWORK. . . ")
+                    centr(scr,"\n\nCONNECTING OVERSEER NETWORK. . . ")
                     time.sleep(2)
                     os.system('sudo torctl start')
                 scr.erase()
                 darknet()
 
             elif selection == 3:
-                print("\n\nACTIVATING AUTOWIPE. . . ")
+                centr(scr,"\n\nACTIVATING AUTOWIPE. . . ")
                 time.sleep(2)
                 os.system('sudo torctl autowipe')
                 scr.erase()
                 darknet()
 
             elif selection == 4:
-                print("\n\nACTIVATING AUTO START. . . ")
+                centr(scr,"\n\nACTIVATING AUTO START. . . ")
                 time.sleep(2)
                 os.system('sudo torctl autostart')
                 scr.erase()
                 darknet()
 
             elif selection == 5:
-                print("\n\nFETCHING LOCAL TERMINAL COORDINATES. . . ")
+                centr(scr,"\n\nFETCHING LOCAL TERMINAL COORDINATES. . . ")
                 time.sleep(2)
                 os.system('sudo torctl ip | micro ')
                 scr.erase()
                 darknet()
 
             elif selection == 6:
-                print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
+                centr(scr,"\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
                 time.sleep(2)
                 os.system('sudo torctl chngid')
                 scr.erase()
                 darknet()
 
             elif selection == 7:
-                print("\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
+                centr(scr,"\n\nCHANGE OVERSEER NETWORK IDENTITY. . . ")
                 time.sleep(2)
                 os.system('sudo torctl chngid')
                 scr.erase()
                 darknet()
 
             elif selection == 8:
-                print("\n\nCHANGING LOCAL ROBCO CHIPSET MAC. . . ")
+                centr(scr,"\n\nCHANGING LOCAL ROBCO CHIPSET MAC. . . ")
                 time.sleep(2)
                 os.system('sudo torctl chngmac')
                 scr.erase()
                 darknet()
 
             elif selection == 9:
-                print("\n\nRESTORING LOCAL ROBCO CHIPSET MAC. . . ")
+                centr(scr,"\n\nRESTORING LOCAL ROBCO CHIPSET MAC. . . ")
                 time.sleep(2)
                 os.system('sudo torctl rvmac')
                 scr.erase()
