@@ -891,12 +891,13 @@ def menuOptions(scr):
 
 
 def menuServicos(scr):
-
     keyInput = 0
     selection = 0
     selection_count = len(MENU_SERVICES)
-    height, width = scr.getmaxyx()
-    largura = scr.getmaxyx()[1]
+    selection_start_y = scr.getyx()[1]
+    selection_start_x = scr.getyx()[1]
+    largura = scr.getmaxyx()[0]
+    typeT(scr, "---- NODE: NETWATCH_HKG_CORE ----" + '\n')
 
     if checkNet():
         MENU_SERVICES[1] = "OVERSEER NETWORK [RUNNING]"
@@ -924,9 +925,8 @@ def menuServicos(scr):
     else:
         MENU_SERVICES[5] = "START VAULTSEC UFW"
 
-    scr.move(0, width - max(len(sel) for sel in MENU_SERVICES) - 1)     
     while keyInput != novaLinha:
-        
+        scr.move(selection_start_y, selection_start_x)
         line = 0
         for sel in MENU_SERVICES:
             whole_line = MENU_SERVICES[line]
@@ -1277,9 +1277,9 @@ def initOptions(scr):
 def initServicos(scr):
 
     curses.use_default_colors()
+    scr.move(0, 0)
     curses.curs_set(0)
-
-   
+    get_system_info()
 
     audio(expand_home("~/.boot/audio/beep.wav"),3)
   
