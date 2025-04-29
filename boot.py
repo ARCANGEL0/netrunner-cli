@@ -1443,7 +1443,7 @@ def cap_string(window, hidden=False, can_novaLinha=True):
 
     except ValueError:
         # Handle Unicode characters, if needed, and re-call the login function
-        login()  # Or handle as appropriate
+        #login()  # Or handle as appropriate
 
 
 
