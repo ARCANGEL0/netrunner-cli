@@ -290,7 +290,11 @@ def draw_double_box(scr, y, x, h, w, title=None):
     for i in range(1, h-1): scr.addstr(y+i, x, '║'); scr.addstr(y+i, x+w-1, '║')
     scr.addstr(y+h-1, x, '╚' + '═'*(w-2) + '╝')
     if title: scr.addstr(y, x+2, f' {title} ')
-
+def bloquearTela():
+    """
+    Initialize curses and start the locked out process
+    """
+    curses.wrapper(initLock)
 
 def run_breach(scr):
     curses.curs_set(0)
@@ -333,7 +337,7 @@ def run_breach(scr):
         typeT(scr, '> >>> ROOT_NODE_ACCESS//GRANTED\n')
         time.sleep(5)
     else:
-        typeT(scr, '\nBREACH PROTOCOL FAILED! ACCESS DENIED')
+        initLock()
     scr.refresh()
     time.sleep(1)
     return success
@@ -405,7 +409,7 @@ def sInit(scr):
     # Run breach protocol game here
     success = run_breach(scr)
     if not success:
-        typeT(scr, '\nBREACH PROTOCOL FAILED! ACCESS DENIED')
+        bloquearTela()
     else:
         scr.clear()
         typeT(scr, '\n\n\n\n\n\nBREACH PROTOCOL SUCCESS! CONTINUING...')
