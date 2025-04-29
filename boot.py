@@ -1278,7 +1278,7 @@ def initServicos(scr):
 
     curses.use_default_colors()
     largura = scr.getmaxyx()[1]
-    scr.move(0, 0)
+    scr.move(largura, 0)
     curses.curs_set(0)
     get_system_info()
 
