@@ -253,7 +253,7 @@ def get_system_info():
             return cron_jobs if cron_jobs else ["No Cron Jobs"]
         except subprocess.CalledProcessError:
             return ["No Cron Jobs"]
-    def get_selinux_status():
+    def selinux_status():
         try:
             status = subprocess.check_output("sestatus", shell=True).decode("utf-8")
             if "enabled" in status.lower():
