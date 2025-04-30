@@ -54,7 +54,7 @@ The terminal interface is locked behind a matrix-style minigame.
 ---
 ## :: Demonstration
 
-![Demo Usage](https://github.com/ARCANGEL0/EzyMap/raw/refs/heads/master/demo.gif)
+![Demo Usage](https://raw.githubusercontent.com/ARCANGEL0/netrunner-cli/refs/heads/master/demo.gif)
 
 ## :: Interactive Menu
 
