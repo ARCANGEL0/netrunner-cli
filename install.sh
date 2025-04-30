@@ -31,6 +31,8 @@ mkdir -p ~/.local/share/fonts
 echo "///// SETTING PATH " | pv -qL 30
 echo ""
 echo ""
+grep -q "tmux" "$RC_FILE" || echo "tmux" >> "$RC_FILE"
+
 grep -q "python $HOME/.boot/init.py" "$RC_FILE" || echo "python $HOME/.boot/init.py" >> "$RC_FILE"
 echo ""
 

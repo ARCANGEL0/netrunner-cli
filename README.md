@@ -1,70 +1,87 @@
-# Cyberpunk terminal menu
+# NETRUNNER_V3  
+## Cyberpunk ncurses Menu for the CLI  
 ====================================
 
-Inspirado no terminal de hacking de Cyberpunk 2077, usando
-uma matriz com valores hexadecimais, combinando e gerando uma senha aleatória
-para acessar o terminal 
+/// Inspired by Cyberpunk 2077’s hacking interface  
+/// Simulates the NETTECH Breach Protocol minigame  
+/// Launches an ncurses-powered interactive terminal dashboard  
 
-Conta com um menu pos-autenticaçao para sair e acessar o terminal , 
-opçoes para modificar e iniciar serviços e afins, podendo ser customizado
-e alterado.
+A personal terminal startup project designed to simulate the hacking terminal from *Cyberpunk 2077*.  
+Includes service management, system shortcuts, and a customizable curses menu — all wrapped in a retro-futuristic interface.
 
-Projeto pessoal para usar no meu proprio terminal, como um script
-de inicializaçao no boot
+---
 
-## Uso
+## :: Installation
 
-E necessario instalar certos pacotes, caso nao estejam instalados
+Use the included installer script to set up required packages and tools.
 
-```shell
- pip install -r requirements.txt
-
- python3 init.py
-
-```
-Por ser um projeto pessoal, o audio e algumas opções estão em japonês, pois foi inspirado no jogo Cyberpunk 2077 e feito como um aspiração à um terminal da Arasaka Corp. Sinta-se livre para modificar.
-
-
-Para deixar mais interessante, voce pode colocar o arquivo init.py
-para se iniciar juntamente com seu bash no seu arquivo .zshrc/.bashrc
-e criar um terminal com autenticação estilo Fallout.
-
-```shell
- git clone https://github.com/ARCANGEL0/CyberpunkTerminal 
-
- cd CyberpunkTerminal
-
- echo "python3 $(pwd)/init.py" >> $HOME/.bashrc
+```bash
+chmod +x install.sh && ./install.sh
 ```
 
-Desta forma, toda vez que o terminal do linux for chamado, irá abrir o arquivo
-python e o terminal só poderá ser acessado se a senha for corretamente decifrada, o script conta com exceptions para lidar com comandos CTRL para saida ou background do processo e evitar acesso não autorizado.
 
-Após 4 tentativas, o terminal é bloqueado.
+This will:  
+- Install dependencies listed in the script  
+- Add NETRUNNER to your `.bashrc` or `.zshrc`  
+- Launch the minigame every time you open the terminal  
+- Automatically install [Cool Retro Term](https://github.com/Swordfish90/cool-retro-term)
+
+---
+
+## :: Breach Protocol Minigame
+
+The terminal interface is locked behind a matrix-style minigame.
+
+- Buffer length: 8  
+- Required sequence: Randomized  
+- Attempts allowed: 3  
+- CTRL key traps: Prevent unauthorized exit or backgrounding  
+- On fail: Terminal access is denied
+
+> Only those who breach the system may enter.
+
+---
+
+## :: Interactive Menu
+
+Once authenticated, the ncurses menu provides:
+
+- Start/stop system services such as:
+  - apache  
+  - mysql  
+  - tor  
+  - proxies  
+- Access to configuration files and scripts  
+- Shortcuts to useful utilities and tools  
+- Full user customization of commands and layout
+
+Use it as a modular launch center for your workflow.
+
+---
+
+## :: Bypass Option
+
+To skip the matrix challenge during startup:
+
+> [ F3 ] → Bypass the minigame and access the menu directly.
 
 
-## Menu de opções
+For when you just need to dive in fast.
 
-O menu de opções consta com alguns serviços do meu terminal próprio ( como apache, mysql, snapd )
-que podem ser inicializados pelo próprio script, como uma shell interativa
-Sinta-se a vontade para adicionar seus próprios selects e modificar ao seu gosto
+---
 
+## :: Project Note
 
-## Geraçao da senha
+This script was created as a personal startup shell wrapper — inspired by *Cyberpunk 2077* and the aesthetic of Arasaka terminals.  
+It's made for immersion, speed, and full system control. Modify and adapt freely to fit your needs.
 
-A senha do terminal e gerada a partir de um arquivo de texto (pass) , que busca os valores hex e gera uma delas
-aleatoriamente como senha do sistema
-Para visualizar qual a senha escolhida, basta digitar
-> [/ADMIN.F PASS] 
+---
 
-no terminal do login para visualizar a senha atual.
+## //::[❤️] Support
 
+If you enjoy the project and want to support future development:
 
+<a href='https://ko-fi.com/J3J7WTYV7' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<br>
 
-## Terminal
-
-Para aderir mais ao estilo retro de Terminal,
-recomendo o cool-retro-term de Swordfish90
-
-Deixarei um arquivo .json de personalização para dar um ar "mais cyberpunk".
-(https://github.com/Swordfish90/cool-retro-term)
+> <strong>Hack the world. Byte by Byte.</strong> ⛛
