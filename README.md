@@ -2,7 +2,9 @@
 # NETRUNNER_V3  
 ## Cyberpunk ncurses Menu for the CLI  
 ====================================
-![Demo Usage](https://github.com/ARCANGEL0/netrunner-cli/raw/netrunner.png)
+<br>
+
+<img src="https://github.com/ARCANGEL0/netrunner-cli/raw/netrunner.png">
 
 [![GitHub watchers](https://img.shields.io/github/watchers/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/watchers)
 [![GitHub stars](https://img.shields.io/github/stars/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/stargazers)
