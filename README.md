@@ -11,7 +11,6 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/pulls)
 [![GitHub issues](https://img.shields.io/github/issues/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/issues)
 [![GitHub forks](https://img.shields.io/github/forks/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/network/members)
-[![GitHub viewers](https://img.shields.io/badge/Viewers-1234-4c1?style=flat-square)](https://github.com/ARCANGEL0/netrunner-cli)
 
 
 /// Inspired by Cyberpunk 2077’s hacking interface  
