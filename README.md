@@ -52,6 +52,9 @@ The terminal interface is locked behind a matrix-style minigame.
 > Only those who breach the system may enter.
 
 ---
+## :: Demonstration
+
+![Demo Usage](https://github.com/ARCANGEL0/EzyMap/raw/refs/heads/master/demo.gif)
 
 ## :: Interactive Menu
 
