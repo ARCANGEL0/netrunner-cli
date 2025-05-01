@@ -14,7 +14,7 @@ loading() {
 }
 
 echo "// INSTALLATION_SEQUENCE . . . . . . . . . . . " | pv -qL 45
-loading 60
+loading 17
 echo ""
 clear
 sudo apt update -qq > /dev/null 2>&1
@@ -29,7 +29,7 @@ echo "//////// LOADING CONFIGURATIONS FOR NETRUNNER_V3:TMUX. . . . . . . . . . .
 
 echo "[::]> Installing tmux, curl, and zsh..."
 sudo apt update && sudo apt install -y tmux curl zsh > /dev/null 2>&1
-loading 70
+loading 15
 echo "[::]> Writing tmux configuration to ~/.tmux.conf..."
 
 cat << 'EOF' > ~/.tmux.conf
@@ -102,14 +102,14 @@ set -g @nova-segments-0-right "weather disk cpu ram net whoami"
 
 run '~/.tmux/plugins/tpm/tpm'
 EOF
-loading 20
+loading 12
 echo "[::]> Appending tmux autostart to ~/.bashrc and ~/.zshrc..."
 
 for rc in ~/.bashrc ~/.zshrc; do
   grep -qxF '[ -z "$TMUX" ] && exec tmux' "$rc" || \
     echo -e '\nif command -v tmux >/dev/null 2>&1; then\n  [ -z "$TMUX" ] && exec tmux\nfi' >> "$rc"
 done
-loading 20
+loading 16
 sleep 4
 echo "" 
 echo "[✓] Setup complete."
@@ -139,7 +139,7 @@ mkdir -p ~/.local/share/fonts
 echo "///// SETTING PATH " | pv -qL 30
 echo ""
 
-loading 70
+loading 10
 
 echo ""
 grep -q "tmux" "$RC_FILE" || echo "tmux" >> "$RC_FILE"
@@ -150,16 +150,9 @@ echo ""
 
 cd $HOME
 echo "[::]> INSTALLING DEPENDENCIES AND TOOLS. . . . . . . .   " | pv -qL 60
-
-for ((i = 1; i <= blh; i++)); do
-    filled=$(printf "%*s" "$i" | tr ' ' "$fc")
-    empty=$(printf "%*s" "$((blh - i))" | tr ' ' "$xc")
-    printf "\r[%s%s]" "$filled" "$empty"
-    sleep 0.07
-done
 echo ""
 echo ""
-loading 50
+loading 10
 wget https://github.com/JohnMcLaren/torctl-bridged/releases/download/torctl-bridged/torctl-bridged_0.5.7-1_amd64.deb
 sudo apt install $HOME/torctl-bridged_0.5.7-1_amd64.deb
 
@@ -189,7 +182,7 @@ for i in {1..5}; do
 done
 
 echo ""
-loading 60
+loading 20
 figlet -f ~/.local/share/fonts/starwars.flf "EzyMap"
 
 sudo cp ezymap ~/.local/bin/
@@ -210,7 +203,7 @@ sleep 5
 echo " "
 echo " "
 echo " "
-loading 100
+loading 50
 sleep 5
 clear
 figlet -f ~/.local/share/fonts/starwars.flf "NET::TECH"
