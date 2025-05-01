@@ -27,6 +27,8 @@ Includes service management, system shortcuts, and a customizable curses menu â€
 Use the included installer script to set up required packages and tools.
 
 ```bash
+git clone https://github.com/ARCANGEL0/netrunner-cli
+cd netrunner-cli
 chmod +x install.sh && ./install.sh
 ```
 
