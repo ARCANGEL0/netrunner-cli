@@ -291,12 +291,7 @@ def get_system_info():
             return result.stdout.strip().replace("\n", ", ") if result.returncode == 0 else "[/]"
         except:
             return "[/]"
-    def get_firewall_rules():
-        try:
-            result = subprocess.check_output(['iptables', '-L'], stderr=subprocess.PIPE)
-            return result.decode()
-        except subprocess.CalledProcessError:
-            return "[ / ]"
+
     def open_ports():
         try:
             output = subprocess.check_output("ss -tuln", shell=True, text=True)
@@ -358,7 +353,7 @@ def get_system_info():
         
         except wifi.exceptions.InterfaceError:
             return "NO SIGNAL"
-   
+    
     def get_ssid(interface='wlan0'):
         if not os.path.exists(f'/sys/class/net/{interface}'):
             return "[/]"
@@ -373,7 +368,26 @@ def get_system_info():
                 return "NO SIGNAL"  #
         except wifi.exceptions.InterfaceError:
             return "NO SIGNAL"  
-            
+    def weather(location=""):
+        try:
+            data = requests.get(f"https://wttr.in/{location}?format=%C", timeout=5).text.strip()
+            return data 
+        except:
+            return "[/]"
+
+    def temperature(location=""):
+        try:
+            data = requests.get(f"https://wttr.in/{location}?format=%t", timeout=5).text.strip()
+            return data  
+        except:
+            return "[/]"
+
+    def wind(location=""):
+        try:
+            data = requests.get(f"https://wttr.in/{location}?format=%w", timeout=5).text.strip()
+            return data 
+        except:
+            return "[/]"
     ip_address = socket.gethostbyname(socket.gethostname())
     public_ip = subprocess.getoutput("curl -s http://checkip.amazonaws.com")
     mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
@@ -417,7 +431,6 @@ def get_system_info():
     system_uptime = str(datetime.now() - datetime.fromtimestamp(psutil.boot_time()))
 
     dns_servers = get_dns_servers()
-    firewall_rules_summary = get_firewall_rules()
     running_services = subprocess.getoutput("systemctl --type=service --state=running").splitlines()
    
     
@@ -427,6 +440,9 @@ def get_system_info():
         f"// IADDRESS..........: {ip_address}",
         f"// W_ADDRESS.......: {public_ip}",
         f"// M_ADDRESS.......: {mac_address}",
+        f"// LOC_STATUS.......: {weather}",
+        f"// LOC_TEMP.......: {temperature}",
+        f"// LOC_WIND.......: {wind}",
         f"// CUR_TIME......: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"// RUNNER_ID.........: {hostname}",
         f"// SESSION_KEY.......: {session_key}",
@@ -449,7 +465,6 @@ def get_system_info():
         f"// GET_PCIDEVICES.......: {pci_devices_count}",
         f"// LOAD_DNS.......: {', '.join(dns_servers)}",
         f"// SELINUX_STATUS....: {selinux_status()}",
-        f"// FIREWALL_RULES....: {firewall_rules_summary}",
         f"// DARKNET_V2........: {'RUNNING' if checkNet() else 'NOT RUNNING' }",
         f"// RUNNER_UPTIME.....: {system_uptime}",
         f"....................................................................",
@@ -488,6 +503,7 @@ MENU_SERVICES = [
     "[:]|/ BOOT_MYSQL",                
     "[:]|/ EXECUTE_TOR",       
     "[:]|/ ACTIVATE_UFW"               
+    "[:]|/ CHECK_WEATHER"               
 ]
 
 MENU_OPTIONS = [
@@ -604,6 +620,8 @@ def editHost():
 def createCron():
     os.environ['EDITOR'] = 'micro'
     subprocess.run("crontab -e", shell=True)
+def getWeather():
+    subprocess.run("tmpf=$(mktemp) && curl -s wttr.in/?d | sed -E 's/\\x1B\\[[0-9;]*[mK]//g' | grep -v 'Follow.*wttr.in' > \"$tmpf\" && nano \"$tmpf\" && rm \"$tmpf\"",shell=True)
 def getNetstat():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp:
         tmp.write("[+] Fetching netstat/ss output...\n")
@@ -978,10 +996,17 @@ def menuServicos(scr):
                 servicos()
             elif selection == 5:
                 if checkPS('ufw'):
-                    os.system('sudo service ufw stop')
+                    os.system('sudo systemctl stop ufw')
                 else:
-                    os.system('sudo service ufw start')
+                    os.system('sudo systemctl start ufw')
                 clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                servicos()
+            elif selection == 6:
+                clearCurrentMenu(scr, menu_top_y, x_pos, selection_count, max_width)
+                audio(expand_home("~/.boot/audio/keyenter.wav"))
+                centr(scr,"\n\n/// FETCHING_LOC_WEATHER")
+                time.sleep(2)
+                getWeather()
                 servicos()
 
 

@@ -5,7 +5,7 @@ import os
 from threading import Thread
 
 def audio(filepath, repeats=1):
-    os.system(f"ffplay -nodisp -autoexit -loop {repeats} {filepath} > /dev/null 2>&1 &")
+    subprocess.Popen(f"ffplay -nodisp -autoexit -loop {repeats} {filepath}", shell=True)
 
 
   
