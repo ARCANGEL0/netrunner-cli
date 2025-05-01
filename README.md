@@ -4,7 +4,10 @@
 ====================================
 <br>
 
-<img src="https://raw.githubusercontent.com/ARCANGEL0/netrunner-cli/refs/heads/master/netrunner.png" alt="NETRUNNER Screenshot" width="250">
+<img src="https://raw.githubusercontent.com/ARCANGEL0/netrunner-cli/refs/heads/master/netrunner.png" alt="NETRUNNER Screenshot" height="850" width="1450">
+<br>
+
+<center>
 
 [![GitHub watchers](https://img.shields.io/github/watchers/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/watchers)
 [![GitHub stars](https://img.shields.io/github/stars/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/stargazers)
@@ -12,6 +15,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/issues)
 [![GitHub forks](https://img.shields.io/github/forks/ARCANGEL0/netrunner-cli.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/netrunner-cli/network/members)
 
+</center>
 
 /// Inspired by Cyberpunk 2077’s hacking interface  
 /// Simulates the NETTECH Breach Protocol minigame  
