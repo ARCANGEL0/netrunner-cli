@@ -357,24 +357,34 @@ def get_system_info():
                 return "NO SIGNAL"  #
         except wifi.exceptions.InterfaceError:
             return "NO SIGNAL"  
+    
     def weather():
         try:
-            data = requests.get(f"https://wttr.in/?format=%C", timeout=5).text.strip()
-            return data 
+            out = subprocess.check_output(
+                ["curl", "-s", "--max-time", "5", "https://wttr.in/?format=%C"],
+                stderr=subprocess.DEVNULL
+            ).decode().strip()
+            return out if out else "[/]"
         except:
             return "[/]"
-
+    
     def temperature():
         try:
-            data = requests.get(f"https://wttr.in/?format=%t", timeout=5).text.strip()
-            return data  
+            out = subprocess.check_output(
+                ["curl", "-s", "--max-time", "5", "https://wttr.in/?format=%t"],
+                stderr=subprocess.DEVNULL
+            ).decode().strip()
+            return out if out else "[/]"
         except:
             return "[/]"
-
+    
     def wind():
         try:
-            data = requests.get(f"https://wttr.in/?format=%w", timeout=5).text.strip()
-            return data 
+            out = subprocess.check_output(
+                ["curl", "-s", "--max-time", "5", "https://wttr.in/?format=%w"],
+                stderr=subprocess.DEVNULL
+            ).decode().strip()
+            return out if out else "[/]"
         except:
             return "[/]"
     ip_address = socket.gethostbyname(socket.gethostname())
@@ -924,9 +934,17 @@ def menuOptions(scr):
 
 def initRefServicos(scr):
     curses.use_default_colors()
+    scr.erase()
+    scr.move(0, 0)
     curses.curs_set(0)
-    audio(expand_home("~/.boot/audio/beep.wav"), 3)
-
+    get_system_info()
+    largura = scr.getmaxyx()[1]
+    
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+    for header in HEADEROUTPUT:   
+        typeT(scr, header + '\n')
+    menu_start_y = scr.getyx()[1]
+    scr.refresh()
     # Do not erase or re-render header; assume it was done before
     return menuServicos(scr)
 
@@ -1347,6 +1365,7 @@ def options():
 def servicos():
     res = curses.wrapper(initServicos)
     return res
+    
 def newServicos():
 
     res = curses.wrapper(initRefServicos)
