@@ -502,7 +502,7 @@ MENU_SERVICES = [
     "[:]|/ LAUNCH_APACHE",       
     "[:]|/ BOOT_MYSQL",                
     "[:]|/ EXECUTE_TOR",       
-    "[:]|/ ACTIVATE_UFW"               
+    "[:]|/ ACTIVATE_UFW",             
     "[:]|/ CHECK_WEATHER"               
 ]
 
@@ -940,7 +940,7 @@ def menuServicos(scr):
     MENU_SERVICES[3] = "[:]|/ KILL_DATABASE_V2" if checkPS('mariadb') or checkPS('mysqld') else "[:]|/ INIT_DATABASE_V2"
     MENU_SERVICES[4] = "[:]|/ KILL_TORRC" if check_tor_running() else "[:]|/ INIT_TORRC"
     MENU_SERVICES[5] = "[:]|/ KILL_NETRUNNERV3_UFW" if checkPS('ufw') else "[:]|/ INIT_NETRUNNERV3_UFW"
-    MENU_SERVICES[6] = "[:]|/ CHECK_WEATHER"
+
     menu_top_y = 0
     max_width = max(len(item) for item in MENU_SERVICES)
     x_pos = scr_width - max_width - 2  # Padding from right edge
