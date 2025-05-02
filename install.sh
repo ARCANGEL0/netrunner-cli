@@ -58,6 +58,7 @@ set -g @plugin 'xamut/tmux-network-bandwidth'
 set -g @nova-segment-time "󱇏 #H | #(date +'%H:%M') 󰄾"
 set -g @nova-segment-time-colors "#000000 #ff0000"
 set -g status-interval 60
+set -g mouse on
 set-option -g @tmux-weather-interval 5
 set-option -g @tmux-weather-format "  %t+%w"
 set -g @nova-segment-weather "     #{weather}/ "
