@@ -921,6 +921,24 @@ def menuOptions(scr):
             refOptions()
 
 
+def initRefServicos(scr):
+    curses.use_default_colors()
+    scr.erase()
+    scr.move(0, 0)
+    curses.curs_set(0)
+    get_system_info()
+    largura = scr.getmaxyx()[1]
+    
+    audio(expand_home("~/.boot/audio/beep.wav"),3)
+    for header in HEADEROUTPUT:   
+        typeT(scr, header + '\n')
+    menu_start_y = scr.getyx()[1]
+    scr.refresh()
+    # Do not erase or re-render header; assume it was done before
+    return menuServicos(scr)
+
+
+
 def initServicos(scr):
     curses.use_default_colors()
     curses.curs_set(0)
@@ -928,6 +946,8 @@ def initServicos(scr):
 
     # Do not erase or re-render header; assume it was done before
     return menuServicos(scr)
+
+
 def menuServicos(scr):
     keyInput = 0
     selection = 0
@@ -1007,7 +1027,7 @@ def menuServicos(scr):
                 centr(scr,"\n\n/// FETCHING_LOC_WEATHER")
                 time.sleep(2)
                 getWeather()
-                servicos()
+                newServicos()
 
 
 def criarMenu(scr):
@@ -1334,6 +1354,11 @@ def options():
 def servicos():
     res = curses.wrapper(initServicos)
     return res
+def newServicos():
+
+    res = curses.wrapper(initRefServicos)
+    return res
+
 
 
 def sInit(scr):
