@@ -105,21 +105,15 @@ echo ""
 echo "" 
 echo "" 
 echo "[::]> Appending tmux autostart to ~/.bashrc and ~/.zshrc..." | pv -qL 25
-ALIAS="alias menu='python3 \$HOME/.boot/boot.py firstMenu'"
-TMUX_START='
-if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-  tmux has-session -t main 2>/dev/null
-  if [ $? -eq 0 ]; then
-    tmux attach-session -t main
-  else
-    tmux new-session -s main -d "python3 /root/.boot/init.py"
-    tmux attach-session -t main
-  fi
+CONFIG='
+alias menu="python3 \$HOME/.boot/boot.py firstMenu"
+tmux attach -D || tmux
+if [ -n "\$TMUX" ]; then
+  python3 "\$HOME/.boot/init.py"
 fi
 '
 for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
-  grep -qxF "$ALIAS" "$rc" || echo "$ALIAS" >> "$rc"
-  echo "$TMUX_START" >> "$rc"
+  echo "$CONFIG" >> "$rc"
 done
 loading 16
 sleep 4
