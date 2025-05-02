@@ -587,7 +587,7 @@ def breach_protocol(scr, matrix, req_seq):
     
         
 def audio(filepath, repeats=1):
-    os.system(f"ffplay -nodisp -autoexit -loop {repeats} {filepath} > /dev/null 2>&1 &")
+    os.system(f"ffplay -nodisp -autoexit -loglevel quiet -loop {repeats} \"{filepath}\" >/dev/null 2>&1 &")
 
         
 def checkPS(processName):
