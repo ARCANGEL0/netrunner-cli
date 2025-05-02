@@ -40,7 +40,6 @@ sudo apt-get install gnome-terminal ffmpeg curl wget fonts-powerline zip ufw hto
 loading 10
 echo "NET::TECH INTERFACE INSTALLATION. . . . . . . . " | pv -qL 45
 sudo apt-get install cool-retro-term git nmtui nmap figlet micro toilet tor python pip3 ffmpeg pv -y curl > /dev/null 2>&1
-pip3 install -r requirements.txt --break-system-packages
 echo "//////// LOADING CONFIGURATIONS FOR NETRUNNER_V3:TMUX. . . . . . . . . . . . . . . . . . . " | pv -qL 25
 echo "[::]> Installing tmux, curl, and zsh..."
 sudo apt update && sudo apt install -y tmux curl  gawk net-tools coreutils > /dev/null 2>&1
@@ -99,7 +98,13 @@ set -g @nova-segments-0-right "weather disk cpu ram net whoami"
 run '~/.tmux/plugins/tpm/tpm'
 EOF
 loading 12
-echo "[::]> Appending tmux autostart to ~/.bashrc and ~/.zshrc..."
+echo "[::]> PIP_INSTALL" | pv -qL 25
+pip install wifi psutil --break-system-packages
+echo "" 
+echo "" 
+echo "" 
+echo "" 
+echo "[::]> Appending tmux autostart to ~/.bashrc and ~/.zshrc..." | pv -qL 25
 ALIAS="alias menu='python3 \$HOME/.boot/boot.py firstMenu'"
 TMUX_START='
 if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
