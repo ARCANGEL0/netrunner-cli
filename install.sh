@@ -79,7 +79,7 @@ set -g @nova-status-style-fg '#000000'
 set -g @nova-status-style-active-bg "#000000"
 set -g @nova-status-style-active-fg "#ff0000"
 set -g @nova-status-style-double-bg "#ff6666"
-set -g window-style 'fg=colour247,bg=#00ff00'
+set -g window-style 'fg=colour247,bg=default'
 set -g window-active-style 'fg=colour250,bg=black'
 set -g @nova-pane-active-border-style "#ffa500"
 set -g @nova-pane-border-style "#282a36"
