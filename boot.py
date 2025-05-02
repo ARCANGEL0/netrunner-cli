@@ -357,23 +357,23 @@ def get_system_info():
                 return "NO SIGNAL"  #
         except wifi.exceptions.InterfaceError:
             return "NO SIGNAL"  
-    def weather(location=""):
+    def weather():
         try:
-            data = requests.get(f"https://wttr.in/{location}?format=%C", timeout=5).text.strip()
+            data = requests.get(f"https://wttr.in/?format=%C", timeout=5).text.strip()
             return data 
         except:
             return "[/]"
 
-    def temperature(location=""):
+    def temperature():
         try:
-            data = requests.get(f"https://wttr.in/{location}?format=%t", timeout=5).text.strip()
+            data = requests.get(f"https://wttr.in/?format=%t", timeout=5).text.strip()
             return data  
         except:
             return "[/]"
 
-    def wind(location=""):
+    def wind():
         try:
-            data = requests.get(f"https://wttr.in/{location}?format=%w", timeout=5).text.strip()
+            data = requests.get(f"https://wttr.in/?format=%w", timeout=5).text.strip()
             return data 
         except:
             return "[/]"
