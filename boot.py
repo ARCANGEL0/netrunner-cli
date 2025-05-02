@@ -1436,7 +1436,7 @@ def cap_string(window, hidden=False, can_novaLinha=True):
             if 96 < keyInput < 123:
                 keyInput -= 32
 
-            # Handle backspace
+            
             if keyInput == ord('\b'):
                 if len(def_string) > 0:
                     def_string = def_string[:-1]
