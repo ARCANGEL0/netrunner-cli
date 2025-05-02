@@ -46,6 +46,7 @@ sudo apt update && sudo apt install -y tmux curl  gawk net-tools coreutils > /de
 loading 15
 echo "[::]> Writing tmux configuration to ~/.tmux.conf..."
 echo "Code added to .zshrc and .bashrc."
+git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git && cd nerd-fonts && ./install.sh && cd .. && rm -rf nerd-fonts
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 cat << 'EOF' > ~/.tmux.conf
 set -g @plugin 'tmux-plugins/tpm'
@@ -107,10 +108,10 @@ echo ""
 echo "" 
 echo "[::]> Appending tmux autostart to ~/.bashrc and ~/.zshrc..." | pv -qL 25
 CONFIG='
-alias menu="python3 \$HOME/.boot/boot.py firstMenu"
+alias menu="python3 ~/.boot/boot.py firstMenu"
 tmux attach -D || tmux
 if [ -n "\$TMUX" ]; then
-  python3 "\$HOME/.boot/init.py"
+  python3 "~/.boot/init.py"
 fi
 '
 for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
@@ -249,6 +250,7 @@ sleep 5
 clear
 echo ""
 echo "/// [≜]:INSTALLING_TERMINAL_UI" | pv -qL 65
+sudo apt-get install cool-retro-term -y 
 grep 'alias crterm="cool-retro-term --fullscreen --profile 'Futuristic' &"' ~/.zshrc || echo 'alias crterm="cool-retro-term --fullscreen --profile 'Futuristic' &"' >> ~/.zshrc; grep -qxF 'alias crterm="cool-retro-term --fullscreen --profile 'Futuristic' &"' ~/.bashrc || echo 'alias crterm="cool-retro-term --fullscreen --profile 'Futuristic' &"' >> ~/.bashrc
 loading 40
 sleep 5
