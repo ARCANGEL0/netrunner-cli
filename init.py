@@ -4,8 +4,20 @@ import tempfile
 import os
 from threading import Thread
 
+
 def audio(filepath, repeats=1):
-    subprocess.Popen(f"ffplay -nodisp -autoexit -loop {repeats} {filepath}", shell=True)
+    subprocess.Popen(
+        [
+            "ffplay",
+            "-nodisp",
+            "-autoexit",
+            "-loglevel", "quiet",
+            "-loop", str(repeats),
+            filepath
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
 
 
   
