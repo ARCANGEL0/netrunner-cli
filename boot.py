@@ -24,7 +24,7 @@ from threading import Thread
 import uuid
 from datetime import datetime
 import re
-import json
+
 
 # AVOID EXITTING SCRIPT
 def handler(signum, frame):
@@ -224,17 +224,6 @@ icon_top = " ╔═╗╔═╗ "
 icon_bot = " ╚═╣╠═╝ "
 
 
-
-import socket
-import subprocess
-import psutil
-import platform
-import random
-import string
-import uuid
-import os
-from datetime import datetime
-import time
 
 
 def get_kernel_modules():
@@ -621,7 +610,7 @@ def createCron():
     os.environ['EDITOR'] = 'micro'
     subprocess.run("crontab -e", shell=True)
 def getWeather():
-    subprocess.run("tmpf=$(mktemp) && curl -s wttr.in/?d | sed -E 's/\\x1B\\[[0-9;]*[mK]//g' | grep -v 'Follow.*wttr.in' > \"$tmpf\" && nano \"$tmpf\" && rm \"$tmpf\"",shell=True)
+    subprocess.run("tmpf=$(mktemp) && curl -s wttr.in/?d | sed -E 's/\\x1B\\[[0-9;]*[mK]//g' | grep -v 'Follow.*wttr.in' > \"$tmpf\" && nano \"$tmpf\" && rm \"$tmpf\" && clear",shell=True)
 def getNetstat():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp:
         tmp.write("[+] Fetching netstat/ss output...\n")
@@ -923,17 +912,9 @@ def menuOptions(scr):
 
 def initRefServicos(scr):
     curses.use_default_colors()
-    scr.erase()
-    scr.move(0, 0)
     curses.curs_set(0)
-    get_system_info()
-    largura = scr.getmaxyx()[1]
-    
-    audio(expand_home("~/.boot/audio/beep.wav"),3)
-    for header in HEADEROUTPUT:   
-        typeT(scr, header + '\n')
-    menu_start_y = scr.getyx()[1]
-    scr.refresh()
+    audio(expand_home("~/.boot/audio/beep.wav"), 3)
+
     # Do not erase or re-render header; assume it was done before
     return menuServicos(scr)
 
