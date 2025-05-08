@@ -45,6 +45,7 @@ echo "[::]> Installing tmux, curl, and zsh..."
 sudo apt update && sudo apt install -y tmux curl  gawk net-tools coreutils > /dev/null 2>&1
 loading 15
 echo "[::]> Writing tmux configuration to ~/.tmux.conf..."
+
 echo "Code added to .zshrc and .bashrc."
 wget -qO- https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip | unzip -d ~/.local/share/fonts/ && fc-cache -fv && rm -rf NerdFontsSymbolsOnly.zip
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
