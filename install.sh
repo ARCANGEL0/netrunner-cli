@@ -57,10 +57,9 @@ set -g @plugin 'xamut/tmux-weather'
 set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'AngryMorrocoy/tmux-neolazygit'
 set -g @plugin 'xamut/tmux-network-bandwidth'
-set -g @nova-segment-time "󱇏 #H | #(date +'%H:%M') 󰄾"
+set -g @nova-segment-time "󱇏 #H | #(date '+%H:%M') 󰄾"
 set -g @nova-segment-time-colors "#000000 #ff0000"
 set -g status-interval 60
-set -g mouse on
 set-option -g @tmux-weather-interval 5
 set-option -g @tmux-weather-format "  %t+%w"
 set -g @nova-segment-weather "     #{weather}/ "
@@ -94,7 +93,8 @@ set -g @nova-segment-mode "#{?client_prefix,󰋘,󰋙} |"
 set -g @nova-segment-mode-colors "#000000 #ff0000"
 set -g @nova-segment-whoami "󰛡 NETRUNNER_V3"
 set -g @nova-segment-whoami-colors "#000000 #ff0000"
-set -g status-right-length 300
+set -g status-right-length 600
+set -g status-right-length 600
 set -g @nova-rows 0
 set -g @nova-segments-0-left "mode time"
 set -g @nova-segments-0-right "weather disk cpu ram net whoami"
