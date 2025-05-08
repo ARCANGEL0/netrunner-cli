@@ -46,7 +46,7 @@ sudo apt update && sudo apt install -y tmux curl  gawk net-tools coreutils > /de
 loading 15
 echo "[::]> Writing tmux configuration to ~/.tmux.conf..."
 echo "Code added to .zshrc and .bashrc."
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git && cd nerd-fonts && ./install.sh && cd .. && rm -rf nerd-fonts
+# git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git && cd nerd-fonts && ./install.sh && cd .. && rm -rf nerd-fonts
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 cat << 'EOF' > ~/.tmux.conf
 set -g @plugin 'tmux-plugins/tpm'
