@@ -101,7 +101,7 @@ It's made for immersion, speed, and full system control. Modify and adapt freely
 <div align="center">
   <center> 
     If you enjoy the project and want to support future development:
-
+<br><br>
 <a href='https://ko-fi.com/J3J7WTYV7' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 <br>
 <strong>Hack the world. Byte by Byte.</strong> ⛛
